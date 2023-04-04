@@ -34,6 +34,8 @@
         --table-row-odd-color: #202326;
 
         --button-background-color: #31363B;
+        --button-text-color: #FCFCFC;
+        --button-icon-color: #41CD52;
         --button-hover-color: #3088B6;
         --button-disabled-background-color: #2F3338;
     }
@@ -58,6 +60,8 @@
         --table-row-odd-color: #F7F7F7;
 
         --button-background-color: #FCFCFC;
+        --button-text-color: #202326;
+        --button-icon-color: #41CD52;
         --button-hover-color: #3088B6;
         --button-disabled-background-color: #F0F0F0;
     }
