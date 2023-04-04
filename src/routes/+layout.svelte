@@ -26,7 +26,7 @@
         break;
 
       case "darwin":
-        console.log("TODO");
+        await import("$lib/css/darwin.css");
         break;
 
       default:
