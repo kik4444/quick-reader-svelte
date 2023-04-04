@@ -22,7 +22,7 @@
   async function init() {
     switch (import.meta.env.TAURI_PLATFORM) {
       case "win32":
-        console.log("TODO");
+        await import("$lib/css/win32.css");
         break;
 
       case "darwin":
