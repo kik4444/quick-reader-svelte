@@ -20,21 +20,21 @@
         --text-color: #FFFFFF;
         --text-disabled-color: #8A8E92;
 
-        --window-background-color: #192031;
-        --window-inner-color: #1D1D1D;
-        --window-foreground-color: #232735;
+        --window-background-color: #202020;
+        --window-inner-color: #17202F;
+        --window-foreground-color: #25272F;
 
-        --border-color: #171D2B;
+        --border-color: rgb(102, 102, 102, 0.5);
         --border-disabled-color: #43474C;
 
-        --input-background-color: #232735;
+        --input-background-color: var(--window-inner-color);
         --input-disabled-background-color: #1A1D1F;
 
         --table-row-even-color: #232735;
         --table-row-odd-color: #202326;
 
-        --button-background-color: #4CC2FF;
-        --button-text-color: #00080E;
+        --button-background-color: #292929;
+        --button-text-color: var(--text-color);
         --button-icon-color: #41CD52;
         --button-hover-color: #005FB8;
         --button-disabled-background-color: #2F3338;
@@ -43,26 +43,26 @@
 
 @media (prefers-color-scheme: light) {
     :root {
-        --text-color: #202326;
+        --text-color: #1A1A1B;
         --text-disabled-color: #8A8E92;
 
-        --window-background-color: #EFF0F1;
-        --window-inner-color: #F4F5F5;
-        --window-foreground-color: #FFFFFF;
+        --window-background-color: #F3F3F3;
+        --window-inner-color: #FDFDFD;
+        --window-foreground-color: #F9F9F9;
 
-        --border-color: rgba(189, 191, 192, 1);
+        --border-color: #EAEAEA;
         --border-disabled-color: #DADBDB;
 
-        --input-background-color: #FCFCFC;
+        --input-background-color: #FAFAFA;
         --input-disabled-background-color: #F3F3F3;
 
         --table-row-even-color: #FFFFFF;
         --table-row-odd-color: #F7F7F7;
 
-        --button-background-color: #FCFCFC;
+        --button-background-color: #FDFDFD;
         --button-text-color: #000100;
         --button-icon-color: #41CD52;
-        --button-hover-color: #3088B6;
-        --button-disabled-background-color: #F0F0F0;
+        --button-hover-color: #005FB8;
+        --button-disabled-background-color: #dddddd;
     }
 }
