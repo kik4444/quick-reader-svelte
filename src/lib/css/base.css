@@ -59,7 +59,7 @@ textarea:disabled {
 button {
   box-sizing: border-box;
   background-color: var(--button-background-color);
-  color: var(--text-color);
+  color: var(--button-text-color);
   border: 1pt solid var(--border-color);
   border-radius: 4pt;
   cursor: pointer;
