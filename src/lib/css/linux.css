@@ -27,14 +27,14 @@
         --border-color: rgba(110, 113, 117, 0.5);
         --border-disabled-color: #43474C;
 
-        --input-background-color: #1B1E20;
+        --input-background-color: var(--window-foreground-color);
         --input-disabled-background-color: #1A1D1F;
 
-        --table-row-even-color: #1B1E20;
+        --table-row-even-color: var(--window-foreground-color);
         --table-row-odd-color: #202326;
 
         --button-background-color: #31363B;
-        --button-text-color: #FCFCFC;
+        --button-text-color: var(--text-color);
         --button-icon-color: #41CD52;
         --button-hover-color: #3088B6;
         --button-disabled-background-color: #2F3338;
@@ -56,11 +56,11 @@
         --input-background-color: #FCFCFC;
         --input-disabled-background-color: #F3F3F3;
 
-        --table-row-even-color: #FFFFFF;
+        --table-row-even-color: var(--window-foreground-color);
         --table-row-odd-color: #F7F7F7;
 
-        --button-background-color: #FCFCFC;
-        --button-text-color: #202326;
+        --button-background-color: var(--input-background-color);
+        --button-text-color: var(--text-color);
         --button-icon-color: #41CD52;
         --button-hover-color: #3088B6;
         --button-disabled-background-color: #F0F0F0;
