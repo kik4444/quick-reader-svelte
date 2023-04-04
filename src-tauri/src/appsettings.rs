@@ -42,6 +42,8 @@ impl Default for SettingsFonts {
 pub struct SettingsWindow {
     pub width: u32,
     pub height: u32,
+    #[serde(deserialize_with = "validate_style")]
+    style: String,
 }
 
 impl Default for SettingsWindow {
@@ -49,8 +51,21 @@ impl Default for SettingsWindow {
         Self {
             width: 680,
             height: 560,
+            style: "auto".into(),
         }
     }
+}
+
+fn validate_style<'de, D>(d: D) -> Result<String, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let style = String::deserialize(d)?;
+
+    Ok(match style.as_str() {
+        "win32" | "darwin" | "linux" => style,
+        _ => "auto".into(),
+    })
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

@@ -20,23 +20,27 @@
   import Animated from "$lib/Animated.svelte";
 
   async function init() {
-    switch (import.meta.env.TAURI_PLATFORM) {
-      case "win32":
-        await import("$lib/css/win32.css");
-        break;
+    await appsettings.load();
 
-      case "darwin":
-        await import("$lib/css/darwin.css");
-        break;
+    if ($appsettings.window.style !== "auto") {
+      await import(`$lib/css/${$appsettings.window.style}.css`);
+    } else {
+      switch (import.meta.env.TAURI_PLATFORM) {
+        case "win32":
+          await import("$lib/css/win32.css");
+          break;
 
-      default:
-        await import("$lib/css/linux.css");
-        break;
+        case "darwin":
+          await import("$lib/css/darwin.css");
+          break;
+
+        default:
+          await import("$lib/css/linux.css");
+          break;
+      }
     }
 
     await import("$lib/css/base.css");
-
-    await appsettings.load();
   }
 </script>
 
