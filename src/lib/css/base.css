@@ -16,14 +16,14 @@
  */
 
 :root {
+  /* The CSS variables are expected to be imported dynamically from TS */
+
   color: var(--text-color);
   background-color: var(--window-background-color);
   border-color: var(--border-color);
 
-  --transition-color: color 0.1s linear;
-  --transition-filter: filter 0.1s linear;
-  --transition-border: border-color 0.1s linear;
-  --transition-background: background-color 0.1s linear;
+  --transition-all: all 0.2s linear;
+  transition: var(--transition-all);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -42,13 +42,11 @@ textarea {
   box-sizing: border-box;
   border: thin solid var(--border-color);
   border-radius: 4pt;
-  transition: var(--transition-border);
-  transition: var(--transition-color);
+  transition: var(--transition-all);
 }
 
 textarea:hover {
   border-color: var(--button-hover-color);
-  transition: var(--transition-border);
 }
 
 textarea:disabled {
@@ -63,18 +61,15 @@ button {
   border: 1pt solid var(--border-color);
   border-radius: 4pt;
   cursor: pointer;
-  transition: var(--transition-background);
-  transition: var(--transition-color);
+  transition: var(--transition-all);
 }
 
 button:hover {
   border-color: var(--button-hover-color);
-  transition: var(--transition-border);
 }
 
 button:active {
   background-color: var(--button-hover-color);
-  transition: var(--transition-background);
 }
 
 button:disabled {
@@ -84,12 +79,20 @@ button:disabled {
   cursor: default;
 }
 
+img {
+  transition: var(--transition-all);
+}
+
+button img {
+  filter: var(--button-icon-color-filter);
+}
+
 button:disabled img {
   filter: grayscale(100%);
 }
 
-img {
-  transition: var(--transition-filter);
+input {
+  transition: var(--transition-all);
 }
 
 input[type=number] {
@@ -98,12 +101,10 @@ input[type=number] {
   border-radius: 4pt;
   background-color: var(--input-background-color);
   padding: 3pt 5pt;
-  transition: var(--transition-border);
 }
 
 input[type=number]:hover {
   border-color: var(--button-hover-color);
-  transition: var(--transition-border);
 }
 
 input[type=range]:hover {
