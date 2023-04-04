@@ -34,8 +34,8 @@
     <p>
       Quick Reader is a program that enables its user to quickly read through
       text by encouraging the silencing of their subvocalization. Quick Reader
-      is free/libre open source software released under GPL. The source code is
-      available at <a href="{source_code_link}" on:click="{clicked_link}"
+      is free/libre software released under the GPL version 3. The source code
+      is available at <a href="{source_code_link}" on:click="{clicked_link}"
         >{source_code_link}</a
       >
     </p>
