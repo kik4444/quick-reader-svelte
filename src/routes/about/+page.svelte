@@ -54,6 +54,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 10pt;
+  }
+
+  p {
+    margin: 0;
   }
 
   img {
