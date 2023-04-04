@@ -1,0 +1,68 @@
+/*    
+ *    This file is part of Quick Reader.
+ *
+ *    Quick Reader is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    Quick Reader is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #E1E1E1;
+        --text-disabled-color: #8A8E92;
+
+        --window-background-color: #323232;
+        --window-inner-color: #393939;
+        --window-foreground-color: #222222;
+
+        --border-color: #2E2E2E;
+        --border-disabled-color: var(--border-color);
+
+        --input-background-color: var(--window-foreground-color);
+        --input-disabled-background-color: #1A1D1F;
+
+        --table-row-even-color: #171717;
+        --table-row-odd-color: var(--window-foreground-color);
+
+        --button-background-color: #565656;
+        --button-text-color: var(--text-color);
+        --button-icon-color: #41CD52;
+        --button-hover-color: #0E78D9;
+        --button-disabled-background-color: #2F2F2F;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --text-color: #1A1A1B;
+        --text-disabled-color: #8A8E92;
+
+        --window-background-color: #EEF4F9;
+        --window-inner-color: #FDFDFD;
+        --window-foreground-color: #F9F9F9;
+
+        --border-color: #EAEAEA;
+        --border-disabled-color: #DADBDB;
+
+        --input-background-color: #FAFAFA;
+        --input-disabled-background-color: #F3F3F3;
+
+        --table-row-even-color: #FFFFFF;
+        --table-row-odd-color: #F7F7F7;
+
+        --button-background-color: #FDFDFD;
+        --button-text-color: #000100;
+        --button-icon-color: #41CD52;
+        --button-hover-color: #005FB8;
+        --button-disabled-background-color: #dddddd;
+    }
+}
