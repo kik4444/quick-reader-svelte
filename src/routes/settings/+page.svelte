@@ -18,10 +18,10 @@
   import { goto } from "$app/navigation";
   import app_settings from "$lib/stores/appsettings";
   import { invoke } from "@tauri-apps/api";
-  import { onDestroy } from "svelte";
   import Animated from "$lib/Animated.svelte";
 
-  onDestroy(() => invoke("set_settings", { newSettings: $app_settings }));
+  // Save settings every time they are changed
+  $: invoke("set_settings", { newSettings: $app_settings });
 </script>
 
 <Animated>
@@ -74,6 +74,15 @@
         bind:value="{$app_settings.playback.jump_forward_chunks}"
       />
       <p>Jump forward chunks</p>
+    </div>
+
+    <div>
+      <select bind:value="{$app_settings.window.style}">
+        {#each ["auto", "win32", "darwin", "linux"] as window_style}
+          <option>{window_style}</option>
+        {/each}
+      </select>
+      <p>Window style (requires refresh)</p>
     </div>
   </main>
 </Animated>

@@ -25,6 +25,9 @@ interface AppSettings {
         textarea_font_style: string;
         textarea_font_size: number;
     };
+    window: {
+        style: string;
+    };
     playback: {
         jump_back_chunks: number;
         jump_forward_chunks: number;
