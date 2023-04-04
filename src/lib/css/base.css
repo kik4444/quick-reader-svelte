@@ -119,4 +119,5 @@ select {
   border: 1pt solid var(--border-color);
   border-radius: 4pt;
   background-color: var(--window-foreground-color);
+  cursor: pointer;
 }
