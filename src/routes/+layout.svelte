@@ -28,8 +28,11 @@
     } else {
       switch (import.meta.env.TAURIPLATFORM) {
         case "win32":
+          windowStyle = "win32";
+
         case "darwin":
-          windowStyle = import.meta.env.TAURIPLATFORM;
+        case "ios":
+          windowStyle = "darwin";
           break;
 
         default:
