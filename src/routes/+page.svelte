@@ -37,7 +37,6 @@
   )}s`;
 
   let playing = false;
-  let textareaLocked = false;
   let playPauseImg: HTMLImageElement;
   let textarea: HTMLTextAreaElement;
 
@@ -47,7 +46,7 @@
   }
 
   function stop() {
-    playing = textareaLocked = false;
+    playing = $appData.textareaLocked = false;
     $appData.currentIndex = 0;
     playPauseImg.src = "/play.svg";
     window.getSelection()?.empty();
@@ -64,7 +63,7 @@
     } else {
       playPauseImg.src = "/pause.svg";
       playing = true;
-      textareaLocked = true;
+      $appData.textareaLocked = true;
     }
   }
 
@@ -133,8 +132,8 @@
         break;
 
       case "Space":
-        event.preventDefault();
-        togglePlaying();
+          event.preventDefault();
+          togglePlaying();
         break;
     }
   }
@@ -146,7 +145,7 @@
   <main>
     <textarea
       placeholder="Enter text to quick read."
-      disabled="{textareaLocked}"
+      disabled="{$appData.textareaLocked}"
       bind:this="{textarea}"
       bind:value="{$appData.text}"
       style="font-size: {$appSettings.fonts.textareaFontSize}pt;
@@ -201,11 +200,11 @@
       </div>
 
       <div class="playback">
-        <button on:click="{stop}" disabled="{!textareaLocked}"
+        <button on:click="{stop}" disabled="{!$appData.textareaLocked}"
           ><img src="/stop.svg" alt="" />Stop</button
         >
 
-        <button on:click="{restart}" disabled="{!textareaLocked}"
+        <button on:click="{restart}" disabled="{!$appData.textareaLocked}"
           ><img src="/restart.svg" alt="" />Restart</button
         >
 
