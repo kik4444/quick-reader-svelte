@@ -15,54 +15,50 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@media (prefers-color-scheme: dark) {
-    [data-style=linux] {
-        --text-color: #FCFCFC;
-        --text-disabled-color: #8A8E92;
+[data-style=linux][data-theme=dark] {
+    --text-color: #FCFCFC;
+    --text-disabled-color: #8A8E92;
 
-        --window-background-color: #2A2E32;
-        --window-inner-color: #26292D;
-        --window-foreground-color: #1B1E20;
+    --window-background-color: #2A2E32;
+    --window-inner-color: #26292D;
+    --window-foreground-color: #1B1E20;
 
-        --border-color: rgba(110, 113, 117, 0.5);
-        --border-disabled-color: #43474C;
+    --border-color: rgba(110, 113, 117, 0.5);
+    --border-disabled-color: #43474C;
 
-        --input-background-color: var(--window-foreground-color);
-        --input-disabled-background-color: #1A1D1F;
+    --input-background-color: var(--window-foreground-color);
+    --input-disabled-background-color: #1A1D1F;
 
-        --table-row-even-color: var(--window-foreground-color);
-        --table-row-odd-color: #202326;
+    --table-row-even-color: var(--window-foreground-color);
+    --table-row-odd-color: #202326;
 
-        --button-background-color: #31363B;
-        --button-text-color: var(--text-color);
-        --button-icon-color: #41CD52;
-        --button-hover-color: #3088B6;
-        --button-disabled-background-color: #2F3338;
-    }
+    --button-background-color: #31363B;
+    --button-text-color: var(--text-color);
+    --button-icon-color: #41CD52;
+    --button-hover-color: #3088B6;
+    --button-disabled-background-color: #2F3338;
 }
 
-@media (prefers-color-scheme: light) {
-    [data-style=linux] {
-        --text-color: #202326;
-        --text-disabled-color: #8A8E92;
+[data-style=linux][data-theme=light] {
+    --text-color: #202326;
+    --text-disabled-color: #8A8E92;
 
-        --window-background-color: #EFF0F1;
-        --window-inner-color: #F4F5F5;
-        --window-foreground-color: #FFFFFF;
+    --window-background-color: #EFF0F1;
+    --window-inner-color: #F4F5F5;
+    --window-foreground-color: #FFFFFF;
 
-        --border-color: rgba(189, 191, 192, 1);
-        --border-disabled-color: #DADBDB;
+    --border-color: rgba(189, 191, 192, 1);
+    --border-disabled-color: #DADBDB;
 
-        --input-background-color: #FCFCFC;
-        --input-disabled-background-color: #F3F3F3;
+    --input-background-color: #FCFCFC;
+    --input-disabled-background-color: #F3F3F3;
 
-        --table-row-even-color: var(--window-foreground-color);
-        --table-row-odd-color: #F7F7F7;
+    --table-row-even-color: var(--window-foreground-color);
+    --table-row-odd-color: #F7F7F7;
 
-        --button-background-color: var(--input-background-color);
-        --button-text-color: var(--text-color);
-        --button-icon-color: #41CD52;
-        --button-hover-color: #3088B6;
-        --button-disabled-background-color: #F0F0F0;
-    }
+    --button-background-color: var(--input-background-color);
+    --button-text-color: var(--text-color);
+    --button-icon-color: #41CD52;
+    --button-hover-color: #3088B6;
+    --button-disabled-background-color: #F0F0F0;
 }

@@ -84,6 +84,15 @@
       </select>
       <p>Window style</p>
     </div>
+
+    <div>
+      <select bind:value="{$appSettings.window.theme}">
+        {#each ["auto", "dark", "light"] as windowTheme}
+          <option>{windowTheme}</option>
+        {/each}
+      </select>
+      <p>Window theme</p>
+    </div>
   </main>
 </Animated>
 

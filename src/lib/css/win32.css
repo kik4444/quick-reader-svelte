@@ -15,54 +15,50 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@media (prefers-color-scheme: dark) {
-    [data-style=win32] {
-        --text-color: #FFFFFF;
-        --text-disabled-color: #8A8E92;
+[data-style=win32][data-theme=dark] {
+    --text-color: #FFFFFF;
+    --text-disabled-color: #8A8E92;
 
-        --window-background-color: #202020;
-        --window-inner-color: #17202F;
-        --window-foreground-color: #25272F;
+    --window-background-color: #202020;
+    --window-inner-color: #17202F;
+    --window-foreground-color: #25272F;
 
-        --border-color: rgb(102, 102, 102, 0.5);
-        --border-disabled-color: #43474C;
+    --border-color: rgb(102, 102, 102, 0.5);
+    --border-disabled-color: #43474C;
 
-        --input-background-color: var(--window-inner-color);
-        --input-disabled-background-color: #1A1D1F;
+    --input-background-color: var(--window-inner-color);
+    --input-disabled-background-color: #1A1D1F;
 
-        --table-row-even-color: #232735;
-        --table-row-odd-color: #202326;
+    --table-row-even-color: #232735;
+    --table-row-odd-color: #202326;
 
-        --button-background-color: #292929;
-        --button-text-color: var(--text-color);
-        --button-icon-color: #41CD52;
-        --button-hover-color: #005FB8;
-        --button-disabled-background-color: #2F3338;
-    }
+    --button-background-color: #292929;
+    --button-text-color: var(--text-color);
+    --button-icon-color: #41CD52;
+    --button-hover-color: #005FB8;
+    --button-disabled-background-color: #2F3338;
 }
 
-@media (prefers-color-scheme: light) {
-    [data-style=win32] {
-        --text-color: #1A1A1B;
-        --text-disabled-color: #8A8E92;
+[data-style=win32][data-theme=light] {
+    --text-color: #1A1A1B;
+    --text-disabled-color: #8A8E92;
 
-        --window-background-color: #EEF4F9;
-        --window-inner-color: #FDFDFD;
-        --window-foreground-color: #F9F9F9;
+    --window-background-color: #EEF4F9;
+    --window-inner-color: #FDFDFD;
+    --window-foreground-color: #F9F9F9;
 
-        --border-color: #EAEAEA;
-        --border-disabled-color: #DADBDB;
+    --border-color: #EAEAEA;
+    --border-disabled-color: #DADBDB;
 
-        --input-background-color: #FAFAFA;
-        --input-disabled-background-color: #F3F3F3;
+    --input-background-color: #FAFAFA;
+    --input-disabled-background-color: #F3F3F3;
 
-        --table-row-even-color: #FFFFFF;
-        --table-row-odd-color: #F7F7F7;
+    --table-row-even-color: #FFFFFF;
+    --table-row-odd-color: #F7F7F7;
 
-        --button-background-color: #FDFDFD;
-        --button-text-color: #000100;
-        --button-icon-color: #41CD52;
-        --button-hover-color: #005FB8;
-        --button-disabled-background-color: #dddddd;
-    }
+    --button-background-color: #FDFDFD;
+    --button-text-color: #000100;
+    --button-icon-color: #41CD52;
+    --button-hover-color: #005FB8;
+    --button-disabled-background-color: #dddddd;
 }
