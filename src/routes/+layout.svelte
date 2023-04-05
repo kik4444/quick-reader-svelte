@@ -17,14 +17,14 @@
 <script lang="ts">
   import "$lib/css/base.css";
   import { goto } from "$app/navigation";
-  import appsettings from "$lib/stores/appsettings";
+  import app_settings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
 
   $: {
     let window_style: string;
 
-    if ($appsettings.window?.style !== "auto") {
-      window_style = $appsettings.window?.style;
+    if ($app_settings.window?.style !== "auto") {
+      window_style = $app_settings.window?.style;
     } else {
       switch (import.meta.env.TAURI_PLATFORM) {
         case "win32":
@@ -41,7 +41,7 @@
   }
 </script>
 
-{#await appsettings.load()}
+{#await app_settings.load()}
   <Animated>
     <p>Loading</p>
   </Animated>

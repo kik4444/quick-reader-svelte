@@ -26,7 +26,7 @@ interface AppData {
   chunk_size: number;
 }
 
-const appdata: Writable<AppData> = writable({
+const app_data: Writable<AppData> = writable({
   text: 'Welcome to "Quick Reader". Press start to begin reading quickly.',
   current_index: 0,
   chunks: [
@@ -40,4 +40,4 @@ const appdata: Writable<AppData> = writable({
   chunk_size: 1,
 });
 
-export default appdata;
+export default app_data;
