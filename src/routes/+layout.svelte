@@ -39,6 +39,20 @@
 
     document.documentElement.setAttribute("data-style", windowStyle);
   }
+
+  $: {
+    let windowTheme: string;
+
+    if ($appSettings.window?.theme !== "auto") {
+      windowTheme = $appSettings.window?.theme;
+    } else {
+      windowTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+
+    document.documentElement.setAttribute("data-theme", windowTheme);
+  }
 </script>
 
 {#await appSettings.load()}
