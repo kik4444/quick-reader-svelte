@@ -46,6 +46,8 @@ pub struct SettingsWindow {
     pub height: u32,
     #[serde(deserialize_with = "validate_style")]
     style: String,
+    #[serde(deserialize_with = "validate_theme")]
+    theme: String,
 }
 
 impl Default for SettingsWindow {
@@ -54,6 +56,7 @@ impl Default for SettingsWindow {
             width: 680,
             height: 560,
             style: "auto".into(),
+            theme: "auto".into(),
         }
     }
 }
@@ -66,6 +69,18 @@ where
 
     Ok(match style.as_str() {
         "win32" | "darwin" | "linux" => style,
+        _ => "auto".into(),
+    })
+}
+
+fn validate_theme<'de, D>(d: D) -> Result<String, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let theme = String::deserialize(d)?;
+
+    Ok(match theme.as_str() {
+        "dark" | "light" => theme,
         _ => "auto".into(),
     })
 }

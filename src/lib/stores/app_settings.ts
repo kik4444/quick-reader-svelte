@@ -27,6 +27,7 @@ interface AppSettings {
     };
     window: {
         style: string;
+        theme: string;
     };
     playback: {
         jumpBackChunks: number;
