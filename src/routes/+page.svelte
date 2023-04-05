@@ -132,8 +132,10 @@
         break;
 
       case "Space":
+        if (textarea !== document.activeElement) {
           event.preventDefault();
           togglePlaying();
+        }
         break;
     }
   }
