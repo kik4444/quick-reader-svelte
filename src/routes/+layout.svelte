@@ -17,31 +17,31 @@
 <script lang="ts">
   import "$lib/css/base.css";
   import { goto } from "$app/navigation";
-  import app_settings from "$lib/stores/app_settings";
+  import appSettings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
 
   $: {
-    let window_style: string;
+    let windowStyle: string;
 
-    if ($app_settings.window?.style !== "auto") {
-      window_style = $app_settings.window?.style;
+    if ($appSettings.window?.style !== "auto") {
+      windowStyle = $appSettings.window?.style;
     } else {
-      switch (import.meta.env.TAURI_PLATFORM) {
+      switch (import.meta.env.TAURIPLATFORM) {
         case "win32":
         case "darwin":
-          window_style = import.meta.env.TAURI_PLATFORM;
+          windowStyle = import.meta.env.TAURIPLATFORM;
           break;
 
         default:
-          window_style = "linux";
+          windowStyle = "linux";
       }
     }
 
-    document.documentElement.setAttribute("data-style", window_style);
+    document.documentElement.setAttribute("data-style", windowStyle);
   }
 </script>
 
-{#await app_settings.load()}
+{#await appSettings.load()}
   <Animated>
     <p>Loading</p>
   </Animated>

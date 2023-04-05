@@ -17,30 +17,30 @@
  -->
 <script lang="ts">
   import { page } from "$app/stores";
-  import app_settings from "$lib/stores/app_settings";
+  import appSettings from "$lib/stores/app_settings";
   import fonts from "$lib/stores/fonts";
   import Animated from "$lib/Animated.svelte";
 
-  async function get_fonts(): Promise<string[]> {
-    if (!$fonts.fonts_loaded) {
+  async function getFonts(): Promise<string[]> {
+    if (!$fonts.fontsLoaded) {
       await fonts.load();
     }
 
     return $fonts.fonts;
   }
 
-  let selected_font_family =
+  let selectedFontFamily =
     $page.params.target === "display"
-      ? $app_settings.fonts.display_font_style
-      : $app_settings.fonts.textarea_font_style;
+      ? $appSettings.fonts.displayFontStyle
+      : $appSettings.fonts.textareaFontStyle;
 
-  function chose_font() {
+  function choseFont() {
     switch ($page.params.target) {
       case "display":
-        $app_settings.fonts.display_font_style = selected_font_family;
+        $appSettings.fonts.displayFontStyle = selectedFontFamily;
         break;
       case "textarea":
-        $app_settings.fonts.textarea_font_style = selected_font_family;
+        $appSettings.fonts.textareaFontStyle = selectedFontFamily;
         break;
     }
 
@@ -48,26 +48,26 @@
   }
 </script>
 
-{#await get_fonts()}
+{#await getFonts()}
   <Animated>
     <p class="loading">Reading system fonts</p>
   </Animated>
 {:then fonts}
   <Animated>
     <main>
-      <select bind:value="{selected_font_family}">
+      <select bind:value="{selectedFontFamily}">
         {#each fonts as font, index (index)}
           <option>{font}</option>
         {/each}
       </select>
 
-      <p style="font-family: {selected_font_family}">
+      <p style="font-family: {selectedFontFamily}">
         The quick brown fox jumps over the lazy dog
       </p>
 
       <div class="buttons">
         <button on:click="{() => history.back()}">Back</button>
-        <button on:click="{chose_font}">Save</button>
+        <button on:click="{choseFont}">Save</button>
       </div>
     </main>
   </Animated>

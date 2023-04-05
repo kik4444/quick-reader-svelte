@@ -19,19 +19,19 @@ import { invoke } from "@tauri-apps/api";
 import { writable } from "svelte/store";
 
 interface Fonts {
-    fonts_loaded: boolean;
+    fontsLoaded: boolean;
     fonts: string[];
 }
 
-function create_store() {
-    let initial_value = { fonts_loaded: false } as Fonts;
+function createStore() {
+    let initialValue = { fontsLoaded: false } as Fonts;
 
-    const { subscribe, update, set } = writable(initial_value);
+    const { subscribe, update, set } = writable(initialValue);
 
     return {
         async load() {
             const fonts = await invoke<string[]>("get_system_fonts");
-            set({ fonts_loaded: true, fonts });
+            set({ fontsLoaded: true, fonts });
         },
         subscribe,
         set,
@@ -39,4 +39,4 @@ function create_store() {
     };
 }
 
-export default create_store();
+export default createStore();
