@@ -20,6 +20,10 @@
   import appSettings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
 
+  // The style and theme can be changed from the settings page.
+  // We react to changes in the style or theme here
+  // and update the html element's data tags accordingly.
+  // This is followed by the browser changing the CSS variables in use for colors
   $: {
     let windowStyle: string;
 
