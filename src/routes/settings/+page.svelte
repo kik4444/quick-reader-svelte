@@ -16,7 +16,7 @@
  -->
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import app_settings from "$lib/stores/appsettings";
+  import app_settings from "$lib/stores/app_settings";
   import { invoke } from "@tauri-apps/api";
   import Animated from "$lib/Animated.svelte";
 

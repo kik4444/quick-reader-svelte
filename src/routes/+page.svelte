@@ -15,22 +15,22 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import appdata from "$lib/stores/appdata";
+  import app_data from "$lib/stores/app_data";
   import { onMount } from "svelte";
   import { split_text } from "$lib/splitter";
-  import app_settings from "$lib/stores/appsettings";
+  import app_settings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
 
-  $: $appdata.chunks = split_text($appdata.text, $appdata.chunk_size);
+  $: $app_data.chunks = split_text($app_data.text, $app_data.chunk_size);
 
-  $: speed = (1000 / ($appdata.wpm / 60)) * $appdata.chunk_size;
+  $: speed = (1000 / ($app_data.wpm / 60)) * $app_data.chunk_size;
 
   $: duration_seconds =
     (speed *
-      $appdata.chunk_size *
-      ($appdata.chunks.length - $appdata.current_index)) /
+      $app_data.chunk_size *
+      ($app_data.chunks.length - $app_data.current_index)) /
     1000 /
-    $appdata.chunk_size;
+    $app_data.chunk_size;
 
   $: duration = `${Math.floor((duration_seconds % 3600) / 60)}m ${Math.floor(
     duration_seconds % 60
@@ -42,19 +42,19 @@
   let textarea: HTMLTextAreaElement;
 
   function reset() {
-    $appdata.wpm = 300;
-    $appdata.chunk_size = 1;
+    $app_data.wpm = 300;
+    $app_data.chunk_size = 1;
   }
 
   function stop() {
     playing = textarea_locked = false;
-    $appdata.current_index = 0;
+    $app_data.current_index = 0;
     play_pause_img.src = "/play.svg";
     window.getSelection()?.empty();
   }
 
   function restart() {
-    $appdata.current_index = 0;
+    $app_data.current_index = 0;
   }
 
   function toggle_playing() {
@@ -69,8 +69,8 @@
   }
 
   function advance_chunk() {
-    if ($appdata.current_index < $appdata.chunks.length - 1) {
-      ++$appdata.current_index;
+    if ($app_data.current_index < $app_data.chunks.length - 1) {
+      ++$app_data.current_index;
     } else {
       stop();
     }
@@ -80,8 +80,9 @@
     if (playing) {
       advance_chunk();
 
-      let selection_start = $appdata.chunks[$appdata.current_index].start_pos;
-      let selection_stop = $appdata.chunks[$appdata.current_index].stop_pos + 1;
+      let selection_start = $app_data.chunks[$app_data.current_index].start_pos;
+      let selection_stop =
+        $app_data.chunks[$app_data.current_index].stop_pos + 1;
 
       textarea.setSelectionRange(selection_start, selection_stop);
     }
@@ -94,7 +95,7 @@
   function changed_wpm(e: Event) {
     const input = e.target as HTMLInputElement;
 
-    $appdata.wpm = Math.min(
+    $app_data.wpm = Math.min(
       parseInt(input.max),
       Math.max(parseInt(input.min), input.valueAsNumber)
     );
@@ -109,26 +110,26 @@
     );
 
     // Recalculate what the new chunk index should be after recreating the text chunks with a different size
-    $appdata.current_index = Math.floor(
-      ($appdata.current_index * $appdata.chunk_size) / new_chunk_size
+    $app_data.current_index = Math.floor(
+      ($app_data.current_index * $app_data.chunk_size) / new_chunk_size
     );
 
-    $appdata.chunk_size = new_chunk_size;
+    $app_data.chunk_size = new_chunk_size;
   }
 
   function keyboard_shortcut_pressed(event: KeyboardEvent) {
     switch (event.code) {
       case "ArrowLeft":
-        $appdata.current_index = Math.max(
-          $appdata.current_index - $app_settings.playback.jump_back_chunks,
+        $app_data.current_index = Math.max(
+          $app_data.current_index - $app_settings.playback.jump_back_chunks,
           0
         );
         break;
 
       case "ArrowRight":
-        $appdata.current_index = Math.min(
-          $appdata.current_index + $app_settings.playback.jump_forward_chunks,
-          $appdata.chunks.length - 1
+        $app_data.current_index = Math.min(
+          $app_data.current_index + $app_settings.playback.jump_forward_chunks,
+          $app_data.chunks.length - 1
         );
         break;
 
@@ -148,7 +149,7 @@
       placeholder="Enter text to quick read."
       disabled="{textarea_locked}"
       bind:this="{textarea}"
-      bind:value="{$appdata.text}"
+      bind:value="{$app_data.text}"
       style="font-size: {$app_settings.fonts.textarea_font_size}pt;
     font-family: {$app_settings.fonts.textarea_font_style}"></textarea>
 
@@ -157,7 +158,7 @@
       style="font-size: {$app_settings.fonts.display_font_size}pt;
     font-family: {$app_settings.fonts.display_font_style}"
     >
-      {$appdata.chunks[$appdata.current_index].chunk}
+      {$app_data.chunks[$app_data.current_index].chunk}
     </p>
 
     <div class="controls">
@@ -168,7 +169,7 @@
           min="60"
           max="1000"
           step="10"
-          value="{$appdata.wpm}"
+          value="{$app_data.wpm}"
           on:change="{changed_wpm}"
         />
         <p>Chunk size:</p>
@@ -176,7 +177,7 @@
           type="number"
           min="1"
           max="10"
-          value="{$appdata.chunk_size}"
+          value="{$app_data.chunk_size}"
           on:change="{changed_chunk_size}"
         />
         <button on:click="{reset}"><img src="/reset.svg" alt="" />Reset</button>
@@ -184,8 +185,8 @@
 
       <div class="progress">
         <p>
-          Chunk {$appdata.current_index + 1} of {Math.floor(
-            $appdata.chunks.length / $appdata.chunk_size
+          Chunk {$app_data.current_index + 1} of {Math.floor(
+            $app_data.chunks.length / $app_data.chunk_size
           )}
         </p>
         <div class="vertical-separator"></div>
@@ -195,8 +196,8 @@
           class="progress"
           type="range"
           min="0"
-          max="{$appdata.chunks.length - 1}"
-          bind:value="{$appdata.current_index}"
+          max="{$app_data.chunks.length - 1}"
+          bind:value="{$app_data.current_index}"
         />
       </div>
 

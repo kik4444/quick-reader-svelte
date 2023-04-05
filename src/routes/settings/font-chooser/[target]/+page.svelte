@@ -17,7 +17,7 @@
  -->
 <script lang="ts">
   import { page } from "$app/stores";
-  import appsettings from "$lib/stores/appsettings";
+  import app_settings from "$lib/stores/app_settings";
   import fonts from "$lib/stores/fonts";
   import Animated from "$lib/Animated.svelte";
 
@@ -31,16 +31,16 @@
 
   let selected_font_family =
     $page.params.target === "display"
-      ? $appsettings.fonts.display_font_style
-      : $appsettings.fonts.textarea_font_style;
+      ? $app_settings.fonts.display_font_style
+      : $app_settings.fonts.textarea_font_style;
 
   function chose_font() {
     switch ($page.params.target) {
       case "display":
-        $appsettings.fonts.display_font_style = selected_font_family;
+        $app_settings.fonts.display_font_style = selected_font_family;
         break;
       case "textarea":
-        $appsettings.fonts.textarea_font_style = selected_font_family;
+        $app_settings.fonts.textarea_font_style = selected_font_family;
         break;
     }
 

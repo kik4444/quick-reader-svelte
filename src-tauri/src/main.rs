@@ -20,8 +20,8 @@
     windows_subsystem = "windows"
 )]
 
-mod appsettings;
-use crate::appsettings::AppSettings;
+mod app_settings;
+use crate::app_settings::AppSettings;
 use quick_reader::Error;
 use std::sync::Mutex;
 use tauri::{AppHandle, Manager, State, Window};
