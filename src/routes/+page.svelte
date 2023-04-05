@@ -15,62 +15,62 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import app_data from "$lib/stores/app_data";
+  import appData from "$lib/stores/app_data";
   import { onMount } from "svelte";
-  import { split_text } from "$lib/splitter";
-  import app_settings from "$lib/stores/app_settings";
+  import { splitText } from "$lib/splitter";
+  import appSettings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
 
-  $: $app_data.chunks = split_text($app_data.text, $app_data.chunk_size);
+  $: $appData.chunks = splitText($appData.text, $appData.chunkSize);
 
-  $: speed = (1000 / ($app_data.wpm / 60)) * $app_data.chunk_size;
+  $: speed = (1000 / ($appData.wpm / 60)) * $appData.chunkSize;
 
-  $: duration_seconds =
+  $: durationSeconds =
     (speed *
-      $app_data.chunk_size *
-      ($app_data.chunks.length - $app_data.current_index)) /
+      $appData.chunkSize *
+      ($appData.chunks.length - $appData.currentIndex)) /
     1000 /
-    $app_data.chunk_size;
+    $appData.chunkSize;
 
-  $: duration = `${Math.floor((duration_seconds % 3600) / 60)}m ${Math.floor(
-    duration_seconds % 60
+  $: duration = `${Math.floor((durationSeconds % 3600) / 60)}m ${Math.floor(
+    durationSeconds % 60
   )}s`;
 
   let playing = false;
-  let textarea_locked = false;
-  let play_pause_img: HTMLImageElement;
+  let textareaLocked = false;
+  let playPauseImg: HTMLImageElement;
   let textarea: HTMLTextAreaElement;
 
   function reset() {
-    $app_data.wpm = 300;
-    $app_data.chunk_size = 1;
+    $appData.wpm = 300;
+    $appData.chunkSize = 1;
   }
 
   function stop() {
-    playing = textarea_locked = false;
-    $app_data.current_index = 0;
-    play_pause_img.src = "/play.svg";
+    playing = textareaLocked = false;
+    $appData.currentIndex = 0;
+    playPauseImg.src = "/play.svg";
     window.getSelection()?.empty();
   }
 
   function restart() {
-    $app_data.current_index = 0;
+    $appData.currentIndex = 0;
   }
 
-  function toggle_playing() {
+  function togglePlaying() {
     if (playing) {
-      play_pause_img.src = "/play.svg";
+      playPauseImg.src = "/play.svg";
       playing = false;
     } else {
-      play_pause_img.src = "/pause.svg";
+      playPauseImg.src = "/pause.svg";
       playing = true;
-      textarea_locked = true;
+      textareaLocked = true;
     }
   }
 
-  function advance_chunk() {
-    if ($app_data.current_index < $app_data.chunks.length - 1) {
-      ++$app_data.current_index;
+  function advanceChunk() {
+    if ($appData.currentIndex < $appData.chunks.length - 1) {
+      ++$appData.currentIndex;
     } else {
       stop();
     }
@@ -78,13 +78,12 @@
 
   function step() {
     if (playing) {
-      advance_chunk();
+      advanceChunk();
 
-      let selection_start = $app_data.chunks[$app_data.current_index].start_pos;
-      let selection_stop =
-        $app_data.chunks[$app_data.current_index].stop_pos + 1;
+      let selectionStart = $appData.chunks[$appData.currentIndex].startPos;
+      let selectionStop = $appData.chunks[$appData.currentIndex].stopPos + 1;
 
-      textarea.setSelectionRange(selection_start, selection_stop);
+      textarea.setSelectionRange(selectionStart, selectionStop);
     }
 
     setTimeout(step, speed);
@@ -92,73 +91,73 @@
 
   onMount(step);
 
-  function changed_wpm(e: Event) {
+  function changedWpm(e: Event) {
     const input = e.target as HTMLInputElement;
 
-    $app_data.wpm = Math.min(
+    $appData.wpm = Math.min(
       parseInt(input.max),
       Math.max(parseInt(input.min), input.valueAsNumber)
     );
   }
 
-  function changed_chunk_size(e: Event) {
+  function changedChunkSize(e: Event) {
     const input = e.target as HTMLInputElement;
 
-    let new_chunk_size = Math.min(
+    let newChunkSize = Math.min(
       parseInt(input.max),
       Math.max(parseInt(input.min), input.valueAsNumber)
     );
 
     // Recalculate what the new chunk index should be after recreating the text chunks with a different size
-    $app_data.current_index = Math.floor(
-      ($app_data.current_index * $app_data.chunk_size) / new_chunk_size
+    $appData.currentIndex = Math.floor(
+      ($appData.currentIndex * $appData.chunkSize) / newChunkSize
     );
 
-    $app_data.chunk_size = new_chunk_size;
+    $appData.chunkSize = newChunkSize;
   }
 
-  function keyboard_shortcut_pressed(event: KeyboardEvent) {
+  function keyboardShortcutPressed(event: KeyboardEvent) {
     switch (event.code) {
       case "ArrowLeft":
-        $app_data.current_index = Math.max(
-          $app_data.current_index - $app_settings.playback.jump_back_chunks,
+        $appData.currentIndex = Math.max(
+          $appData.currentIndex - $appSettings.playback.jumpBackChunks,
           0
         );
         break;
 
       case "ArrowRight":
-        $app_data.current_index = Math.min(
-          $app_data.current_index + $app_settings.playback.jump_forward_chunks,
-          $app_data.chunks.length - 1
+        $appData.currentIndex = Math.min(
+          $appData.currentIndex + $appSettings.playback.jumpForwardChunks,
+          $appData.chunks.length - 1
         );
         break;
 
       case "Space":
         event.preventDefault();
-        toggle_playing();
+        togglePlaying();
         break;
     }
   }
 </script>
 
-<svelte:window on:keydown="{keyboard_shortcut_pressed}" />
+<svelte:window on:keydown="{keyboardShortcutPressed}" />
 
 <Animated>
   <main>
     <textarea
       placeholder="Enter text to quick read."
-      disabled="{textarea_locked}"
+      disabled="{textareaLocked}"
       bind:this="{textarea}"
-      bind:value="{$app_data.text}"
-      style="font-size: {$app_settings.fonts.textarea_font_size}pt;
-    font-family: {$app_settings.fonts.textarea_font_style}"></textarea>
+      bind:value="{$appData.text}"
+      style="font-size: {$appSettings.fonts.textareaFontSize}pt;
+    font-family: {$appSettings.fonts.textareaFontStyle}"></textarea>
 
     <p
       class="display"
-      style="font-size: {$app_settings.fonts.display_font_size}pt;
-    font-family: {$app_settings.fonts.display_font_style}"
+      style="font-size: {$appSettings.fonts.displayFontSize}pt;
+    font-family: {$appSettings.fonts.displayFontStyle}"
     >
-      {$app_data.chunks[$app_data.current_index].chunk}
+      {$appData.chunks[$appData.currentIndex].chunk}
     </p>
 
     <div class="controls">
@@ -169,24 +168,24 @@
           min="60"
           max="1000"
           step="10"
-          value="{$app_data.wpm}"
-          on:change="{changed_wpm}"
+          value="{$appData.wpm}"
+          on:change="{changedWpm}"
         />
         <p>Chunk size:</p>
         <input
           type="number"
           min="1"
           max="10"
-          value="{$app_data.chunk_size}"
-          on:change="{changed_chunk_size}"
+          value="{$appData.chunkSize}"
+          on:change="{changedChunkSize}"
         />
         <button on:click="{reset}"><img src="/reset.svg" alt="" />Reset</button>
       </div>
 
       <div class="progress">
         <p>
-          Chunk {$app_data.current_index + 1} of {Math.floor(
-            $app_data.chunks.length / $app_data.chunk_size
+          Chunk {$appData.currentIndex + 1} of {Math.floor(
+            $appData.chunks.length / $appData.chunkSize
           )}
         </p>
         <div class="vertical-separator"></div>
@@ -196,22 +195,22 @@
           class="progress"
           type="range"
           min="0"
-          max="{$app_data.chunks.length - 1}"
-          bind:value="{$app_data.current_index}"
+          max="{$appData.chunks.length - 1}"
+          bind:value="{$appData.currentIndex}"
         />
       </div>
 
       <div class="playback">
-        <button on:click="{stop}" disabled="{!textarea_locked}"
+        <button on:click="{stop}" disabled="{!textareaLocked}"
           ><img src="/stop.svg" alt="" />Stop</button
         >
 
-        <button on:click="{restart}" disabled="{!textarea_locked}"
+        <button on:click="{restart}" disabled="{!textareaLocked}"
           ><img src="/restart.svg" alt="" />Restart</button
         >
 
-        <button on:click="{toggle_playing}"
-          ><img src="/play.svg" alt="" bind:this="{play_pause_img}" />{playing
+        <button on:click="{togglePlaying}"
+          ><img src="/play.svg" alt="" bind:this="{playPauseImg}" />{playing
             ? "Pause"
             : "Start"}</button
         >

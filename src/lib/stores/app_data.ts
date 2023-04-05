@@ -20,24 +20,24 @@ import type { TextChunk } from "../splitter";
 
 interface AppData {
   text: string;
-  current_index: number;
+  currentIndex: number;
   chunks: TextChunk[];
   wpm: number;
-  chunk_size: number;
+  chunkSize: number;
 }
 
-const app_data: Writable<AppData> = writable({
+const appData: Writable<AppData> = writable({
   text: 'Welcome to "Quick Reader". Press start to begin reading quickly.',
-  current_index: 0,
+  currentIndex: 0,
   chunks: [
     {
       chunk: "",
-      start_pos: 0,
-      stop_pos: 0
+      startPos: 0,
+      stopPos: 0
     }
   ],
   wpm: 300,
-  chunk_size: 1,
+  chunkSize: 1,
 });
 
-export default app_data;
+export default appData;

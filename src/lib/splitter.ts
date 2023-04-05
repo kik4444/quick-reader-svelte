@@ -17,40 +17,40 @@
 
 export interface TextChunk {
     chunk: string;
-    start_pos: number;
-    stop_pos: number;
+    startPos: number;
+    stopPos: number;
 }
 
-export function split_text(input: string, chunk_size: number): TextChunk[] {
-    let delimited_text = [] as TextChunk[];
+export function splitText(input: string, chunkSize: number): TextChunk[] {
+    let delimitedText = [] as TextChunk[];
 
     let matches = input.matchAll(/\S+/g);
     for (const match of matches) {
-        delimited_text.push({
+        delimitedText.push({
             chunk: match[0],
-            start_pos: match.index!,
-            stop_pos: match.index! + match[0].length - 1,
+            startPos: match.index!,
+            stopPos: match.index! + match[0].length - 1,
         });
     }
 
-    if (chunk_size > 1) {
-        let new_delimited_text = [] as TextChunk[];
+    if (chunkSize > 1) {
+        let newDelimitedText = [] as TextChunk[];
 
-        for (let i = 0; i < delimited_text.length; i += chunk_size) {
-            let sections = delimited_text.slice(i, i + chunk_size);
+        for (let i = 0; i < delimitedText.length; i += chunkSize) {
+            let sections = delimitedText.slice(i, i + chunkSize);
 
-            let joined_text = sections.map(section => section.chunk)
+            let joinedText = sections.map(section => section.chunk)
                 .reduce((prev, cur) => prev + " " + cur);
 
-            new_delimited_text.push({
-                chunk: joined_text,
-                start_pos: sections[0].start_pos,
-                stop_pos: sections[sections.length - 1].stop_pos
+            newDelimitedText.push({
+                chunk: joinedText,
+                startPos: sections[0].startPos,
+                stopPos: sections[sections.length - 1].stopPos
             });
         }
 
-        return new_delimited_text;
+        return newDelimitedText;
     }
 
-    return delimited_text;
+    return delimitedText;
 }

@@ -21,5 +21,4 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 	envPrefix: ["VITE_", "TAURI_"]
-
 });

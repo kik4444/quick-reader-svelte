@@ -18,6 +18,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 #[serde(default)]
 struct SettingsFonts {
     display_font_style: String,
@@ -38,6 +39,7 @@ impl Default for SettingsFonts {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 #[serde(default)]
 pub struct SettingsWindow {
     pub width: u32,
@@ -69,6 +71,7 @@ where
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 #[serde(default)]
 struct SettingsPlayback {
     jump_back_chunks: u16,
@@ -85,6 +88,7 @@ impl Default for SettingsPlayback {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
+#[serde(rename_all = "camelCase")]
 #[serde(default)]
 pub struct AppSettings {
     fonts: SettingsFonts,

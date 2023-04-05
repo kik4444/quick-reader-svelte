@@ -20,29 +20,29 @@ import { writable } from "svelte/store";
 
 interface AppSettings {
     fonts: {
-        display_font_style: string;
-        display_font_size: number;
-        textarea_font_style: string;
-        textarea_font_size: number;
+        displayFontStyle: string;
+        displayFontSize: number;
+        textareaFontStyle: string;
+        textareaFontSize: number;
     };
     window: {
         style: string;
     };
     playback: {
-        jump_back_chunks: number;
-        jump_forward_chunks: number;
+        jumpBackChunks: number;
+        jumpForwardChunks: number;
     };
 }
 
-function create_store() {
-    let initial_value = {} as AppSettings;
+function createStore() {
+    let initialValue = {} as AppSettings;
 
-    const { subscribe, update, set } = writable(initial_value);
+    const { subscribe, update, set } = writable(initialValue);
 
     return {
         async load() {
-            const app_settings = await invoke<AppSettings>("get_settings");
-            set(app_settings);
+            const appSettings = await invoke<AppSettings>("get_settings");
+            set(appSettings);
         },
         subscribe,
         set,
@@ -50,4 +50,4 @@ function create_store() {
     };
 }
 
-export default create_store();
+export default createStore();

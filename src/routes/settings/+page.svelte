@@ -16,12 +16,12 @@
  -->
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import app_settings from "$lib/stores/app_settings";
+  import appSettings from "$lib/stores/app_settings";
   import { invoke } from "@tauri-apps/api";
   import Animated from "$lib/Animated.svelte";
 
   // Save settings every time they are changed
-  $: invoke("set_settings", { newSettings: $app_settings });
+  $: invoke("set_settings", { newSettings: $appSettings });
 </script>
 
 <Animated>
@@ -30,14 +30,14 @@
       <button on:click="{() => goto('/settings/font-chooser/display')}"
         >Choose display font family</button
       >
-      <p>{$app_settings.fonts.display_font_style}</p>
+      <p>{$appSettings.fonts.displayFontStyle}</p>
     </div>
 
     <div>
       <input
         type="number"
         min="1"
-        bind:value="{$app_settings.fonts.display_font_size}"
+        bind:value="{$appSettings.fonts.displayFontSize}"
       />
       <p>Display font size</p>
     </div>
@@ -46,14 +46,14 @@
       <button on:click="{() => goto('/settings/font-chooser/textarea')}"
         >Choose textarea font family</button
       >
-      <p>{$app_settings.fonts.textarea_font_style}</p>
+      <p>{$appSettings.fonts.textareaFontStyle}</p>
     </div>
 
     <div>
       <input
         type="number"
         min="1"
-        bind:value="{$app_settings.fonts.textarea_font_size}"
+        bind:value="{$appSettings.fonts.textareaFontSize}"
       />
       <p>Text area font size</p>
     </div>
@@ -62,7 +62,7 @@
       <input
         type="number"
         min="1"
-        bind:value="{$app_settings.playback.jump_back_chunks}"
+        bind:value="{$appSettings.playback.jumpBackChunks}"
       />
       <p>Jump back chunks</p>
     </div>
@@ -71,15 +71,15 @@
       <input
         type="number"
         min="1"
-        bind:value="{$app_settings.playback.jump_forward_chunks}"
+        bind:value="{$appSettings.playback.jumpForwardChunks}"
       />
       <p>Jump forward chunks</p>
     </div>
 
     <div>
-      <select bind:value="{$app_settings.window.style}">
-        {#each ["auto", "win32", "darwin", "linux"] as window_style}
-          <option>{window_style}</option>
+      <select bind:value="{$appSettings.window.style}">
+        {#each ["auto", "win32", "darwin", "linux"] as windowStyle}
+          <option>{windowStyle}</option>
         {/each}
       </select>
       <p>Window style</p>
