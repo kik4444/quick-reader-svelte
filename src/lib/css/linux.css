@@ -16,7 +16,7 @@
  */
 
 @media (prefers-color-scheme: dark) {
-    :root {
+    [data-style=linux] {
         --text-color: #FCFCFC;
         --text-disabled-color: #8A8E92;
 
@@ -42,7 +42,7 @@
 }
 
 @media (prefers-color-scheme: light) {
-    :root {
+    [data-style=linux] {
         --text-color: #202326;
         --text-disabled-color: #8A8E92;
 

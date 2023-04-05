@@ -15,36 +15,33 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
+  import "$lib/css/base.css";
   import { goto } from "$app/navigation";
   import appsettings from "$lib/stores/appsettings";
   import Animated from "$lib/Animated.svelte";
 
-  async function init() {
-    await appsettings.load();
+  $: {
+    let window_style: string;
 
-    if ($appsettings.window.style !== "auto") {
-      await import(`$lib/css/${$appsettings.window.style}.css`);
+    if ($appsettings.window?.style !== "auto") {
+      window_style = $appsettings.window?.style;
     } else {
       switch (import.meta.env.TAURI_PLATFORM) {
         case "win32":
-          await import("$lib/css/win32.css");
-          break;
-
         case "darwin":
-          await import("$lib/css/darwin.css");
+          window_style = import.meta.env.TAURI_PLATFORM;
           break;
 
         default:
-          await import("$lib/css/linux.css");
-          break;
+          window_style = "linux";
       }
     }
 
-    await import("$lib/css/base.css");
+    document.documentElement.setAttribute("data-style", window_style);
   }
 </script>
 
-{#await init()}
+{#await appsettings.load()}
   <Animated>
     <p>Loading</p>
   </Animated>

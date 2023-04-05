@@ -15,9 +15,11 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-:root {
-  /* The CSS variables are expected to be imported dynamically from TS */
+@import "win32";
+@import "darwin";
+@import "linux";
 
+:root {
   color: var(--text-color);
   background-color: var(--window-background-color);
   border-color: var(--border-color);

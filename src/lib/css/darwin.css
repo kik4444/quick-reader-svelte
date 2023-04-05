@@ -16,7 +16,7 @@
  */
 
 @media (prefers-color-scheme: dark) {
-    :root {
+    [data-style=darwin] {
         --text-color: #E1E1E1;
         --text-disabled-color: #8A8E92;
 
@@ -42,7 +42,7 @@
 }
 
 @media (prefers-color-scheme: light) {
-    :root {
+    [data-style=darwin] {
         --text-color: #0F0F0F;
         --text-disabled-color: #8A8E92;
 
