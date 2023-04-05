@@ -16,7 +16,7 @@
  */
 
 @media (prefers-color-scheme: dark) {
-    :root {
+    [data-style=win32] {
         --text-color: #FFFFFF;
         --text-disabled-color: #8A8E92;
 
@@ -42,7 +42,7 @@
 }
 
 @media (prefers-color-scheme: light) {
-    :root {
+    [data-style=win32] {
         --text-color: #1A1A1B;
         --text-disabled-color: #8A8E92;
 

@@ -82,7 +82,7 @@
           <option>{window_style}</option>
         {/each}
       </select>
-      <p>Window style (requires refresh)</p>
+      <p>Window style</p>
     </div>
   </main>
 </Animated>
