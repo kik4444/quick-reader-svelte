@@ -16,7 +16,7 @@
  */
 
 import { writable, type Writable } from "svelte/store";
-import type { TextChunk } from "../splitter";
+import type { TextChunk } from "$lib/splitter";
 
 interface AppData {
   text: string;
