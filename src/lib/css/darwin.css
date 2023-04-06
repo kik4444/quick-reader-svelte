@@ -34,7 +34,6 @@
 
     --button-background-color: #565656;
     --button-text-color: var(--text-color);
-    --button-icon-color: #41CD52;
     --button-hover-color: #0E78D9;
     --button-disabled-background-color: #2F2F2F;
 
@@ -60,7 +59,6 @@
 
     --button-background-color: #FFFFFF;
     --button-text-color: var(--text-color);
-    --button-icon-color: #41CD52;
     --button-hover-color: #0882FD;
     --button-disabled-background-color: #E8E3E9;
 
