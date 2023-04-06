@@ -15,7 +15,7 @@
       "shell": {
         "all": false,
         "execute": false,
-        "open": "^((https?://github.com)|(https?://www.gnu.org)).+",
+        "open": "^((https://github.com)|(https://www.gnu.org)).+",
         "scope": [],
         "sidecar": false
       }
