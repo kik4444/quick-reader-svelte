@@ -64,8 +64,4 @@
   img {
     height: 10vh;
   }
-
-  a {
-    color: #3daee9;
-  }
 </style>
