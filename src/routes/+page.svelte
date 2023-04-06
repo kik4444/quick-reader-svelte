@@ -1,4 +1,4 @@
-<!-- 
+<!--
  *    This file is part of Quick Reader.
  *
  *    Quick Reader is free software: you can redistribute it and/or modify
@@ -50,6 +50,10 @@
     $appData.currentIndex = 0;
     playPauseImg.src = "/play.svg";
     window.getSelection()?.empty();
+
+    // We must unfocus the textfield after stopping play to avoid the user accidentally
+    // deleting text if they press space after the reading has finished
+    textarea.blur();
   }
 
   function restart() {
@@ -64,6 +68,9 @@
       playPauseImg.src = "/pause.svg";
       playing = true;
       $appData.textareaLocked = true;
+
+      // On Windows we must focus the textfield otherwise the highlight is not visible
+      textarea.focus();
     }
   }
 
@@ -132,7 +139,7 @@
         break;
 
       case "Space":
-        if (textarea !== document.activeElement) {
+        if ($appData.textareaLocked || textarea !== document.activeElement) {
           event.preventDefault();
           togglePlaying();
         }
@@ -145,9 +152,12 @@
 
 <Animated>
   <main>
+    <!-- We should use readonly when we want to lock the textarea
+         because Windows cannot highlight text when we use "disabled"
+    -->
     <textarea
       placeholder="Enter text to quick read."
-      disabled="{$appData.textareaLocked}"
+      readonly="{$appData.textareaLocked}"
       bind:this="{textarea}"
       bind:value="{$appData.text}"
       style="font-size: {$appSettings.fonts.textareaFontSize}pt;
