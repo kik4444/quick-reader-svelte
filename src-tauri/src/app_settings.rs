@@ -17,6 +17,11 @@
 
 use serde::{Deserialize, Serialize};
 
+// If serde encounters an error during deserialization of a child struct
+// it will even use the default value of the parent struct.
+// E.g. if an error occurs while deserializing SettingsFonts,
+// even all of AppSettings will assume its default value if we apply unwrap_or_default
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 #[serde(default)]
