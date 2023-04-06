@@ -118,8 +118,20 @@ input[type=range]:active {
 }
 
 select {
+  appearance: none;
   border: 1pt solid var(--border-color);
   border-radius: 4pt;
-  background-color: var(--window-foreground-color);
+  color: var(--text-color);
+  background-color: var(--button-background-color);
+  background-image: var(--select-down-arrow-url);
+  background-repeat: no-repeat;
+  background-position: right 5pt top 50%;
+  background-size: 7pt 9pt;
+  padding: 3pt 2em 3pt 3pt;
   cursor: pointer;
+  transition: var(--transition-all);
+}
+
+select:hover {
+  border-color: var(--button-hover-color);
 }
