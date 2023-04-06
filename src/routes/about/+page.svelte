@@ -1,4 +1,4 @@
-<!-- 
+<!--
  *    This file is part of Quick Reader.
  *
  *    Quick Reader is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@
   main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
     gap: 10pt;
   }
 
