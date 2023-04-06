@@ -15,7 +15,7 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-[data-style=darwin][data-theme=dark] {
+[data-style="MacOS Monterey"][data-theme=Dark] {
     --text-color: #E1E1E1;
     --text-disabled-color: #8A8E92;
 
@@ -42,7 +42,7 @@
     --select-down-arrow-url: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg fill='%23E1E1E1' viewBox='0 0 19.998435 15.001033' version='1.1' id='svg4' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cdefs id='defs8' /%3E%3Cpath d='m 9.1758612,14.569001 a 0.998,0.998 0 0 0 1.6439998,0 l 9,-12.9999998 A 0.999,0.999 0 0 0 18.997861,1.2392435e-6 H 0.99786121 A 1.002,1.002 0 0 0 0.17586121,1.5690012 Z' id='path2' /%3E%3C/svg%3E%0A")
 }
 
-[data-style=darwin][data-theme=light] {
+[data-style="MacOS Monterey"][data-theme=Light] {
     --text-color: #0F0F0F;
     --text-disabled-color: #8A8E92;
 

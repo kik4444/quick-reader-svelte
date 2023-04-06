@@ -27,20 +27,20 @@
   $: {
     let windowStyle: string;
 
-    if ($appSettings.window?.style !== "auto") {
+    if ($appSettings.window?.style !== "Auto") {
       windowStyle = $appSettings.window?.style;
     } else {
       switch (import.meta.env.TAURIPLATFORM) {
         case "win32":
-          windowStyle = "win32";
+          windowStyle = "Windows Mica";
 
         case "darwin":
         case "ios":
-          windowStyle = "darwin";
+          windowStyle = "MacOS Monterey";
           break;
 
         default:
-          windowStyle = "linux";
+          windowStyle = "Linux Breeze";
       }
     }
 
@@ -50,12 +50,12 @@
   $: {
     let windowTheme: string;
 
-    if ($appSettings.window?.theme !== "auto") {
+    if ($appSettings.window?.theme !== "Auto") {
       windowTheme = $appSettings.window?.theme;
     } else {
       windowTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+        ? "Dark"
+        : "Light";
     }
 
     document.documentElement.setAttribute("data-theme", windowTheme);
