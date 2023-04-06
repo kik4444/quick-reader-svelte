@@ -56,6 +56,10 @@ textarea:disabled {
   border-color: var(--border-disabled-color);
 }
 
+a {
+  color: var(--anchor-color);
+}
+
 button {
   box-sizing: border-box;
   background-color: var(--button-background-color);
