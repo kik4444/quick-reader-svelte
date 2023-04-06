@@ -18,6 +18,9 @@
         "open": "^((https://github.com)|(https://www.gnu.org)).+",
         "scope": [],
         "sidecar": false
+      },
+      "os": {
+        "all": true
       }
     },
     "bundle": {
