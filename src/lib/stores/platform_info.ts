@@ -15,9 +15,27 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { writable } from "svelte/store";
+import { platform } from '@tauri-apps/api/os';
 
-export default defineConfig({
-	plugins: [sveltekit()]
-});
+interface PlatformInfo {
+    platformName: string;
+}
+
+function createStore() {
+    let initialValue = {} as PlatformInfo;
+
+    const { subscribe, update, set } = writable(initialValue);
+
+    return {
+        async load() {
+            const platformName = await platform();
+            set({ platformName });
+        },
+        subscribe,
+        set,
+        update,
+    };
+}
+
+export default createStore();

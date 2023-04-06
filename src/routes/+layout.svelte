@@ -1,4 +1,4 @@
-<!-- 
+<!--
  *    This file is part of Quick Reader.
  *
  *    Quick Reader is free software: you can redistribute it and/or modify
@@ -19,6 +19,12 @@
   import { goto } from "$app/navigation";
   import appSettings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
+  import platformInfo from "$lib/stores/platform_info";
+
+  async function init() {
+    await appSettings.load();
+    await platformInfo.load();
+  }
 
   // The style and theme can be changed from the settings page.
   // We react to changes in the style or theme here
@@ -30,9 +36,10 @@
     if ($appSettings.window?.style !== "Auto") {
       windowStyle = $appSettings.window?.style;
     } else {
-      switch (import.meta.env.TAURIPLATFORM) {
+      switch ($platformInfo.platformName) {
         case "win32":
           windowStyle = "Windows Mica";
+          break;
 
         case "darwin":
         case "ios":
@@ -62,7 +69,7 @@
   }
 </script>
 
-{#await appSettings.load()}
+{#await init()}
   <Animated>
     <p>Loading</p>
   </Animated>
