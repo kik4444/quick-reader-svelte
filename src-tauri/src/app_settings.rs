@@ -55,8 +55,8 @@ impl Default for SettingsWindow {
         Self {
             width: 680,
             height: 560,
-            style: "auto".into(),
-            theme: "auto".into(),
+            style: "Auto".into(),
+            theme: "Auto".into(),
         }
     }
 }
@@ -65,11 +65,11 @@ fn validate_style<'de, D>(d: D) -> Result<String, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
-    let style = String::deserialize(d)?;
+    let style = String::deserialize(d).unwrap_or_else(|_| String::new());
 
     Ok(match style.as_str() {
-        "win32" | "darwin" | "linux" => style,
-        _ => "auto".into(),
+        "Windows Mica" | "MacOS Monterey" | "Linux Breeze" => style,
+        _ => "Auto".into(),
     })
 }
 
@@ -77,11 +77,11 @@ fn validate_theme<'de, D>(d: D) -> Result<String, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
-    let theme = String::deserialize(d)?;
+    let theme = String::deserialize(d).unwrap_or_else(|_| String::new());
 
     Ok(match theme.as_str() {
-        "dark" | "light" => theme,
-        _ => "auto".into(),
+        "Dark" | "Light" => theme,
+        _ => "Auto".into(),
     })
 }
 

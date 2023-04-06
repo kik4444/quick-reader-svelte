@@ -78,7 +78,7 @@
 
     <div>
       <select bind:value="{$appSettings.window.style}">
-        {#each ["auto", "win32", "darwin", "linux"] as windowStyle}
+        {#each ["Auto", "Windows Mica", "MacOS Monterey", "Linux Breeze"] as windowStyle}
           <option>{windowStyle}</option>
         {/each}
       </select>
@@ -87,7 +87,7 @@
 
     <div>
       <select bind:value="{$appSettings.window.theme}">
-        {#each ["auto", "dark", "light"] as windowTheme}
+        {#each ["Auto", "Dark", "Light"] as windowTheme}
           <option>{windowTheme}</option>
         {/each}
       </select>
