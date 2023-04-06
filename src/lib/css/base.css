@@ -85,10 +85,6 @@ img {
   transition: var(--transition-all);
 }
 
-button img {
-  filter: var(--button-icon-color-filter);
-}
-
 button:disabled img {
   filter: grayscale(100%);
 }
