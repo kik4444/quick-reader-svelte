@@ -15,10 +15,10 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import appSettings from "$lib/stores/app_settings";
   import { invoke } from "@tauri-apps/api";
   import Animated from "$lib/Animated.svelte";
+  import router from "$lib/stores/router";
 
   // Save settings every time they are changed
   $: invoke("set_settings", { newSettings: $appSettings });
@@ -27,7 +27,7 @@
 <Animated>
   <main>
     <div>
-      <button on:click="{() => goto('/settings/font-chooser/display')}"
+      <button on:click="{() => router.push('FontsChooser/Display')}"
         >Choose display font family</button
       >
       <p>{$appSettings.fonts.displayFontStyle}</p>
@@ -43,7 +43,7 @@
     </div>
 
     <div>
-      <button on:click="{() => goto('/settings/font-chooser/textarea')}"
+      <button on:click="{() => router.push('FontsChooser/Textarea')}"
         >Choose text area font family</button
       >
       <p>{$appSettings.fonts.textareaFontStyle}</p>

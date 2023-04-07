@@ -16,10 +16,9 @@
 
  -->
 <script lang="ts">
-  import { page } from "$app/stores";
-  import appSettings from "$lib/stores/app_settings";
   import fonts from "$lib/stores/fonts";
   import Animated from "$lib/Animated.svelte";
+  import router from "$lib/stores/router";
 
   async function getFonts(): Promise<string[]> {
     if (!$fonts.fontsLoaded) {
@@ -29,22 +28,12 @@
     return $fonts.fonts;
   }
 
-  let selectedFontFamily =
-    $page.params.target === "display"
-      ? $appSettings.fonts.displayFontStyle
-      : $appSettings.fonts.textareaFontStyle;
+  export let currentFontFamily: string;
+  export let saveFont: (fontFamily: string) => void;
 
-  function choseFont() {
-    switch ($page.params.target) {
-      case "display":
-        $appSettings.fonts.displayFontStyle = selectedFontFamily;
-        break;
-      case "textarea":
-        $appSettings.fonts.textareaFontStyle = selectedFontFamily;
-        break;
-    }
-
-    history.back();
+  function save() {
+    saveFont(currentFontFamily);
+    router.pop();
   }
 </script>
 
@@ -55,19 +44,19 @@
 {:then fonts}
   <Animated>
     <main>
-      <select bind:value="{selectedFontFamily}">
+      <select bind:value="{currentFontFamily}">
         {#each fonts as font, index (index)}
           <option>{font}</option>
         {/each}
       </select>
 
-      <p style="font-family: {selectedFontFamily}">
+      <p style="font-family: {currentFontFamily}">
         The quick brown fox jumps over the lazy dog
       </p>
 
       <div class="buttons">
-        <button on:click="{() => history.back()}">Back</button>
-        <button on:click="{choseFont}">Save</button>
+        <button on:click="{() => router.pop()}">Back</button>
+        <button on:click="{save}">Save</button>
       </div>
     </main>
   </Animated>
