@@ -20,6 +20,11 @@
   import appSettings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
   import platformInfo from "$lib/stores/platform_info";
+  import appData from "$lib/stores/app_data";
+
+  import Display from "./+page.svelte";
+  import Settings from "./settings/+page.svelte";
+  import About from "./about/+page.svelte";
 
   async function init() {
     await appSettings.load();
@@ -77,11 +82,24 @@
   <Animated>
     <main>
       <nav>
-        <button on:click="{() => goto('/settings')}">Settings</button>
-        <button on:click="{() => goto('/')}">Quick Reader</button>
-        <button on:click="{() => goto('/about')}">About</button>
+        <button on:click="{() => ($appData.activePage = 'Settings.svelte')}"
+          >Settings</button
+        >
+        <button on:click="{() => ($appData.activePage = 'Display.svelte')}"
+          >Quick Reader</button
+        >
+        <button on:click="{() => ($appData.activePage = 'About.svelte')}"
+          >About</button
+        >
       </nav>
-      <slot />
+
+      {#if $appData.activePage === "Display.svelte"}
+        <Display />
+      {:else if $appData.activePage === "Settings.svelte"}
+        <Settings />
+      {:else if $appData.activePage === "About.svelte"}
+        <About />
+      {/if}
     </main>
   </Animated>
 {:catch error}
