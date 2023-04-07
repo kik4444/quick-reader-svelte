@@ -15,10 +15,10 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import appSettings from "$lib/stores/app_settings";
   import { invoke } from "@tauri-apps/api";
-  import Animated from "$lib/Animated.svelte";
-  import router from "$lib/stores/router";
+  import Animated from "$lib/components/Animated.svelte";
+  import router from "$stores/router";
+  import appSettings from "$stores/app_settings";
 
   // Save settings every time they are changed
   $: invoke("set_settings", { newSettings: $appSettings });
