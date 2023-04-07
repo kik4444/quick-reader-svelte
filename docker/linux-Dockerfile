@@ -7,7 +7,6 @@ RUN apt-get update \
     build-essential \
     libssl-dev \
     libgtk-3-dev \
-    libayatana-appindicator3-dev \
     librsvg2-dev \
     nodejs \
     && apt-get clean -y \
