@@ -25,6 +25,7 @@ interface AppData {
   wpm: number;
   chunkSize: number;
   textareaLocked: boolean;
+  activePage: string;
 }
 
 const appData: Writable<AppData> = writable({
@@ -39,7 +40,8 @@ const appData: Writable<AppData> = writable({
   ],
   wpm: 300,
   chunkSize: 1,
-  textareaLocked: false
+  textareaLocked: false,
+  activePage: "Display.svelte"
 });
 
 export default appData;
