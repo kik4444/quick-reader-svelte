@@ -44,7 +44,7 @@
 
     <div>
       <button on:click="{() => goto('/settings/font-chooser/textarea')}"
-        >Choose textarea font family</button
+        >Choose text area font family</button
       >
       <p>{$appSettings.fonts.textareaFontStyle}</p>
     </div>
