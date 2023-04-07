@@ -15,16 +15,12 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import "$lib/css/base.css";
-  import appSettings from "$lib/stores/app_settings";
-  import Animated from "$lib/Animated.svelte";
-  import platformInfo from "$lib/stores/platform_info";
-  import router from "$lib/stores/router";
-
-  import Display from "./+page.svelte";
-  import Settings from "./settings/+page.svelte";
-  import About from "./about/+page.svelte";
-  import FontChooser from "./settings/font-chooser/[target]/+page.svelte";
+  import "$/styles/base.css";
+  import appSettings from "$stores/app_settings";
+  import platformInfo from "$stores/platform_info";
+  import router from "$stores/router";
+  import App from "$/App.svelte";
+  import Animated from "$lib/components/Animated.svelte";
 
   async function init() {
     await Promise.all([appSettings.load(), platformInfo.load()]);
@@ -72,8 +68,6 @@
     document.documentElement.setAttribute("data-theme", windowTheme);
   }
 
-  $: latestPage = $router.history.at(-1)?.page;
-
   function shortcut_pressed(event: KeyboardEvent) {
     switch (event.code) {
       case "Escape":
@@ -90,57 +84,9 @@
     <p>Loading</p>
   </Animated>
 {:then}
-  <Animated>
-    <main>
-      <nav>
-        <button on:click="{() => router.push('Settings')}">Settings</button>
-        <button on:click="{() => router.push('Display')}">Quick Reader</button>
-        <button on:click="{() => router.push('About')}">About</button>
-      </nav>
-
-      {#if latestPage === "Display"}
-        <Display />
-      {:else if latestPage === "Settings"}
-        <Settings />
-      {:else if latestPage === "About"}
-        <About />
-      {:else if latestPage === "FontsChooser/Display"}
-        <FontChooser
-          currentFontFamily="{$appSettings.fonts.displayFontStyle}"
-          saveFont="{(fontFamily) =>
-            ($appSettings.fonts.displayFontStyle = fontFamily)}"
-        />
-      {:else if latestPage === "FontsChooser/Textarea"}
-        <FontChooser
-          currentFontFamily="{$appSettings.fonts.textareaFontStyle}"
-          saveFont="{(fontFamily) =>
-            ($appSettings.fonts.textareaFontStyle = fontFamily)}"
-        />
-      {/if}
-    </main>
-  </Animated>
+  <App />
 {:catch error}
   <Animated>
     <p>Error initializing application: {error}</p>
   </Animated>
 {/await}
-
-<style>
-  main {
-    height: 100vh;
-    margin: 5pt 10pt;
-    display: grid;
-    gap: 10pt;
-    grid-template-rows: 5% 95%;
-  }
-
-  nav {
-    display: flex;
-    gap: 5pt;
-    align-items: center;
-  }
-
-  nav button {
-    flex-grow: 1;
-  }
-</style>
