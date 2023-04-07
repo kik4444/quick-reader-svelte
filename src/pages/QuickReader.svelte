@@ -15,11 +15,11 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import appData from "$lib/stores/app_data";
+  import appData from "$stores/app_data";
   import { onMount } from "svelte";
-  import { splitText } from "$lib/splitter";
-  import appSettings from "$lib/stores/app_settings";
-  import Animated from "$lib/Animated.svelte";
+  import { splitText } from "$lib/functions/splitter";
+  import appSettings from "$stores/app_settings";
+  import Animated from "$lib/components/Animated.svelte";
 
   $: $appData.chunks = splitText($appData.text, $appData.chunkSize);
 

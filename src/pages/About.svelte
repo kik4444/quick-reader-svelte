@@ -15,7 +15,7 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import Animated from "$lib/Animated.svelte";
+  import Animated from "$lib/components/Animated.svelte";
   import { open } from "@tauri-apps/api/shell";
 
   const source_code_link = "https://github.com/kik4444/quick-reader";

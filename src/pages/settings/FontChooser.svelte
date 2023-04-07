@@ -16,9 +16,9 @@
 
  -->
 <script lang="ts">
-  import fonts from "$lib/stores/fonts";
-  import Animated from "$lib/Animated.svelte";
-  import router from "$lib/stores/router";
+  import Animated from "$lib/components/Animated.svelte";
+  import fonts from "$stores/fonts";
+  import router from "$stores/router";
 
   async function getFonts(): Promise<string[]> {
     if (!$fonts.fontsLoaded) {
