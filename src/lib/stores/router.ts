@@ -18,13 +18,11 @@
 import { writable } from "svelte/store";
 
 interface Router {
-    history: {
-        page: string;
-    }[];
+    history: string[];
 }
 
 function createRouter() {
-    let initialValue = { history: [{ page: "Display" }] } as Router;
+    let initialValue = { history: ["QuickReader"] } as Router;
     const { subscribe, set, update } = writable(initialValue);
     set(initialValue);
 
@@ -33,10 +31,8 @@ function createRouter() {
 
         push(page: string) {
             update(router => {
-                if (page !== router.history.at(-1)?.page) {
-                    // We force Svelte to notify this store's subscribers of a change by using the assignment operator
-                    let ref = router;
-                    ref.history.push({ page });
+                if (page !== router.history.at(-1)) {
+                    router.history.push(page);
                 }
                 return router;
             });
@@ -45,8 +41,7 @@ function createRouter() {
         pop() {
             update(router => {
                 if (router.history.length >= 2) {
-                    let ref = router;
-                    ref.history.pop();
+                    router.history.pop();
                 }
                 return router;
             });
