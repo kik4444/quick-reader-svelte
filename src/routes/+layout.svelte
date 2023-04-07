@@ -16,19 +16,18 @@
  -->
 <script lang="ts">
   import "$lib/css/base.css";
-  import { goto } from "$app/navigation";
   import appSettings from "$lib/stores/app_settings";
   import Animated from "$lib/Animated.svelte";
   import platformInfo from "$lib/stores/platform_info";
-  import appData from "$lib/stores/app_data";
+  import router from "$lib/stores/router";
 
   import Display from "./+page.svelte";
   import Settings from "./settings/+page.svelte";
   import About from "./about/+page.svelte";
+  import FontChooser from "./settings/font-chooser/[target]/+page.svelte";
 
   async function init() {
-    await appSettings.load();
-    await platformInfo.load();
+    await Promise.all([appSettings.load(), platformInfo.load()]);
   }
 
   // The style and theme can be changed from the settings page.
@@ -72,7 +71,19 @@
 
     document.documentElement.setAttribute("data-theme", windowTheme);
   }
+
+  $: latestPage = $router.history.at(-1)?.page;
+
+  function shortcut_pressed(event: KeyboardEvent) {
+    switch (event.code) {
+      case "Escape":
+        router.pop();
+        break;
+    }
+  }
 </script>
+
+<svelte:window on:keydown="{shortcut_pressed}" />
 
 {#await init()}
   <Animated>
@@ -82,23 +93,29 @@
   <Animated>
     <main>
       <nav>
-        <button on:click="{() => ($appData.activePage = 'Settings.svelte')}"
-          >Settings</button
-        >
-        <button on:click="{() => ($appData.activePage = 'Display.svelte')}"
-          >Quick Reader</button
-        >
-        <button on:click="{() => ($appData.activePage = 'About.svelte')}"
-          >About</button
-        >
+        <button on:click="{() => router.push('Settings')}">Settings</button>
+        <button on:click="{() => router.push('Display')}">Quick Reader</button>
+        <button on:click="{() => router.push('About')}">About</button>
       </nav>
 
-      {#if $appData.activePage === "Display.svelte"}
+      {#if latestPage === "Display"}
         <Display />
-      {:else if $appData.activePage === "Settings.svelte"}
+      {:else if latestPage === "Settings"}
         <Settings />
-      {:else if $appData.activePage === "About.svelte"}
+      {:else if latestPage === "About"}
         <About />
+      {:else if latestPage === "FontsChooser/Display"}
+        <FontChooser
+          currentFontFamily="{$appSettings.fonts.displayFontStyle}"
+          saveFont="{(fontFamily) =>
+            ($appSettings.fonts.displayFontStyle = fontFamily)}"
+        />
+      {:else if latestPage === "FontsChooser/Textarea"}
+        <FontChooser
+          currentFontFamily="{$appSettings.fonts.textareaFontStyle}"
+          saveFont="{(fontFamily) =>
+            ($appSettings.fonts.textareaFontStyle = fontFamily)}"
+        />
       {/if}
     </main>
   </Animated>
