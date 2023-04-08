@@ -17,7 +17,7 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
 
-  let duration = 200;
+  const duration = 200;
 </script>
 
 <div

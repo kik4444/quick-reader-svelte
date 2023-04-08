@@ -36,7 +36,7 @@ interface AppSettings {
 }
 
 function createStore() {
-    let initialValue = {} as AppSettings;
+    const initialValue = {} as AppSettings;
 
     const { subscribe, update, set } = writable(initialValue);
 
