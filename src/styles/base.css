@@ -96,7 +96,11 @@ img {
   transition: var(--transition-all);
 }
 
-button:disabled img {
+button>img {
+  margin-right: 10px;
+}
+
+button:disabled>img {
   filter: grayscale(100%);
 }
 
