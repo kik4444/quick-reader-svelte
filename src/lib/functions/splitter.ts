@@ -24,7 +24,8 @@ export interface TextChunk {
 export function splitText(input: string, chunkSize: number): TextChunk[] {
     let delimitedText = [] as TextChunk[];
 
-    let matches = input.matchAll(/\S+/g);
+    const matches = input.matchAll(/\S+/g);
+
     for (const match of matches) {
         delimitedText.push({
             chunk: match[0],
@@ -37,15 +38,15 @@ export function splitText(input: string, chunkSize: number): TextChunk[] {
         let newDelimitedText = [] as TextChunk[];
 
         for (let i = 0; i < delimitedText.length; i += chunkSize) {
-            let sections = delimitedText.slice(i, i + chunkSize);
+            const sections = delimitedText.slice(i, i + chunkSize);
 
-            let joinedText = sections.map(section => section.chunk)
+            const joinedText = sections.map(section => section.chunk)
                 .reduce((prev, cur) => prev + " " + cur);
 
             newDelimitedText.push({
                 chunk: joinedText,
-                startPos: sections[0].startPos,
-                stopPos: sections[sections.length - 1].stopPos
+                startPos: sections[0]!.startPos,
+                stopPos: sections[sections.length - 1]!.stopPos
             });
         }
 

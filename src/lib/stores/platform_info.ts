@@ -23,7 +23,7 @@ interface PlatformInfo {
 }
 
 function createStore() {
-    let initialValue = {} as PlatformInfo;
+    const initialValue = {} as PlatformInfo;
 
     const { subscribe, update, set } = writable(initialValue);
 
