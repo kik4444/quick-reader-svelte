@@ -24,7 +24,7 @@ interface Fonts {
 }
 
 function createStore() {
-    let initialValue = { fontsLoaded: false } as Fonts;
+    const initialValue = { fontsLoaded: false } as Fonts;
 
     const { subscribe, update, set } = writable(initialValue);
 

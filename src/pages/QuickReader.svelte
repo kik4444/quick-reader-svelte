@@ -89,8 +89,8 @@
     if (playing) {
       advanceChunk();
 
-      let selectionStart = $appData.chunks[$appData.currentIndex]!.startPos;
-      let selectionStop = $appData.chunks[$appData.currentIndex]!.stopPos + 1;
+      const selectionStart = $appData.chunks[$appData.currentIndex]!.startPos;
+      const selectionStop = $appData.chunks[$appData.currentIndex]!.stopPos + 1;
 
       textarea.setSelectionRange(selectionStart, selectionStop);
     }
@@ -112,7 +112,7 @@
   function changedChunkSize(e: Event) {
     const input = e.target as HTMLInputElement;
 
-    let newChunkSize = Math.min(
+    const newChunkSize = Math.min(
       parseInt(input.max),
       Math.max(parseInt(input.min), input.valueAsNumber)
     );

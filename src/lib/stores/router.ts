@@ -34,7 +34,7 @@ type Router = Route[];
 const FinalPages = [Page.FontChooser];
 
 function createRouter() {
-    let initialValue = [{ page: Page.QuickReader }] as Router;
+    const initialValue = [{ page: Page.QuickReader }] as Router;
     const { subscribe, update } = writable(initialValue);
 
     function push(page: Page, data: any = null) {
