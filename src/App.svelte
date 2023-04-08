@@ -23,6 +23,7 @@
   import QuickReader from "$/pages/QuickReader.svelte";
   import About from "$/pages/About.svelte";
 
+  // Non-null assertion, because the router is guaranteed to always have at least one page
   $: currentPage = $router.at(-1)!.page;
 </script>
 
