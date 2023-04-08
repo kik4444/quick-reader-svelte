@@ -27,8 +27,12 @@
 <Animated>
   <main>
     <div>
-      <button on:click="{() => router.push('FontsChooser/Display')}"
-        >Choose display font family</button
+      <button
+        on:click="{() =>
+          router.pushFontChooser([
+            $appSettings.fonts.displayFontStyle,
+            (fontFamily) => ($appSettings.fonts.displayFontStyle = fontFamily),
+          ])}">Choose display font family</button
       >
       <p>{$appSettings.fonts.displayFontStyle}</p>
     </div>
@@ -43,8 +47,12 @@
     </div>
 
     <div>
-      <button on:click="{() => router.push('FontsChooser/Textarea')}"
-        >Choose text area font family</button
+      <button
+        on:click="{() =>
+          router.pushFontChooser([
+            $appSettings.fonts.textareaFontStyle,
+            (fontFamily) => ($appSettings.fonts.textareaFontStyle = fontFamily),
+          ])}">Choose text area font family</button
       >
       <p>{$appSettings.fonts.textareaFontStyle}</p>
     </div>
