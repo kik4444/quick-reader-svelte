@@ -21,7 +21,10 @@
   import appSettings from "$stores/app_settings";
   import Animated from "$lib/components/Animated.svelte";
 
-  $: $appData.chunks = splitText($appData.text, $appData.chunkSize);
+  $: $appData.chunks = splitText(
+    $appData.text.length > 0 ? $appData.text : "Quick Reader",
+    $appData.chunkSize
+  );
 
   $: speed = (1000 / ($appData.wpm / 60)) * $appData.chunkSize;
 
@@ -86,8 +89,8 @@
     if (playing) {
       advanceChunk();
 
-      let selectionStart = $appData.chunks[$appData.currentIndex].startPos;
-      let selectionStop = $appData.chunks[$appData.currentIndex].stopPos + 1;
+      let selectionStart = $appData.chunks[$appData.currentIndex]!.startPos;
+      let selectionStop = $appData.chunks[$appData.currentIndex]!.stopPos + 1;
 
       textarea.setSelectionRange(selectionStart, selectionStop);
     }
@@ -168,7 +171,7 @@
       style="font-size: {$appSettings.fonts.displayFontSize}pt;
     font-family: {$appSettings.fonts.displayFontStyle}"
     >
-      {$appData.chunks[$appData.currentIndex].chunk}
+      {$appData.chunks[$appData.currentIndex]?.chunk}
     </p>
 
     <div class="controls">
