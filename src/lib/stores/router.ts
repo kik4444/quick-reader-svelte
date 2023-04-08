@@ -31,6 +31,7 @@ interface Route {
 
 type Router = Route[];
 
+// Pages you can only exit from. These pages cannot remain in the router history
 const FinalPages = [Page.FontChooser];
 
 function createRouter() {
