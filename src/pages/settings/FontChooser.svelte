@@ -28,8 +28,10 @@
     return $fonts.fonts;
   }
 
-  export let currentFontFamily: string;
-  export let saveFont: (fontFamily: string) => void;
+  let [currentFontFamily, saveFont] = $router.at(-1)?.data as [
+    string,
+    (fontFamily: string) => void
+  ];
 
   function save() {
     saveFont(currentFontFamily);

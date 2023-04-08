@@ -17,35 +17,55 @@
 
 import { writable } from "svelte/store";
 
-interface Router {
-    history: string[];
+export enum Page {
+    QuickReader,
+    Settings,
+    About,
+    FontChooser
 }
 
+interface Route {
+    page: Page,
+    data: any;
+}
+
+type Router = Route[];
+
+const FinalPages = [Page.FontChooser];
+
 function createRouter() {
-    let initialValue = { history: ["QuickReader"] } as Router;
-    const { subscribe, set, update } = writable(initialValue);
-    set(initialValue);
+    let initialValue = [{ page: Page.QuickReader }] as Router;
+    const { subscribe, update } = writable(initialValue);
+
+    function push(page: Page, data: any = null) {
+        update(router => {
+            const currentPage = router.at(-1)!.page;
+
+            if (page !== currentPage && !FinalPages.includes(currentPage)) {
+                router.push({ page, data });
+            }
+
+            return router;
+        });
+    }
+
+    function pop() {
+        update(router => {
+            if (router.length > 1) {
+                router.pop();
+            }
+            return router;
+        });
+    }
 
     return {
         subscribe,
+        push,
+        pop,
 
-        push(page: string) {
-            update(router => {
-                if (page !== router.history.at(-1)) {
-                    router.history.push(page);
-                }
-                return router;
-            });
+        pushFontChooser(data: [string, (fontFamily: string) => void]) {
+            push(Page.FontChooser, data);
         },
-
-        pop() {
-            update(router => {
-                if (router.history.length >= 2) {
-                    router.history.pop();
-                }
-                return router;
-            });
-        }
     };
 };
 

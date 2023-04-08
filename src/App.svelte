@@ -16,44 +16,34 @@
  -->
 <script lang="ts">
   import Animated from "$lib/components/Animated.svelte";
-  import router from "$stores/router";
-  import appSettings from "$stores/app_settings";
+  import router, { Page } from "$stores/router";
 
   import Settings from "$/pages/settings/Settings.svelte";
   import FontChooser from "$/pages/settings/FontChooser.svelte";
   import QuickReader from "$/pages/QuickReader.svelte";
   import About from "$/pages/About.svelte";
 
-  $: currentPage = $router.history.at(-1);
+  $: currentPage = $router.at(-1)!.page;
 </script>
 
 <Animated>
   <main>
     <nav>
-      <button on:click="{() => router.push('Settings')}">Settings</button>
-      <button on:click="{() => router.push('QuickReader')}">Quick Reader</button
+      <button on:click="{() => router.push(Page.Settings)}">Settings</button>
+      <button on:click="{() => router.push(Page.QuickReader)}"
+        >Quick Reader</button
       >
-      <button on:click="{() => router.push('About')}">About</button>
+      <button on:click="{() => router.push(Page.About)}">About</button>
     </nav>
 
-    {#if currentPage === "QuickReader"}
+    {#if currentPage === Page.QuickReader}
       <QuickReader />
-    {:else if currentPage === "Settings"}
+    {:else if currentPage === Page.Settings}
       <Settings />
-    {:else if currentPage === "About"}
+    {:else if currentPage === Page.About}
       <About />
-    {:else if currentPage === "FontsChooser/Display"}
-      <FontChooser
-        currentFontFamily="{$appSettings.fonts.displayFontStyle}"
-        saveFont="{(fontFamily) =>
-          ($appSettings.fonts.displayFontStyle = fontFamily)}"
-      />
-    {:else if currentPage === "FontsChooser/Textarea"}
-      <FontChooser
-        currentFontFamily="{$appSettings.fonts.textareaFontStyle}"
-        saveFont="{(fontFamily) =>
-          ($appSettings.fonts.textareaFontStyle = fontFamily)}"
-      />
+    {:else if currentPage === Page.FontChooser}
+      <FontChooser />
     {:else}
       <p>Unknown page. How did we get here?</p>
     {/if}
