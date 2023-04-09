@@ -72,7 +72,7 @@
   main {
     height: 100%;
     display: grid;
-    grid-template-rows: 10% 70% 20%;
+    grid-template-rows: 10% 80% 10%;
     align-items: center;
   }
 
@@ -82,18 +82,18 @@
 
   p {
     font-size: 20pt;
-    word-wrap: normal;
+    align-self: center;
     justify-self: center;
   }
 
   div.buttons {
-    display: flex;
-    justify-content: center;
+    align-self: end;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 5pt;
   }
 
   button {
-    flex-grow: 1;
     font-size: 12pt;
   }
 </style>

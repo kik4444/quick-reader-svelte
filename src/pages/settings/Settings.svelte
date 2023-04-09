@@ -108,13 +108,11 @@
   main {
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
 
   div {
     display: flex;
     gap: 5pt;
-    justify-content: start;
     align-items: center;
   }
 
@@ -125,6 +123,6 @@
 
   input {
     font-size: 13pt;
-    width: 7%;
+    width: 15%;
   }
 </style>

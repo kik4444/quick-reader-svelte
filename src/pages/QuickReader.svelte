@@ -235,16 +235,14 @@
 
 <style>
   main {
-    display: grid;
-    grid-template-rows: 10%, repeat(3, 30%);
     height: 100%;
+    display: grid;
+    grid-template-rows: 35% 45% 20%;
   }
 
   textarea {
-    margin: 0;
     padding: 15px 0;
     text-align: center;
-    width: 100%;
   }
 
   p.display {
@@ -254,9 +252,6 @@
 
   div.controls {
     align-self: end;
-    margin-bottom: 30pt;
-    /* without this display, the div somehow becomes flex after going to the font settings and back */
-    display: inherit;
   }
 
   div.controls p {
@@ -293,17 +288,12 @@
 
   div.playback {
     display: grid;
-    grid-template-columns: repeat(3, 33%);
-    justify-content: center;
+    grid-template-columns: repeat(3, 1fr);
     gap: 5pt;
   }
 
   button {
     font-size: 12pt;
     height: 22pt;
-  }
-
-  img {
-    margin-right: 10px;
   }
 </style>
