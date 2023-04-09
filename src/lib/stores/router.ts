@@ -15,30 +15,27 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { ComponentType } from "svelte";
 import { writable } from "svelte/store";
 
-export enum Page {
-    QuickReader,
-    Settings,
-    About,
-    FontChooser
-}
+import FontChooser from "$/pages/settings/FontChooser.svelte";
+import QuickReader from "$/pages/QuickReader.svelte";
 
 interface Route {
-    page: Page,
+    page: ComponentType,
     data: any;
 }
 
 type Router = Route[];
 
 // Pages you can only exit from. These pages cannot remain in the router history
-const FinalPages = [Page.FontChooser];
+const FinalPages: [ComponentType] = [FontChooser];
 
 function createRouter() {
-    const initialValue = [{ page: Page.QuickReader }] as Router;
+    const initialValue = [{ page: QuickReader }] as Router;
     const { subscribe, update } = writable(initialValue);
 
-    function push(page: Page, data: any = null) {
+    function push(page: ComponentType, data: any = null) {
         update(router => {
             const currentPage = router.at(-1)!.page;
 
@@ -65,7 +62,7 @@ function createRouter() {
         pop,
 
         pushFontChooser(data: [string, (fontFamily: string) => void]) {
-            push(Page.FontChooser, data);
+            push(FontChooser, data);
         },
     };
 };
