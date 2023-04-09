@@ -17,9 +17,8 @@
 <script lang="ts">
   import appData from "$stores/app_data";
   import { onMount } from "svelte";
-  import { splitText } from "$lib/functions/splitter";
+  import splitText from "$lib/functions/splitter";
   import appSettings from "$stores/app_settings";
-  import Animated from "$lib/components/Animated.svelte";
 
   $: $appData.chunks = splitText(
     $appData.text.length > 0 ? $appData.text : "Quick Reader",
@@ -40,7 +39,6 @@
   )}s`;
 
   let playing = false;
-  let playPauseImg: HTMLImageElement;
   let textarea: HTMLTextAreaElement;
 
   function reset() {
@@ -51,11 +49,10 @@
   function stop() {
     playing = $appData.textareaLocked = false;
     $appData.currentIndex = 0;
-    playPauseImg.src = "/play.svg";
     window.getSelection()?.empty();
 
     // We must unfocus the textfield after stopping play to avoid the user accidentally
-    // deleting text if they press space after the reading has finished
+    // deleting text if they press space after playing has finished
     textarea.blur();
   }
 
@@ -65,29 +62,22 @@
 
   function togglePlaying() {
     if (playing) {
-      playPauseImg.src = "/play.svg";
       playing = false;
     } else {
-      playPauseImg.src = "/pause.svg";
-      playing = true;
-      $appData.textareaLocked = true;
+      playing = $appData.textareaLocked = true;
 
       // On Windows we must focus the textfield otherwise the highlight is not visible
       textarea.focus();
     }
   }
 
-  function advanceChunk() {
-    if ($appData.currentIndex < $appData.chunks.length - 1) {
-      ++$appData.currentIndex;
-    } else {
-      stop();
-    }
-  }
-
   function step() {
     if (playing) {
-      advanceChunk();
+      if ($appData.currentIndex < $appData.chunks.length - 1) {
+        ++$appData.currentIndex;
+      } else {
+        stop();
+      }
 
       const selectionStart = $appData.chunks[$appData.currentIndex]!.startPos;
       const selectionStop = $appData.chunks[$appData.currentIndex]!.stopPos + 1;
@@ -125,7 +115,7 @@
     $appData.chunkSize = newChunkSize;
   }
 
-  function keyboardShortcutPressed(event: KeyboardEvent) {
+  function shortcutPressed(event: KeyboardEvent) {
     switch (event.code) {
       case "ArrowLeft":
         $appData.currentIndex = Math.max(
@@ -151,87 +141,85 @@
   }
 </script>
 
-<svelte:window on:keydown="{keyboardShortcutPressed}" />
+<svelte:window on:keydown="{shortcutPressed}" />
 
-<Animated>
-  <main>
-    <!-- We should use readonly when we want to lock the textarea
-         because Windows cannot highlight text when we use "disabled"
+<main>
+  <!-- We should use readonly when we want to lock the textarea
+         because Windows cannot highlight text it is disabled
     -->
-    <textarea
-      placeholder="Enter text to quick read."
-      readonly="{$appData.textareaLocked}"
-      bind:this="{textarea}"
-      bind:value="{$appData.text}"
-      style="font-size: {$appSettings.fonts.textareaFontSize}pt;
+  <textarea
+    placeholder="Enter text to read quickly."
+    readonly="{$appData.textareaLocked}"
+    bind:this="{textarea}"
+    bind:value="{$appData.text}"
+    style="font-size: {$appSettings.fonts.textareaFontSize}pt;
     font-family: {$appSettings.fonts.textareaFontStyle}"></textarea>
 
-    <p
-      class="display"
-      style="font-size: {$appSettings.fonts.displayFontSize}pt;
+  <p
+    class="display"
+    style="font-size: {$appSettings.fonts.displayFontSize}pt;
     font-family: {$appSettings.fonts.displayFontStyle}"
-    >
-      {$appData.chunks[$appData.currentIndex]?.chunk}
-    </p>
+  >
+    {$appData.chunks[$appData.currentIndex]?.chunk}
+  </p>
 
-    <div class="controls">
-      <div class="chunking">
-        <p>Words per minute:</p>
-        <input
-          type="number"
-          min="60"
-          max="1000"
-          step="10"
-          value="{$appData.wpm}"
-          on:change="{changedWpm}"
-        />
-        <p>Chunk size:</p>
-        <input
-          type="number"
-          min="1"
-          max="10"
-          value="{$appData.chunkSize}"
-          on:change="{changedChunkSize}"
-        />
-        <button on:click="{reset}"><img src="/reset.svg" alt="" />Reset</button>
-      </div>
-
-      <div class="progress">
-        <p>
-          Chunk {$appData.currentIndex + 1} of {Math.floor(
-            $appData.chunks.length / $appData.chunkSize
-          )}
-        </p>
-        <div class="vertical-separator"></div>
-        <p>Duration: {duration}</p>
-        <div class="vertical-separator"></div>
-        <input
-          class="progress"
-          type="range"
-          min="0"
-          max="{$appData.chunks.length - 1}"
-          bind:value="{$appData.currentIndex}"
-        />
-      </div>
-
-      <div class="playback">
-        <button on:click="{stop}" disabled="{!$appData.textareaLocked}"
-          ><img src="/stop.svg" alt="" />Stop</button
-        >
-
-        <button on:click="{restart}" disabled="{!$appData.textareaLocked}"
-          ><img src="/restart.svg" alt="" />Restart</button
-        >
-
-        <button on:click="{togglePlaying}"
-          ><img src="/play.svg" alt="" bind:this="{playPauseImg}" />{playing
-            ? "Pause"
-            : "Start"}</button
-        >
-      </div>
+  <div class="controls">
+    <div class="chunking">
+      <p>Words per minute:</p>
+      <input
+        type="number"
+        min="60"
+        max="1000"
+        step="10"
+        value="{$appData.wpm}"
+        on:change="{changedWpm}"
+      />
+      <p>Chunk size:</p>
+      <input
+        type="number"
+        min="1"
+        max="10"
+        value="{$appData.chunkSize}"
+        on:change="{changedChunkSize}"
+      />
+      <button on:click="{reset}"><img src="/reset.svg" alt="" />Reset</button>
     </div>
-  </main>
-</Animated>
+
+    <div class="progress">
+      <p>
+        Chunk {$appData.currentIndex + 1} of {Math.floor(
+          $appData.chunks.length / $appData.chunkSize
+        )}
+      </p>
+      <div class="vertical-separator"></div>
+      <p>Duration: {duration}</p>
+      <div class="vertical-separator"></div>
+      <input
+        class="progress"
+        type="range"
+        min="0"
+        max="{$appData.chunks.length - 1}"
+        bind:value="{$appData.currentIndex}"
+      />
+    </div>
+
+    <div class="playback">
+      <button on:click="{stop}" disabled="{!$appData.textareaLocked}"
+        ><img src="/stop.svg" alt="" />Stop</button
+      >
+
+      <button on:click="{restart}" disabled="{!$appData.textareaLocked}"
+        ><img src="/restart.svg" alt="" />Restart</button
+      >
+
+      <button on:click="{togglePlaying}"
+        ><img src="{playing ? '/pause.svg' : '/play.svg'}" alt="" />{playing
+          ? "Pause"
+          : "Start"}</button
+      >
+    </div>
+  </div>
+</main>
 
 <style>
   main {
