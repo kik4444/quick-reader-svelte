@@ -281,7 +281,7 @@
   }
 
   button {
-    font-size: 12pt;
+    font-size: 10pt;
     height: 22pt;
   }
 </style>
