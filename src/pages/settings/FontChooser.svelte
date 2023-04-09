@@ -18,6 +18,7 @@
 <script lang="ts">
   import fonts from "$stores/fonts";
   import router from "$stores/router";
+  import { fade } from "svelte/transition";
 
   async function getFonts(): Promise<string[]> {
     if (!$fonts.fontsLoaded) {
@@ -41,7 +42,7 @@
 {#await getFonts()}
   <p class="loading">Reading system fonts</p>
 {:then fonts}
-  <main>
+  <main in:fade="{{ duration: 300 }}">
     <select bind:value="{currentFontFamily}">
       {#each fonts as font, index (index)}
         <option>{font}</option>
