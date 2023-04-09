@@ -15,7 +15,6 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import Animated from "$lib/components/Animated.svelte";
   import { open } from "@tauri-apps/api/shell";
 
   const source_code_link = "https://github.com/kik4444/quick-reader";
@@ -28,26 +27,23 @@
   }
 </script>
 
-<Animated>
-  <main>
-    <img src="/original-icon.svg" alt="" />
-    <p>
-      Quick Reader is a program that enables its user to quickly read through
-      text by encouraging the silencing of their subvocalization. Quick Reader
-      is free/libre software released under the GPL version 3. The source code
-      is available at <a href="{source_code_link}" on:click="{clicked_link}"
-        >{source_code_link}</a
-      >
-    </p>
-    <p>
-      You should have received a copy of the GNU General Public License along
-      with this program. If not, see <a
-        href="{license_link}"
-        on:click="{clicked_link}">{license_link}</a
-      >
-    </p>
-  </main>
-</Animated>
+<main>
+  <img src="/original-icon.svg" alt="" />
+  <p>
+    Quick Reader is a program that enables its user to quickly read through text
+    by encouraging the silencing of their subvocalization. Quick Reader is
+    free/libre software released under the GPL version 3. The source code is
+    available at <a href="{source_code_link}" on:click="{clicked_link}"
+      >{source_code_link}</a
+    >
+  </p>
+  <p>
+    You should have received a copy of the GNU General Public License along with
+    this program. If not, see <a href="{license_link}" on:click="{clicked_link}"
+      >{license_link}</a
+    >
+  </p>
+</main>
 
 <style>
   main {
