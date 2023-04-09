@@ -16,7 +16,6 @@
 
  -->
 <script lang="ts">
-  import Animated from "$lib/components/Animated.svelte";
   import fonts from "$stores/fonts";
   import router from "$stores/router";
 
@@ -40,32 +39,26 @@
 </script>
 
 {#await getFonts()}
-  <Animated>
-    <p class="loading">Reading system fonts</p>
-  </Animated>
+  <p class="loading">Reading system fonts</p>
 {:then fonts}
-  <Animated>
-    <main>
-      <select bind:value="{currentFontFamily}">
-        {#each fonts as font, index (index)}
-          <option>{font}</option>
-        {/each}
-      </select>
+  <main>
+    <select bind:value="{currentFontFamily}">
+      {#each fonts as font, index (index)}
+        <option>{font}</option>
+      {/each}
+    </select>
 
-      <p style="font-family: {currentFontFamily}">
-        The quick brown fox jumps over the lazy dog
-      </p>
+    <p style="font-family: {currentFontFamily}">
+      The quick brown fox jumps over the lazy dog
+    </p>
 
-      <div class="buttons">
-        <button on:click="{() => router.pop()}">Back</button>
-        <button on:click="{save}">Save</button>
-      </div>
-    </main>
-  </Animated>
+    <div class="buttons">
+      <button on:click="{() => router.pop()}">Back</button>
+      <button on:click="{save}">Save</button>
+    </div>
+  </main>
 {:catch error}
-  <Animated>
-    <p>Error loading system fonts: {error}</p>
-  </Animated>
+  <p>Error loading system fonts: {error}</p>
 {/await}
 
 <style>

@@ -15,8 +15,8 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  -->
 <script lang="ts">
-  import Animated from "$lib/components/Animated.svelte";
   import router, { Page } from "$stores/router";
+  import { fade } from "svelte/transition";
 
   import Settings from "$/pages/settings/Settings.svelte";
   import FontChooser from "$/pages/settings/FontChooser.svelte";
@@ -27,29 +27,31 @@
   $: currentPage = $router.at(-1)!.page;
 </script>
 
-<Animated>
-  <main>
-    <nav>
-      <button on:click="{() => router.push(Page.Settings)}">Settings</button>
-      <button on:click="{() => router.push(Page.QuickReader)}"
-        >Quick Reader</button
-      >
-      <button on:click="{() => router.push(Page.About)}">About</button>
-    </nav>
+<main>
+  <nav in:fade="{{ duration: 300 }}">
+    <button on:click="{() => router.push(Page.Settings)}">Settings</button>
+    <button on:click="{() => router.push(Page.QuickReader)}"
+      >Quick Reader</button
+    >
+    <button on:click="{() => router.push(Page.About)}">About</button>
+  </nav>
 
-    {#if currentPage === Page.QuickReader}
-      <QuickReader />
-    {:else if currentPage === Page.Settings}
-      <Settings />
-    {:else if currentPage === Page.About}
-      <About />
-    {:else if currentPage === Page.FontChooser}
-      <FontChooser />
-    {:else}
-      <p>Unknown page. How did we get here?</p>
-    {/if}
-  </main>
-</Animated>
+  {#key currentPage}
+    <div in:fade="{{ duration: 300 }}">
+      {#if currentPage === Page.QuickReader}
+        <QuickReader />
+      {:else if currentPage === Page.Settings}
+        <Settings />
+      {:else if currentPage === Page.About}
+        <About />
+      {:else if currentPage === Page.FontChooser}
+        <FontChooser />
+      {:else}
+        <p>Unknown page. How did we get here?</p>
+      {/if}
+    </div>
+  {/key}
+</main>
 
 <style>
   main {
