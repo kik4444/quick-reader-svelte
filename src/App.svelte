@@ -53,20 +53,16 @@
 
 <style>
   main {
-    height: 100vh;
+    height: 95vh;
     margin: 5pt 10pt;
     display: grid;
-    gap: 10pt;
-    grid-template-rows: 5% 95%;
+    grid-template-rows: 3fr 97fr;
+    gap: 5pt;
   }
 
   nav {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 5pt;
-    align-items: center;
-  }
-
-  nav button {
-    flex-grow: 1;
   }
 </style>
