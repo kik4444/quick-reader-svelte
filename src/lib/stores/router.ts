@@ -36,23 +36,23 @@ function createRouter() {
     const { subscribe, update } = writable(initialValue);
 
     function push(page: ComponentType, data: any = null) {
-        update(router => {
-            const currentPage = router.at(-1)!.page;
+        update(self => {
+            const currentPage = self.at(-1)!.page;
 
             if (page !== currentPage && !FinalPages.includes(currentPage)) {
-                router.push({ page, data });
+                self.push({ page, data });
             }
 
-            return router;
+            return self;
         });
     }
 
     function pop() {
-        update(router => {
-            if (router.length > 1) {
-                router.pop();
+        update(self => {
+            if (self.length > 1) {
+                self.pop();
             }
-            return router;
+            return self;
         });
     }
 
