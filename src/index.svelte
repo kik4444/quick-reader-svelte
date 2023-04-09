@@ -20,7 +20,6 @@
   import platformInfo from "$stores/platform_info";
   import router from "$stores/router";
   import App from "$/App.svelte";
-  import Animated from "$lib/components/Animated.svelte";
 
   async function init() {
     await Promise.all([appSettings.load(), platformInfo.load()]);
@@ -80,13 +79,9 @@
 <svelte:window on:keydown="{shortcut_pressed}" />
 
 {#await init()}
-  <Animated>
-    <p>Loading</p>
-  </Animated>
+  <p>Loading</p>
 {:then}
   <App />
 {:catch error}
-  <Animated>
-    <p>Error initializing application: {error}</p>
-  </Animated>
+  <p>Error initializing application: {error}</p>
 {/await}

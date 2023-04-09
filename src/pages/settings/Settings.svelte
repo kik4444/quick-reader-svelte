@@ -16,7 +16,6 @@
  -->
 <script lang="ts">
   import { invoke } from "@tauri-apps/api";
-  import Animated from "$lib/components/Animated.svelte";
   import router from "$stores/router";
   import appSettings from "$stores/app_settings";
 
@@ -24,85 +23,83 @@
   $: invoke("set_settings", { newSettings: $appSettings });
 </script>
 
-<Animated>
-  <main>
-    <div>
-      <button
-        on:click="{() =>
-          router.pushFontChooser([
-            $appSettings.fonts.displayFontStyle,
-            (fontFamily) => ($appSettings.fonts.displayFontStyle = fontFamily),
-          ])}">Choose display font family</button
-      >
-      <p>{$appSettings.fonts.displayFontStyle}</p>
-    </div>
+<main>
+  <div>
+    <button
+      on:click="{() =>
+        router.pushFontChooser([
+          $appSettings.fonts.displayFontStyle,
+          (fontFamily) => ($appSettings.fonts.displayFontStyle = fontFamily),
+        ])}">Choose display font family</button
+    >
+    <p>{$appSettings.fonts.displayFontStyle}</p>
+  </div>
 
-    <div>
-      <input
-        type="number"
-        min="1"
-        bind:value="{$appSettings.fonts.displayFontSize}"
-      />
-      <p>Display font size</p>
-    </div>
+  <div>
+    <input
+      type="number"
+      min="1"
+      bind:value="{$appSettings.fonts.displayFontSize}"
+    />
+    <p>Display font size</p>
+  </div>
 
-    <div>
-      <button
-        on:click="{() =>
-          router.pushFontChooser([
-            $appSettings.fonts.textareaFontStyle,
-            (fontFamily) => ($appSettings.fonts.textareaFontStyle = fontFamily),
-          ])}">Choose text area font family</button
-      >
-      <p>{$appSettings.fonts.textareaFontStyle}</p>
-    </div>
+  <div>
+    <button
+      on:click="{() =>
+        router.pushFontChooser([
+          $appSettings.fonts.textareaFontStyle,
+          (fontFamily) => ($appSettings.fonts.textareaFontStyle = fontFamily),
+        ])}">Choose text area font family</button
+    >
+    <p>{$appSettings.fonts.textareaFontStyle}</p>
+  </div>
 
-    <div>
-      <input
-        type="number"
-        min="1"
-        bind:value="{$appSettings.fonts.textareaFontSize}"
-      />
-      <p>Text area font size</p>
-    </div>
+  <div>
+    <input
+      type="number"
+      min="1"
+      bind:value="{$appSettings.fonts.textareaFontSize}"
+    />
+    <p>Text area font size</p>
+  </div>
 
-    <div>
-      <input
-        type="number"
-        min="1"
-        bind:value="{$appSettings.playback.jumpBackChunks}"
-      />
-      <p>Jump back chunks</p>
-    </div>
+  <div>
+    <input
+      type="number"
+      min="1"
+      bind:value="{$appSettings.playback.jumpBackChunks}"
+    />
+    <p>Jump back chunks</p>
+  </div>
 
-    <div>
-      <input
-        type="number"
-        min="1"
-        bind:value="{$appSettings.playback.jumpForwardChunks}"
-      />
-      <p>Jump forward chunks</p>
-    </div>
+  <div>
+    <input
+      type="number"
+      min="1"
+      bind:value="{$appSettings.playback.jumpForwardChunks}"
+    />
+    <p>Jump forward chunks</p>
+  </div>
 
-    <div>
-      <select bind:value="{$appSettings.window.style}">
-        {#each ["Auto", "Windows Mica", "MacOS Monterey", "Linux Breeze"] as windowStyle}
-          <option>{windowStyle}</option>
-        {/each}
-      </select>
-      <p>Window style</p>
-    </div>
+  <div>
+    <select bind:value="{$appSettings.window.style}">
+      {#each ["Auto", "Windows Mica", "MacOS Monterey", "Linux Breeze"] as windowStyle}
+        <option>{windowStyle}</option>
+      {/each}
+    </select>
+    <p>Window style</p>
+  </div>
 
-    <div>
-      <select bind:value="{$appSettings.window.theme}">
-        {#each ["Auto", "Dark", "Light"] as windowTheme}
-          <option>{windowTheme}</option>
-        {/each}
-      </select>
-      <p>Window theme</p>
-    </div>
-  </main>
-</Animated>
+  <div>
+    <select bind:value="{$appSettings.window.theme}">
+      {#each ["Auto", "Dark", "Light"] as windowTheme}
+        <option>{windowTheme}</option>
+      {/each}
+    </select>
+    <p>Window theme</p>
+  </div>
+</main>
 
 <style>
   main {
