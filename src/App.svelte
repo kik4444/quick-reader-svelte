@@ -25,7 +25,17 @@
 
   // Non-null assertion, because the router is guaranteed to always have at least one page
   $: currentPage = $router.at(-1)!.page;
+
+  function shortcut_pressed(event: KeyboardEvent) {
+    switch (event.code) {
+      case "Escape":
+        router.pop();
+        break;
+    }
+  }
 </script>
+
+<svelte:window on:keydown="{shortcut_pressed}" />
 
 <main>
   <nav in:fade="{{ duration: 300 }}">

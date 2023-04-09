@@ -18,7 +18,6 @@
   import "$/styles/base.css";
   import appSettings from "$stores/app_settings";
   import platformInfo from "$stores/platform_info";
-  import router from "$stores/router";
   import App from "$/App.svelte";
 
   async function init() {
@@ -66,17 +65,7 @@
 
     document.documentElement.setAttribute("data-theme", windowTheme);
   }
-
-  function shortcut_pressed(event: KeyboardEvent) {
-    switch (event.code) {
-      case "Escape":
-        router.pop();
-        break;
-    }
-  }
 </script>
-
-<svelte:window on:keydown="{shortcut_pressed}" />
 
 {#await init()}
   <p>Loading</p>
