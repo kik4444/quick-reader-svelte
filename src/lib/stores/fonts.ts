@@ -26,7 +26,7 @@ interface Fonts {
 function createStore() {
     const initialValue = { fontsLoaded: false } as Fonts;
 
-    const { subscribe, update, set } = writable(initialValue);
+    const { subscribe, set } = writable(initialValue);
 
     return {
         async load() {
@@ -34,8 +34,6 @@ function createStore() {
             set({ fontsLoaded: true, fonts });
         },
         subscribe,
-        set,
-        update,
     };
 }
 
