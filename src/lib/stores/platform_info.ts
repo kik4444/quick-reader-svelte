@@ -25,7 +25,7 @@ interface PlatformInfo {
 function createStore() {
     const initialValue = {} as PlatformInfo;
 
-    const { subscribe, update, set } = writable(initialValue);
+    const { subscribe, set } = writable(initialValue);
 
     return {
         async load() {
@@ -33,8 +33,6 @@ function createStore() {
             set({ platformName });
         },
         subscribe,
-        set,
-        update,
     };
 }
 
