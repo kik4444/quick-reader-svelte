@@ -38,7 +38,7 @@ interface AppSettings {
 function createStore() {
     const initialValue = {} as AppSettings;
 
-    const { subscribe, update, set } = writable(initialValue);
+    const { subscribe, set } = writable(initialValue);
 
     return {
         async load() {
@@ -47,7 +47,6 @@ function createStore() {
         },
         subscribe,
         set,
-        update,
     };
 }
 
