@@ -21,7 +21,7 @@
   import appSettings from "$stores/app_settings";
 
   $: $appData.chunks = splitText(
-    $appData.text.length > 0 ? $appData.text : "Quick Reader",
+    $appData.text.trim().length > 0 ? $appData.text : "Quick Reader",
     $appData.chunkSize
   );
 
