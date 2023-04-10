@@ -17,6 +17,7 @@
 <script lang="ts">
   import router from "$stores/router";
   import { fade } from "svelte/transition";
+  import { animationDuration as duration } from "$lib/consts";
 
   import Settings from "$/pages/settings/Settings.svelte";
   import QuickReader from "$/pages/QuickReader.svelte";
@@ -37,14 +38,14 @@
 <svelte:window on:keydown="{shortcut_pressed}" />
 
 <main>
-  <nav in:fade="{{ duration: 300 }}">
+  <nav in:fade="{{ duration }}">
     <button on:click="{() => router.push(Settings)}">Settings</button>
     <button on:click="{() => router.push(QuickReader)}">Quick Reader</button>
     <button on:click="{() => router.push(About)}">About</button>
   </nav>
 
   {#key currentPage}
-    <div in:fade="{{ duration: 300 }}">
+    <div in:fade="{{ duration }}">
       <svelte:component this="{currentPage}" />
     </div>
   {/key}
