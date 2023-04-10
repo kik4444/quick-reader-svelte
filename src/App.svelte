@@ -17,7 +17,7 @@
 <script lang="ts">
   import router from "$stores/router";
   import { fade } from "svelte/transition";
-  import { animationDuration as duration } from "$lib/consts";
+  import { animationDuration as duration } from "$/lib/constants";
 
   import Settings from "$/pages/settings/Settings.svelte";
   import QuickReader from "$/pages/QuickReader.svelte";

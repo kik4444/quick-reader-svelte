@@ -18,6 +18,7 @@
   import "$/styles/base.css";
   import appSettings from "$stores/app_settings";
   import platformInfo from "$stores/platform_info";
+
   import App from "$/App.svelte";
 
   async function init() {
