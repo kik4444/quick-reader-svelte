@@ -19,7 +19,7 @@
   import fonts from "$stores/fonts";
   import router from "$stores/router";
   import { fade } from "svelte/transition";
-  import { animationDuration as duration } from "$lib/consts";
+  import { animationDuration as duration } from "$/lib/constants";
 
   async function getFonts(): Promise<string[]> {
     if (!$fonts.fontsLoaded) {
