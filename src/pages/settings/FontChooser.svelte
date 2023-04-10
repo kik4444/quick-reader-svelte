@@ -19,6 +19,7 @@
   import fonts from "$stores/fonts";
   import router from "$stores/router";
   import { fade } from "svelte/transition";
+  import { animationDuration as duration } from "$lib/consts";
 
   async function getFonts(): Promise<string[]> {
     if (!$fonts.fontsLoaded) {
@@ -42,7 +43,7 @@
 {#await getFonts()}
   <p class="loading">Reading system fonts</p>
 {:then fonts}
-  <main in:fade="{{ duration: 300 }}">
+  <main in:fade="{{ duration }}">
     <select bind:value="{currentFontFamily}">
       {#each fonts as font, index (index)}
         <option>{font}</option>
