@@ -56,7 +56,7 @@
     height: 95vh;
     margin: 5pt 10pt;
     display: grid;
-    grid-template-rows: 3fr 97fr;
+    grid-template-rows: 18pt 1fr;
     gap: 5pt;
   }
 
