@@ -15,34 +15,21 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use leptos::{html::Textarea, *};
+use leptos::*;
+use leptos_router::*;
 
-// #[cfg(feature = "web")]
-// async fn get_data() -> String {
-//     "From web".into()
-// }
-
-// #[cfg(not(feature = "web"))]
-// async fn get_data() -> String {
-//     #[derive(Serialize, Deserialize)]
-//     struct GreetArgs<'a> {
-//         name: &'a str,
-//     }
-
-//     invoke("greet", GreetArgs { name: "Name" }.to_js_value().unwrap())
-//         .await
-//         .as_string()
-//         .unwrap()
-// }
+use crate::pages::quick_reader::QuickReader;
 
 #[component]
 pub fn App() -> impl IntoView {
-    let area = create_node_ref::<Textarea>();
-
     view! {
-      <textarea cols="30" rows="10" node_ref=area></textarea>
-      <button on:click=move |_| {
-          area().unwrap().set_selection_range(0, 5).unwrap();
-      }>"click me"</button>
+      <Router>
+        <nav></nav>
+        <main>
+          <Routes>
+            <Route path="/" view=QuickReader/>
+          </Routes>
+        </main>
+      </Router>
     }
 }

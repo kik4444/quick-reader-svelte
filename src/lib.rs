@@ -21,6 +21,7 @@ use wasm_bindgen::JsValue;
 pub mod app;
 pub mod errors;
 pub mod js_bindings;
+pub mod pages;
 pub mod splitter;
 
 pub trait ToJsValue {
