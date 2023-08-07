@@ -1,0 +1,9 @@
+{
+    "html": {
+        "snippets": {
+            "router": "Router",
+            "routes": "Routes",
+            "route": "<Route path=\"${1}\" view=${2}/>"
+        }
+    }
+}
