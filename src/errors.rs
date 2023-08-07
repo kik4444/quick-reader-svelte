@@ -1,4 +1,4 @@
-/*    
+/*
  *    This file is part of Quick Reader.
  *
  *    Quick Reader is free software: you can redistribute it and/or modify
@@ -15,31 +15,8 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { writable, type Writable } from "svelte/store";
-import type { TextChunk } from "$lib/functions/splitter";
-
-interface AppData {
-  text: string;
-  currentIndex: number;
-  chunks: TextChunk[];
-  wpm: number;
-  chunkSize: number;
-  textareaLocked: boolean;
+#[derive(Debug, PartialEq, Eq, thiserror::Error)]
+pub enum SplitError {
+    #[error("error input is empty")]
+    EmptyInput,
 }
-
-const appData: Writable<AppData> = writable({
-  text: 'Welcome to "Quick Reader". Press start to begin reading quickly.',
-  currentIndex: 0,
-  chunks: [
-    {
-      chunk: "",
-      startPos: 0,
-      stopPos: 0
-    }
-  ],
-  wpm: 300,
-  chunkSize: 1,
-  textareaLocked: false,
-});
-
-export default appData;

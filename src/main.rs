@@ -1,4 +1,4 @@
-/*    
+/*
  *    This file is part of Quick Reader.
  *
  *    Quick Reader is free software: you can redistribute it and/or modify
@@ -15,26 +15,12 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { invoke } from "@tauri-apps/api";
-import { writable } from "svelte/store";
+use leptos::*;
+use quick_reader_ui::app::App;
 
-interface Fonts {
-    fontsLoaded: boolean;
-    fonts: string[];
+fn main() {
+    console_log::init_with_level(log::Level::Debug).expect("setup logging");
+    console_error_panic_hook::set_once();
+
+    mount_to_body(|| view! { <App/> })
 }
-
-function createStore() {
-    const initialValue = { fontsLoaded: false } as Fonts;
-
-    const { subscribe, set } = writable(initialValue);
-
-    return {
-        async load() {
-            const fonts = await invoke<string[]>("get_system_fonts");
-            set({ fontsLoaded: true, fonts });
-        },
-        subscribe,
-    };
-}
-
-export default createStore();

@@ -1,4 +1,4 @@
-/*    
+/*
  *    This file is part of Quick Reader.
  *
  *    Quick Reader is free software: you can redistribute it and/or modify
@@ -15,10 +15,11 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import index from "./index.svelte";
+use wasm_bindgen::prelude::*;
 
-const app = new index({
-  target: document.getElementById("app")!,
-});
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = ["window", "__TAURI__"])]
+    pub async fn invoke(cmd: &str, args: JsValue) -> JsValue;
 
-export default app;
+}

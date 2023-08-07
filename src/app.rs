@@ -15,32 +15,34 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-    #[error(transparent)]
-    Io(#[from] std::io::Error),
+use leptos::{html::Textarea, *};
 
-    #[error(transparent)]
-    Serde(#[from] serde_json::Error),
+// #[cfg(feature = "web")]
+// async fn get_data() -> String {
+//     "From web".into()
+// }
 
-    #[error("Could not read path: {0}")]
-    TauriDir(#[from] tauri::api::Error),
+// #[cfg(not(feature = "web"))]
+// async fn get_data() -> String {
+//     #[derive(Serialize, Deserialize)]
+//     struct GreetArgs<'a> {
+//         name: &'a str,
+//     }
 
-    #[error("{0}")]
-    TauriPath(String),
+//     invoke("greet", GreetArgs { name: "Name" }.to_js_value().unwrap())
+//         .await
+//         .as_string()
+//         .unwrap()
+// }
 
-    #[error(transparent)]
-    TauriError(#[from] tauri::Error),
+#[component]
+pub fn App() -> impl IntoView {
+    let area = create_node_ref::<Textarea>();
 
-    #[error("Could not load system fonts: {0}")]
-    FontError(#[from] font_kit::error::SelectionError),
-}
-
-impl serde::Serialize for Error {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_str(self.to_string().as_ref())
+    view! {
+      <textarea cols="30" rows="10" node_ref=area></textarea>
+      <button on:click=move |_| {
+          area().unwrap().set_selection_range(0, 5).unwrap();
+      }>"click me"</button>
     }
 }

@@ -1,13 +1,14 @@
 {
   "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "trunk build --release",
+    "beforeDevCommand": "trunk serve",
     "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "distDir": "../dist",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "quick-reader",
-    "version": "1.0.2"
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -17,9 +18,6 @@
         "open": "^((https://github.com)|(https://www.gnu.org)).+",
         "scope": [],
         "sidecar": false
-      },
-      "os": {
-        "all": true
       }
     },
     "bundle": {
