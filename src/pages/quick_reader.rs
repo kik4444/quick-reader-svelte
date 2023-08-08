@@ -151,7 +151,7 @@ pub fn QuickReader() -> impl IntoView {
 
     window_event_listener(ev::keydown, move |ev| match ev.code().as_str() {
         "ArrowLeft" => set_current_index(current_index().saturating_sub(5)),
-        "ArrowRight" => set_current_index(std::cmp::max(
+        "ArrowRight" => set_current_index(std::cmp::min(
             current_index() + 5,
             text_chunks.with(|t| t.len() - 1),
         )),
