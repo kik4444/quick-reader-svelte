@@ -25,7 +25,9 @@
     "css.validate": false,
     "tailwindCSS.classAttributes": [
         "class",
-        "class_textarea",
-        "class_label",
     ],
+    "tailwindCSS.experimental.classRegex": [
+        ".*_class=\"([^\"\n]+)\"",
+        ".*_?class=move\\s*\\|.?\\|\\s*{?\\s*format!\\(\\s*\"([^\"\n]+)\""
+    ]
 }
