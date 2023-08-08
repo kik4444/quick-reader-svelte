@@ -2,7 +2,7 @@ use leptos::*;
 
 #[component]
 pub fn Button(
-    children: Children,
+    #[prop(optional)] children: Option<Children>,
     #[prop(optional, into)] class: Option<MaybeSignal<String>>,
     #[prop(optional, into)] disabled: Option<MaybeSignal<bool>>,
 ) -> impl IntoView {
@@ -18,14 +18,14 @@ pub fn Button(
         data-ripple-light="true"
         disabled=move || disabled.map(|d| d()).unwrap_or_default()
       >
-        {children()}
+        {children.map(|c| c())}
       </button>
     }
 }
 
 #[component]
 pub fn Textarea(
-    children: Children,
+    #[prop(optional)] children: Option<Children>,
     #[prop(optional)] node_ref: Option<NodeRef<html::Textarea>>,
     #[prop(optional, into)] readonly: Option<MaybeSignal<bool>>,
     #[prop(optional, into)] disabled: Option<MaybeSignal<bool>>,
@@ -44,7 +44,7 @@ pub fn Textarea(
             readonly=move || readonly.map(|r| r()).unwrap_or_default()
             disabled=move || disabled.map(|d| d()).unwrap_or_default()
           >
-            {children()}
+            {children.map(|c| c())}
           </textarea>
           <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
             {label}
