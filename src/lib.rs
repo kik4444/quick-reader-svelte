@@ -19,8 +19,8 @@ use serde_wasm_bindgen::{Deserializer, Serializer};
 use wasm_bindgen::JsValue;
 
 pub mod app;
-pub mod errors;
 pub mod js_bindings;
+pub mod material_tailwind;
 pub mod pages;
 pub mod splitter;
 
