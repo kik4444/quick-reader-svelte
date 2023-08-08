@@ -23,4 +23,9 @@
         ]
     },
     "css.validate": false,
+    "tailwindCSS.classAttributes": [
+        "class",
+        "class_textarea",
+        "class_label",
+    ],
 }

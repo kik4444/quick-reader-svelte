@@ -176,11 +176,7 @@ pub fn QuickReader() -> impl IntoView {
         {text}
       </Textarea>
       <p>{move || text_chunks.with(|t| t[current_index()].chunk.clone())}</p>
-      <Button
-        class="bg-pink-500 shadow-pink-500/20 hover:shadow-pink-500/40"
-        on:click=move |_| stop()
-        disabled=(move || !textarea_locked()).derive_signal()
-      >
+      <Button on:click=move |_| stop() disabled=(move || !textarea_locked()).derive_signal()>
         "Stop"
       </Button>
       <br/>
