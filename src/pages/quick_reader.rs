@@ -20,6 +20,7 @@ use std::time::Duration;
 use leptos::{html::Textarea, leptos_dom::helpers::IntervalHandle, *};
 use wasm_bindgen::JsValue;
 
+use crate::material_tailwind::*;
 use crate::splitter;
 
 #[derive(Debug)]
@@ -166,27 +167,30 @@ pub fn QuickReader() -> impl IntoView {
     });
 
     view! {
-      <textarea
-        cols="30"
-        rows="10"
+      <Textarea
         readonly=textarea_locked
         node_ref=textarea
+        label="Quick Reader"
         on:input=move |ev| set_text(event_target_value(&ev))
       >
         {text}
-      </textarea>
+      </Textarea>
       <p>{move || text_chunks.with(|t| t[current_index()].chunk.clone())}</p>
-      <button on:click=move |_| stop() disabled=move || !textarea_locked()>
+      <Button
+        class="bg-pink-500 shadow-pink-500/20 hover:shadow-pink-500/40"
+        on:click=move |_| stop()
+        disabled=(move || !textarea_locked()).derive_signal()
+      >
         "Stop"
-      </button>
+      </Button>
       <br/>
-      <button on:click=move |_| restart() disabled=move || !textarea_locked()>
+      <Button on:click=move |_| restart() disabled=(move || !textarea_locked()).derive_signal()>
         "Restart"
-      </button>
+      </Button>
       <br/>
-      <button on:click=move |_| toggle_playing()>
+      <Button on:click=move |_| toggle_playing()>
         {move || if playing() { "Pause" } else { "Play" }}
-      </button>
+      </Button>
       <br/>
       <input
         type="number"
