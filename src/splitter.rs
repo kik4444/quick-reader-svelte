@@ -17,20 +17,22 @@
 
 use unicode_segmentation::UnicodeSegmentation;
 
-use crate::errors::SplitError;
-
 /// start_offset and stop_offset are [unicode grapheme offsets](https://docs.rs/unicode-segmentation/latest/unicode_segmentation/)
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct TextChunk {
     pub chunk: String,
     pub start_offset: usize,
     pub stop_offset: usize,
 }
 
-pub fn split(input: &str, chunk_size: usize) -> Result<Vec<TextChunk>, SplitError> {
+pub fn split(input: &str, chunk_size: usize) -> Vec<TextChunk> {
     let input = input.trim();
     if input.is_empty() {
-        return Err(SplitError::EmptyInput);
+        return vec![TextChunk {
+            chunk: "".into(),
+            start_offset: 0,
+            stop_offset: 0,
+        }];
     }
 
     let mut text_chunks = vec![];
@@ -74,10 +76,10 @@ pub fn split(input: &str, chunk_size: usize) -> Result<Vec<TextChunk>, SplitErro
             });
         }
 
-        return Ok(new_text_chunks);
+        return new_text_chunks;
     }
 
-    Ok(text_chunks)
+    text_chunks
 }
 
 #[cfg(test)]
@@ -87,13 +89,27 @@ mod tests {
     #[test]
     fn test_empty_input() {
         let res = split("", 1);
-        assert_eq!(res.expect_err("err"), SplitError::EmptyInput);
+        assert_eq!(
+            res,
+            vec![TextChunk {
+                chunk: "".into(),
+                start_offset: 0,
+                stop_offset: 0,
+            }]
+        );
     }
 
     #[test]
     fn test_only_whitespace() {
         let res = split("  \n\n\n  　\n", 1);
-        assert_eq!(res.expect_err("err"), SplitError::EmptyInput);
+        assert_eq!(
+            res,
+            vec![TextChunk {
+                chunk: "".into(),
+                start_offset: 0,
+                stop_offset: 0,
+            }]
+        );
     }
 
     #[test]
@@ -104,7 +120,7 @@ mod tests {
         );
 
         assert_eq!(
-            res.expect("ok"),
+            res,
             vec![
                 TextChunk {
                     chunk: "Welcome".into(),
@@ -168,7 +184,7 @@ mod tests {
         );
 
         assert_eq!(
-            res.expect("ok"),
+            res,
             vec![
                 TextChunk {
                     chunk: "Welcome to".into(),
@@ -204,7 +220,7 @@ mod tests {
         let res = split("こんにちは world и　皆さん", 1);
 
         assert_eq!(
-            res.expect("ok"),
+            res,
             vec![
                 TextChunk {
                     chunk: "こんにちは".into(),
@@ -235,7 +251,7 @@ mod tests {
         let res = split("こんにちは world и　皆さん", 2);
 
         assert_eq!(
-            res.expect("ok"),
+            res,
             vec![
                 TextChunk {
                     chunk: "こんにちは world".into(),
@@ -256,7 +272,7 @@ mod tests {
         let res = split("こんにちは world и　皆さん", 3);
 
         assert_eq!(
-            res.expect("ok"),
+            res,
             vec![
                 TextChunk {
                     chunk: "こんにちは world и".into(),
@@ -277,7 +293,7 @@ mod tests {
         let res = split("こんにちは world и　皆さん\n\n and ! everyone else", 1);
 
         assert_eq!(
-            res.expect("ok"),
+            res,
             vec![
                 TextChunk {
                     chunk: "こんにちは".into(),
