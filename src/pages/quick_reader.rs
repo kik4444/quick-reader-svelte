@@ -157,7 +157,7 @@ pub fn QuickReader() -> impl IntoView {
         )),
         "Space" => {
             if textarea_locked()
-                || document().active_element().expect("to exist") != ***textarea().expect("")
+                || document().active_element().expect("ok") != ***textarea().expect("ok")
             {
                 ev.prevent_default();
                 toggle_playing();
