@@ -18,9 +18,9 @@
 use std::time::Duration;
 
 use leptos::{html::Textarea, leptos_dom::helpers::IntervalHandle, *};
+use leptos_material_tailwind::Button;
 use wasm_bindgen::JsValue;
 
-use crate::material_tailwind::*;
 use crate::splitter;
 
 #[derive(Debug)]
@@ -167,40 +167,59 @@ pub fn QuickReader() -> impl IntoView {
     });
 
     view! {
-      <Textarea
-        readonly=textarea_locked
-        node_ref=textarea
-        label="Quick Reader"
-        on:input=move |ev| set_text(event_target_value(&ev))
-      >
-        {text}
-      </Textarea>
-      <p>{move || text_chunks.with(|t| t[current_index()].chunk.clone())}</p>
-      <Button on:click=move |_| stop() disabled=(move || !textarea_locked()).derive_signal()>
-        "Stop"
-      </Button>
-      <br/>
-      <Button on:click=move |_| restart() disabled=(move || !textarea_locked()).derive_signal()>
-        "Restart"
-      </Button>
-      <br/>
-      <Button on:click=move |_| toggle_playing()>
-        {move || if playing() { "Pause" } else { "Play" }}
-      </Button>
-      <br/>
-      <input
-        type="number"
-        value=chunk_size
-        on:input=move |ev| set_chunk_size(event_target_value(&ev).parse().unwrap_or(1))
-      />
-      <br/>
-      <input
-        type="number"
-        step="50"
-        min="100"
-        max="1000"
-        value=words_per_minute
-        on:input=move |ev| set_words_per_minute(event_target_value(&ev).parse().unwrap_or(300))
-      />
+      <main>
+        // Textarea
+
+        // <Textarea
+        // readonly=textarea_locked
+        // textarea_node_ref=textarea
+        // label="Quick Reader"
+        // on:input=move |ev| set_text(event_target_value(&ev))
+        // >
+        // {text}
+        // </Textarea>
+
+        // display
+        <p>{move || text_chunks.with(|t| t[current_index()].chunk.clone())}</p>
+
+        // Button testing
+
+        // <Button size=s on:click=move |_| s.set("lg".into())>
+        // "medium"
+        // </Button>
+
+        <br/>
+
+        // Original
+
+        // <button on:click=move |_| stop() disabled=(move || !textarea_locked()).derive_signal()>
+        // "Stop"
+        // </button>
+        // <br/>
+        // <button on:click=move |_| restart() disabled=(move || !textarea_locked()).derive_signal()>
+        // "Restart"
+        // </button>
+        // <br/>
+        // <button on:click=move |_| toggle_playing()>
+        // {move || if playing() { "Pause" } else { "Play" }}
+        // </button>
+        <br/>
+        <input
+          type="number"
+          min="1"
+          max="10"
+          value=chunk_size
+          on:input=move |ev| set_chunk_size(event_target_value(&ev).parse().unwrap_or(1))
+        />
+        <br/>
+        <input
+          type="number"
+          step="50"
+          min="100"
+          max="1000"
+          value=words_per_minute
+          on:input=move |ev| set_words_per_minute(event_target_value(&ev).parse().unwrap_or(300))
+        />
+      </main>
     }
 }

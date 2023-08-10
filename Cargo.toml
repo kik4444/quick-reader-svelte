@@ -1,5 +1,5 @@
 [workspace]
-members = ["src-tauri"]
+members = ["src-tauri", "leptos-material-tailwind"]
 
 [package]
 name = "quick-reader-ui"
@@ -20,6 +20,7 @@ js-sys = "0.3.64"
 thiserror = "1.0.44"
 unicode-segmentation = "1.10.1"
 web-sys = { version = "0.3.64", features = ["Selection", "Window", "EventTarget"] }
+leptos-material-tailwind = { version = "0.1.0", path = "leptos-material-tailwind" }
 
 [profile.release]
 panic = "abort" # Strip expensive unwind on panic

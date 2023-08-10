@@ -20,7 +20,6 @@ use wasm_bindgen::JsValue;
 
 pub mod app;
 pub mod js_bindings;
-pub mod material_tailwind;
 pub mod pages;
 pub mod splitter;
 
