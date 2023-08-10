@@ -27,7 +27,7 @@ pub struct ReaderState {
     pub text: String,
     pub chunk_size: usize,
     pub current_index: usize,
-    pub words_per_minute: u64,
+    pub words_per_minute: usize,
 }
 
 #[component]
@@ -145,7 +145,7 @@ pub fn QuickReader() -> impl IntoView {
             handle.clear();
         }
 
-        set_interval_with_handle(step, Duration::from_millis(words_per_minute()))
+        set_interval_with_handle(step, Duration::from_millis(words_per_minute() as u64))
     });
 
     window_event_listener(ev::keydown, move |ev| match ev.code().as_str() {
@@ -165,62 +165,113 @@ pub fn QuickReader() -> impl IntoView {
         _ => (),
     });
 
-    let v = create_rw_signal(ButtonVariants::Outlined);
-
     view! {
-      <main>
-        // Textarea
+      <main class="w-full h-screen grid grid-rows-[35%_45%_20%] place-items-center">
 
-        // <Textarea
-        // readonly=textarea_locked
-        // textarea_node_ref=textarea
-        // label="Quick Reader"
-        // on:input=move |ev| set_text(event_target_value(&ev))
-        // >
-        // {text}
-        // </Textarea>
+        <div class="relative w-full h-full min-w-[200px] pt-5 px-5 [&>label]:pt-5 [&>label]:px-5">
+          <textarea
+            class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-red-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+            placeholder=" "
+            node_ref=textarea
+            on:input=move |ev| set_text(event_target_value(&ev))
+          >
+            {text}
+          </textarea>
+          <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-red-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-red-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+            "Quick Reader"
+          </label>
+        </div>
 
-        // display
-        <p>{move || text_chunks.with(|t| t[current_index()].chunk.clone())}</p>
+        <p class="block font-sans text-4xl font-semibold leading-[1.3] tracking-normal text-inherit antialiased">
+          {move || text_chunks.with(|t| t[current_index()].chunk.clone())}
+        </p>
 
-        // Button testing
+        <div class="w-full flex flex-col items-center gap-5">
 
-        <Button variant=v on:click=move |_| v.set(ButtonVariants::Filled)>
-          "medium"
-        </Button>
+          <div class="w-full flex gap-5 place-content-center">
 
-        <br/>
+            {
+            [
+                (
+                    "Words per minute",
+                    "1",
+                    "10",
+                    "1",
+                    chunk_size,
+                    Box::new(move |ev| set_chunk_size(event_target_value(&ev).parse().unwrap_or(1)))
+                        as Box<dyn Fn(_)>,
+                ),
+                (
+                    "Chunk size",
+                    "100",
+                    "1000",
+                    "50",
+                    words_per_minute,
+                    Box::new(move |ev| set_words_per_minute(
+                        event_target_value(&ev).parse().unwrap_or(300),
+                    )),
+                ),
+            ]
+                .map(|(name, min, max, step, value, on_input)| {
+                    view! {
+                      <div class="w-72">
+                        <div class="relative h-10 w-full min-w-[200px]">
+                          <input
+                            class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                            placeholder=" "
+                            type="number"
+                            min=min
+                            max=max
+                            step=step
+                            value=value
+                            on:input=on_input
+                          />
+                          <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                            {name}
+                          </label>
+                        </div>
+                      </div>
+                    }
+                })}
 
-        // Original
+          </div>
 
-        // <button on:click=move |_| stop() disabled=(move || !textarea_locked()).derive_signal()>
-        // "Stop"
-        // </button>
-        // <br/>
-        // <button on:click=move |_| restart() disabled=(move || !textarea_locked()).derive_signal()>
-        // "Restart"
-        // </button>
-        // <br/>
-        // <button on:click=move |_| toggle_playing()>
-        // {move || if playing() { "Pause" } else { "Play" }}
-        // </button>
-        <br/>
-        <input
-          type="number"
-          min="1"
-          max="10"
-          value=chunk_size
-          on:input=move |ev| set_chunk_size(event_target_value(&ev).parse().unwrap_or(1))
-        />
-        <br/>
-        <input
-          type="number"
-          step="50"
-          min="100"
-          max="1000"
-          value=words_per_minute
-          on:input=move |ev| set_words_per_minute(event_target_value(&ev).parse().unwrap_or(300))
-        />
+          <div class="w-full grid grid-cols-3 px-5 gap-5">
+
+            {
+            [
+                (
+                    Box::new(|| "Stop") as Box<dyn Fn() -> &'static str>,
+                    Box::new(move |_| stop()) as Box<dyn Fn(_)>,
+                    Box::new(move || !textarea_locked()) as Box<dyn Fn() -> bool>,
+                ),
+                (
+                    Box::new(|| "Restart"),
+                    Box::new(move |_| restart()),
+                    Box::new(move || !textarea_locked()),
+                ),
+                (
+                    Box::new(move || if playing() { "Pause" } else { "Play" }),
+                    Box::new(move |_| toggle_playing()),
+                    Box::new(|| false),
+                ),
+            ]
+                .map(|(text, on_click, disabled)| {
+                    view! {
+                      <button
+                        class="middle none center rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        disabled=disabled
+                        on:click=on_click
+                      >
+                        {text}
+                      </button>
+                    }
+                })
+                .collect_view()}
+          </div>
+
+        </div>
+
       </main>
     }
 }
