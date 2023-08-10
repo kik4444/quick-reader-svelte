@@ -16,8 +16,8 @@
  */
 
 pub mod Base;
-pub mod ButtonFilled;
-pub mod ButtonGradient;
-pub mod ButtonOutlined;
-pub mod ButtonText;
-pub mod Sizes;
+mod ButtonFilled;
+mod ButtonGradient;
+mod ButtonOutlined;
+mod ButtonSizes;
+mod ButtonText;

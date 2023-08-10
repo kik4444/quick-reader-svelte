@@ -18,7 +18,7 @@
 use std::time::Duration;
 
 use leptos::{html::Textarea, leptos_dom::helpers::IntervalHandle, *};
-use leptos_material_tailwind::Button;
+use leptos_material_tailwind::{Button, ButtonVariants};
 use wasm_bindgen::JsValue;
 
 use crate::splitter;
@@ -166,6 +166,8 @@ pub fn QuickReader() -> impl IntoView {
         _ => (),
     });
 
+    let v = create_rw_signal(ButtonVariants::Outlined);
+
     view! {
       <main>
         // Textarea
@@ -184,7 +186,9 @@ pub fn QuickReader() -> impl IntoView {
 
         // Button testing
 
-        <Button class="bg-red-500">"medium"</Button>
+        <Button variant=v on:click=move |_| v.set(ButtonVariants::Filled)>
+          "medium"
+        </Button>
 
         <br/>
 

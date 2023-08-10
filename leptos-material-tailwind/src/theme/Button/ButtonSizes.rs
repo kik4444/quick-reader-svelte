@@ -15,8 +15,7 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use phf::phf_map;
-
+use super::Base::ButtonSizes::{self, *};
 use crate::JoinFields;
 
 pub(crate) struct Size {
@@ -27,7 +26,7 @@ pub(crate) struct Size {
 }
 
 impl JoinFields for Size {
-    fn fields_to_string(&self) -> String {
+    fn join_fields(&self) -> String {
         format!(
             "{} {} {} {}",
             self.font_size, self.py, self.px, self.border_radius
@@ -35,23 +34,25 @@ impl JoinFields for Size {
     }
 }
 
-pub(crate) static SIZES: phf::Map<&'static str, Size> = phf_map! {
-    "sm" => Size {
-        font_size: "text-xs",
-        py: "py-2",
-        px: "px-4",
-        border_radius: "rounded-lg",
-    },
-    "md" => Size {
-        font_size: "text-xs",
-        py: "py-3",
-        px: "px-6",
-        border_radius: "rounded-lg",
-    },
-    "lg" => Size {
-        font_size: "text-xm",
-        py: "py-3.5",
-        px: "px-7",
-        border_radius: "rounded-lg",
-    },
-};
+pub(crate) fn get_size(size: ButtonSizes) -> Size {
+    match size {
+        Sm => Size {
+            font_size: "text-xs",
+            py: "py-2",
+            px: "px-4",
+            border_radius: "rounded-lg",
+        },
+        Md => Size {
+            font_size: "text-xs",
+            py: "py-3",
+            px: "px-6",
+            border_radius: "rounded-lg",
+        },
+        Lg => Size {
+            font_size: "text-xm",
+            py: "py-3.5",
+            px: "px-7",
+            border_radius: "rounded-lg",
+        },
+    }
+}

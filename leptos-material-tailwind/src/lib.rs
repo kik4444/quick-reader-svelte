@@ -15,16 +15,14 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#![allow(non_snake_case)]
-
-pub mod theme;
+pub(crate) mod theme;
 
 use wasm_bindgen::prelude::*;
 
-pub use theme::Button::Base::Button;
+pub use theme::Button::Base::{Button, ButtonColors, ButtonSizes, ButtonVariants};
 
 pub(crate) trait JoinFields {
-    fn fields_to_string(&self) -> String;
+    fn join_fields(&self) -> String;
 }
 
 #[wasm_bindgen(module = "/js_bundle/tailwind_merge.js")]

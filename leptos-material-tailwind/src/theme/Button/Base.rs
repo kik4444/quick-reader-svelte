@@ -16,14 +16,11 @@
  */
 
 use leptos::*;
-use phf::phf_map;
 
-use super::{
-    ButtonFilled::BUTTON_FILLED, ButtonGradient::BUTTON_GRADIENT, ButtonOutlined::BUTTON_OUTLINED,
-    ButtonText::BUTTON_TEXT, Sizes::SIZES,
-};
+use super::{ButtonFilled, ButtonGradient, ButtonOutlined, ButtonSizes::get_size, ButtonText};
 use crate::{tailwind_merge, JoinFields};
 
+#[derive(Default)]
 pub(crate) struct Theme {
     pub(crate) background: &'static str,
     pub(crate) border: &'static str,
@@ -34,28 +31,8 @@ pub(crate) struct Theme {
     pub(crate) active: &'static str,
 }
 
-impl Theme {
-    pub(crate) const fn const_default() -> Self {
-        Self {
-            background: "",
-            border: "",
-            color: "",
-            shadow: "",
-            hover: "",
-            focus: "",
-            active: "",
-        }
-    }
-}
-
-impl Default for Theme {
-    fn default() -> Self {
-        Self::const_default()
-    }
-}
-
 impl JoinFields for Theme {
-    fn fields_to_string(&self) -> String {
+    fn join_fields(&self) -> String {
         format!(
             "{} {} {} {} {} {} {}",
             self.background,
@@ -69,83 +46,86 @@ impl JoinFields for Theme {
     }
 }
 
-static VARIANTS: phf::Map<&'static str, &phf::Map<&'static str, Theme>> = phf_map! {
-    "filled" => &BUTTON_FILLED,
-    "gradient" => &BUTTON_GRADIENT,
-    "outlined" => &BUTTON_OUTLINED,
-    "text" => &BUTTON_TEXT,
-};
+#[derive(Clone, Copy)]
+pub enum ButtonVariants {
+    Filled,
+    Gradient,
+    Outlined,
+    Text,
+}
 
-const DEFAULT_VARIANT: &str = "filled";
-const DEFAULT_COLOR: &str = "light-blue";
-const DEFAULT_SIZE: &str = "md";
+#[derive(Clone, Copy)]
+pub enum ButtonColors {
+    White,
+    BlueGray,
+    Gray,
+    Brown,
+    DeepOrange,
+    Orange,
+    Amber,
+    Yellow,
+    Lime,
+    LightGreen,
+    Green,
+    Teal,
+    Cyan,
+    LightBlue,
+    Blue,
+    Indigo,
+    DeepPurple,
+    Purple,
+    Pink,
+    Red,
+}
+
+#[derive(Clone, Copy)]
+pub enum ButtonSizes {
+    Sm,
+    Md,
+    Lg,
+}
 
 #[component]
 pub fn Button(
     children: Children,
     #[prop(optional)] node_ref: Option<NodeRef<html::Button>>,
-    #[prop(optional, into)] variant: Option<MaybeSignal<String>>,
-    #[prop(optional, into)] color: Option<MaybeSignal<String>>,
-    #[prop(optional, into)] size: Option<MaybeSignal<String>>,
+    #[prop(optional, into)] variant: Option<MaybeSignal<ButtonVariants>>,
+    #[prop(optional, into)] color: Option<MaybeSignal<ButtonColors>>,
+    #[prop(optional, into)] size: Option<MaybeSignal<ButtonSizes>>,
     #[prop(optional, into)] class: Option<MaybeSignal<String>>,
 ) -> impl IntoView {
-    let variant = move || {
-        variant
-            .as_ref()
-            .map(|v| v())
-            .unwrap_or_else(|| DEFAULT_VARIANT.into())
-    };
-
-    let button_type = move || {
-        let v = variant();
-        VARIANTS.get(&v).unwrap_or_else(|| {
-            log::warn!("variant {v} not found");
-            &VARIANTS[DEFAULT_VARIANT]
-        })
-    };
-
-    let color = move || {
-        color
-            .as_ref()
-            .map(|c| c())
-            .unwrap_or_else(|| DEFAULT_COLOR.into())
-    };
-
     let theme = move || {
-        let c = color();
-        let b = button_type();
-        b.get(&c)
-            .unwrap_or_else(|| {
-                log::warn!("color {c} not found");
-                &b[DEFAULT_COLOR]
-            })
-            .fields_to_string()
+        let theme_getter = match variant {
+            Some(v) => match v() {
+                ButtonVariants::Filled => ButtonFilled::get_theme,
+                ButtonVariants::Gradient => ButtonGradient::get_theme,
+                ButtonVariants::Outlined => ButtonOutlined::get_theme,
+                ButtonVariants::Text => ButtonText::get_theme,
+            },
+            None => ButtonFilled::get_theme,
+        };
+
+        match color {
+            Some(c) => theme_getter(c()),
+            None => theme_getter(ButtonColors::Blue),
+        }
+        .join_fields()
     };
 
     let size = move || {
-        size.as_ref()
-            .map(|s| s())
-            .unwrap_or_else(|| DEFAULT_SIZE.into())
-    };
-
-    let size = move || {
-        let s = size();
-        SIZES
-            .get(&s)
-            .unwrap_or_else(|| {
-                log::warn!("size {s} not found");
-                &SIZES[DEFAULT_SIZE]
-            })
-            .fields_to_string()
+        match size {
+            Some(s) => get_size(s()),
+            None => get_size(ButtonSizes::Md),
+        }
+        .join_fields()
     };
 
     let final_class = move || {
         let build = format!("align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none {} {}", theme(), size());
 
-        if let Some(user_class) = class.as_ref() {
-            tailwind_merge(build, &user_class())
-        } else {
-            build
+        match class.as_ref() {
+            Some(c) => tailwind_merge(build, &c()),
+            None => build,
         }
     };
 
