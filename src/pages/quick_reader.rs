@@ -168,7 +168,10 @@ pub fn QuickReader() -> impl IntoView {
     view! {
       <main class="w-full h-screen grid grid-rows-[35%_45%_20%] place-items-center">
 
-        <div class="relative w-full h-full min-w-[200px] pt-5 px-5 [&>label]:pt-5 [&>label]:px-5">
+        <div
+          id="textarea"
+          class="relative w-full h-full min-w-[200px] pt-5 px-5 [&>label]:pt-5 [&>label]:px-5"
+        >
           <textarea
             class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-red-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
             placeholder=" "
@@ -182,13 +185,16 @@ pub fn QuickReader() -> impl IntoView {
           </label>
         </div>
 
-        <p class="block font-sans text-4xl font-semibold leading-[1.3] tracking-normal text-inherit antialiased">
+        <p
+          id="display"
+          class="block font-sans text-4xl font-semibold leading-[1.3] tracking-normal text-inherit antialiased"
+        >
           {move || text_chunks.with(|t| t[current_index()].chunk.clone())}
         </p>
 
-        <div class="w-full flex flex-col items-center gap-5">
+        <div id="controls" class="w-full flex flex-col items-center gap-5">
 
-          <div class="w-full flex gap-5 place-content-center">
+          <div id="chunking" class="w-full flex gap-5 place-content-center">
 
             {
             [
@@ -236,7 +242,7 @@ pub fn QuickReader() -> impl IntoView {
 
           </div>
 
-          <div class="w-full grid grid-cols-3 px-5 gap-5">
+          <div id="playback" class="w-full grid grid-cols-3 px-5 gap-5">
 
             {
             [
