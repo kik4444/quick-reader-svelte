@@ -23,8 +23,3 @@ extern "C" {
     pub async fn invoke(cmd: &str, args: JsValue) -> JsValue;
 
 }
-
-#[wasm_bindgen(module = "/js_bundle/tailwind_merge.js")]
-extern "C" {
-    pub fn tailwind_merge(existing_classes: String, new_classes: &str) -> String;
-}

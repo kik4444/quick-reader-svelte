@@ -19,8 +19,15 @@
 
 pub mod theme;
 
+use wasm_bindgen::prelude::*;
+
 pub use theme::Button::Base::Button;
 
 pub(crate) trait JoinFields {
     fn fields_to_string(&self) -> String;
+}
+
+#[wasm_bindgen(module = "/js_bundle/tailwind_merge.js")]
+extern "C" {
+    pub fn tailwind_merge(existing_classes: String, new_classes: &str) -> String;
 }

@@ -1,13 +1,13 @@
-[[hooks]]
-stage = "pre_build"
-command = "./node_modules/esbuild/bin/esbuild"
-command_arguments = ["tailwind_merge.js", "--bundle", "--platform=neutral", "--minify", "--outfile=js_bundle/tailwind_merge.js"]
+# [[hooks]]
+# stage = "pre_build"
+# command = "./node_modules/esbuild/bin/esbuild"
+# command_arguments = ["tailwind_merge.js", "--bundle", "--platform=neutral", "--minify", "--outfile=js_bundle/tailwind_merge.js"]
 
 [build]
 target = "./index.html"
 
 [watch]
-ignore = ["./src-tauri", "./js_bundle"]
+ignore = ["./src-tauri"]
 
 [serve]
 address = "127.0.0.1"

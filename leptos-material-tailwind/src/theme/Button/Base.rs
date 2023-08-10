@@ -22,7 +22,7 @@ use super::{
     ButtonFilled::BUTTON_FILLED, ButtonGradient::BUTTON_GRADIENT, ButtonOutlined::BUTTON_OUTLINED,
     ButtonText::BUTTON_TEXT, Sizes::SIZES,
 };
-use crate::JoinFields;
+use crate::{tailwind_merge, JoinFields};
 
 pub(crate) struct Theme {
     pub(crate) background: &'static str,
@@ -87,7 +87,7 @@ pub fn Button(
     #[prop(optional, into)] variant: Option<MaybeSignal<String>>,
     #[prop(optional, into)] color: Option<MaybeSignal<String>>,
     #[prop(optional, into)] size: Option<MaybeSignal<String>>,
-    // #[prop(default = "md".into())] size: String,
+    #[prop(optional, into)] class: Option<MaybeSignal<String>>,
 ) -> impl IntoView {
     let variant = move || {
         variant
@@ -140,7 +140,13 @@ pub fn Button(
     };
 
     let final_class = move || {
-        format!("align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none {} {}", theme(), size())
+        let build = format!("align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none {} {}", theme(), size());
+
+        if let Some(user_class) = class.as_ref() {
+            tailwind_merge(build, &user_class())
+        } else {
+            build
+        }
     };
 
     let reference = create_node_ref::<html::Button>();

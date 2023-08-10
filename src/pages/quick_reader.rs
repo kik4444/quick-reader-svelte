@@ -184,9 +184,7 @@ pub fn QuickReader() -> impl IntoView {
 
         // Button testing
 
-        // <Button size=s on:click=move |_| s.set("lg".into())>
-        // "medium"
-        // </Button>
+        <Button class="bg-red-500">"medium"</Button>
 
         <br/>
 

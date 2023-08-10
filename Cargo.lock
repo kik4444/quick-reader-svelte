@@ -1821,6 +1821,7 @@ dependencies = [
  "log",
  "phf 0.11.2",
  "phf_macros 0.11.2",
+ "wasm-bindgen",
 ]
 
 [[package]]
