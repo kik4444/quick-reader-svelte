@@ -200,22 +200,21 @@ pub fn QuickReader() -> impl IntoView {
             [
                 (
                     "Words per minute",
-                    "1",
-                    "10",
-                    "1",
-                    chunk_size,
-                    Box::new(move |ev| set_chunk_size(event_target_value(&ev).parse().unwrap_or(1)))
-                        as Box<dyn Fn(_)>,
-                ),
-                (
-                    "Chunk size",
                     "100",
                     "1000",
                     "50",
                     words_per_minute,
                     Box::new(move |ev| set_words_per_minute(
                         event_target_value(&ev).parse().unwrap_or(300),
-                    )),
+                    )) as Box<dyn Fn(_)>,
+                ),
+                (
+                    "Chunk size",
+                    "1",
+                    "10",
+                    "1",
+                    chunk_size,
+                    Box::new(move |ev| set_chunk_size(event_target_value(&ev).parse().unwrap_or(1))),
                 ),
             ]
                 .map(|(name, min, max, step, value, on_input)| {
