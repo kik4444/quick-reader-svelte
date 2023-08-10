@@ -162,7 +162,7 @@ pub fn QuickReader() -> impl IntoView {
                 toggle_playing();
             }
         }
-        _ => (),
+        _ => {}
     });
 
     view! {
@@ -278,8 +278,8 @@ pub fn QuickReader() -> impl IntoView {
                         {text}
                       </button>
                     }
-                })
-                .collect_view()}
+                })}
+
           </div>
 
         </div>
