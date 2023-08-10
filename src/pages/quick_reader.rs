@@ -18,7 +18,6 @@
 use std::time::Duration;
 
 use leptos::{html::Textarea, leptos_dom::helpers::IntervalHandle, *};
-use leptos_material_tailwind::{Button, ButtonVariants};
 use wasm_bindgen::JsValue;
 
 use crate::splitter;
