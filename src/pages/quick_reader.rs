@@ -166,7 +166,7 @@ pub fn QuickReader() -> impl IntoView {
     });
 
     view! {
-      <main class="w-full h-screen grid grid-rows-[35%_45%_20%] place-items-center">
+      <main class="w-full h-screen grid grid-rows-3 place-items-center">
 
         <div
           id="textarea"
