@@ -5,6 +5,10 @@
   <meta charset="utf-8" />
   <link data-trunk rel="tailwind-css" href="tailwind.css" />
   <link data-trunk rel="copy-dir" href="public" />
+  <link data-trunk rel="copy-file" href="node_modules/@material-tailwind/html/scripts/ripple.js" />
+  <script>
+    setTimeout(() => import("./ripple.js"), 1000);
+  </script>
 </head>
 
 <body>
