@@ -54,9 +54,11 @@ pub fn QuickReader() -> impl IntoView {
     let (chunk_size, set_chunk_size) = create_slice(
         reader_state,
         |s| s.chunk_size,
-        |s, new| {
-            s.chunk_size = new;
-            // TODO recalculate new index
+        |s, new_chunk_size| {
+            // Recalculate what the new chunk index should be after recreating the text chunks with a different size
+            s.current_index = (s.current_index * s.chunk_size) / new_chunk_size;
+
+            s.chunk_size = new_chunk_size;
         },
     );
 
