@@ -139,11 +139,17 @@ pub fn QuickReader() -> impl IntoView {
     });
 
     create_effect(move |prev: Option<Result<IntervalHandle, JsValue>>| {
-        if let Some(Ok(handle)) = prev {
-            handle.clear();
+        if let Some(Ok(interval)) = prev {
+            interval.clear();
         }
 
-        set_interval_with_handle(step, Duration::from_millis(speed() as u64))
+        let interval = set_interval_with_handle(step, Duration::from_millis(speed() as u64));
+
+        if let Ok(interval) = interval {
+            on_cleanup(move || interval.clear());
+        }
+
+        interval
     });
 
     window_event_listener(ev::keydown, move |ev| match ev.code().as_str() {
