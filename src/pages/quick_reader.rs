@@ -275,6 +275,18 @@ pub fn QuickReader() -> impl IntoView {
             <div class="w-[1px] h-[30px] self-center bg-black"></div>
             <p>"Duration: " {duration}</p>
             <div class="w-[1px] h-[30px] self-center bg-black"></div>
+            <input
+              type="progress"
+              type="range"
+              min="0"
+              max=move || text_chunks.with(|t| t.len() - 1)
+              prop:value=current_index
+              on:input=move |ev| set_current_index(
+                  event_target_value(&ev).parse().unwrap_or_default(),
+              )
+
+              class="flex-grow-[2]"
+            />
           </div>
 
           <div id="playback" class="w-full grid grid-cols-3 px-5 gap-5">
