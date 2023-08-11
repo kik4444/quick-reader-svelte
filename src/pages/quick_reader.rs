@@ -268,7 +268,7 @@ pub fn QuickReader() -> impl IntoView {
 
           </div>
 
-          <div id="progress" class="w-full flex gap-5 px-5 ">
+          <div id="progress" class="w-full flex gap-3 px-5">
             <p>
               "Chunk " {move || current_index() + 1} " of " {move || text_chunks.with(|t| t.len())}
             </p>
