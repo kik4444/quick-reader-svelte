@@ -20,15 +20,7 @@ use std::time::Duration;
 use leptos::{html::Textarea, leptos_dom::helpers::IntervalHandle, *};
 use wasm_bindgen::JsValue;
 
-use crate::splitter;
-
-#[derive(Debug)]
-pub struct ReaderState {
-    pub text: String,
-    pub chunk_size: usize,
-    pub current_index: usize,
-    pub words_per_minute: usize,
-}
+use crate::{app::ReaderState, splitter};
 
 #[component]
 pub fn QuickReader() -> impl IntoView {

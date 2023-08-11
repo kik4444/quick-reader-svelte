@@ -20,6 +20,13 @@ use leptos_router::*;
 
 use crate::pages::quick_reader::QuickReader;
 
+pub struct ReaderState {
+    pub text: String,
+    pub chunk_size: usize,
+    pub current_index: usize,
+    pub words_per_minute: usize,
+}
+
 #[component]
 pub fn App() -> impl IntoView {
     view! {
