@@ -29,6 +29,14 @@ pub struct ReaderState {
 
 #[component]
 pub fn App() -> impl IntoView {
+    // Global state for the reader which should persist across page navigation
+    provide_context(create_rw_signal(ReaderState {
+        text: r#"Welcome to "Quick Reader". Press start to begin reading quickly."#.into(),
+        chunk_size: 1,
+        current_index: 0,
+        words_per_minute: 300,
+    }));
+
     view! {
       <Router>
         <nav></nav>

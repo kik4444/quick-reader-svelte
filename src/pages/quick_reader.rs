@@ -24,12 +24,7 @@ use crate::{app::ReaderState, splitter};
 
 #[component]
 pub fn QuickReader() -> impl IntoView {
-    let reader_state = create_rw_signal(ReaderState {
-        text: r#"Welcome to "Quick Reader". Press start to begin reading quickly."#.into(),
-        chunk_size: 1,
-        current_index: 0,
-        words_per_minute: 300,
-    });
+    let reader_state = expect_context::<RwSignal<ReaderState>>();
 
     let playing = create_rw_signal(false);
 
