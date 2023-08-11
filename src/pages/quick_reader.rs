@@ -41,15 +41,7 @@ pub fn QuickReader() -> impl IntoView {
 
     let playing = create_rw_signal(false);
 
-    let (text, set_text) = create_slice(
-        reader_state,
-        |s| s.text.clone(),
-        move |s, new| {
-            s.text = new;
-            s.current_index = 0;
-            playing.set(false);
-        },
-    );
+    let (text, set_text) = create_slice(reader_state, |s| s.text.clone(), |s, new| s.text = new);
 
     let (chunk_size, set_chunk_size) = create_slice(
         reader_state,
@@ -143,15 +135,15 @@ pub fn QuickReader() -> impl IntoView {
     };
 
     let speed = create_memo(move |_| (1000 / (words_per_minute() / 60)) * chunk_size());
-    let duration_seconds = create_memo(move |_| {
-        let chunk_size = chunk_size();
-        (speed() * chunk_size * (text_chunks.with(|t| t.len()) - current_index()))
-            / 1000
-            / chunk_size
-    });
 
-    let duration = create_memo(move |_| {
-        let duration_seconds = duration_seconds();
+    let (duration, _) = create_signal(move || {
+        let chunk_size = chunk_size();
+
+        let duration_seconds =
+            (speed() * chunk_size * (text_chunks.with(|t| t.len()) - current_index()))
+                / 1000
+                / chunk_size;
+
         format!(
             "{}m {}s",
             (duration_seconds % 3600) / 60,
