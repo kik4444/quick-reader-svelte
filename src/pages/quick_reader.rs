@@ -142,9 +142,10 @@ pub fn QuickReader() -> impl IntoView {
 
     let speed = create_memo(move |_| (1000 / (words_per_minute() / 60)) * chunk_size());
     let duration_seconds = create_memo(move |_| {
-        (speed() * chunk_size() * (text_chunks.with(|t| t.len()) - current_index()))
+        let chunk_size = chunk_size();
+        (speed() * chunk_size * (text_chunks.with(|t| t.len()) - current_index()))
             / 1000
-            / chunk_size()
+            / chunk_size
     });
 
     let duration = create_memo(move |_| {
@@ -161,7 +162,7 @@ pub fn QuickReader() -> impl IntoView {
             handle.clear();
         }
 
-        set_interval_with_handle(step, Duration::from_millis(words_per_minute() as u64))
+        set_interval_with_handle(step, Duration::from_millis(speed() as u64))
     });
 
     window_event_listener(ev::keydown, move |ev| match ev.code().as_str() {
