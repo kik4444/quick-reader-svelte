@@ -137,7 +137,7 @@ pub fn QuickReader() -> impl IntoView {
 
         format!(
             "{}m {}s",
-            (duration_seconds % 3600) / 60,
+            duration_seconds % 3600 / 60,
             duration_seconds % 60
         )
     });
@@ -149,6 +149,7 @@ pub fn QuickReader() -> impl IntoView {
 
         let interval = set_interval_with_handle(step, Duration::from_millis(speed() as u64));
 
+        // Remove the interval when this page is destroyed otherwise it'll continue running and trying to access inaccessible signals and spam the console with panics
         if let Ok(interval) = interval {
             on_cleanup(move || interval.clear());
         }
