@@ -1814,15 +1814,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "leptos-material-tailwind"
-version = "0.1.0"
-dependencies = [
- "leptos",
- "log",
- "wasm-bindgen",
-]
-
-[[package]]
 name = "leptos_config"
 version = "0.5.0-alpha2"
 source = "registry+https://github.com/rust-lang/crates.io-index"

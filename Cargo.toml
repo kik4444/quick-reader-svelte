@@ -1,5 +1,5 @@
 [workspace]
-members = ["src-tauri", "leptos-material-tailwind"]
+members = ["src-tauri"]
 
 [package]
 name = "quick-reader-ui"

@@ -1,1 +1,0 @@
-This readme allows git to track the js_bundle dir whilst ignoring the JS files inside because they'll be generated at build time
