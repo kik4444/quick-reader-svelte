@@ -140,6 +140,22 @@ pub fn QuickReader() -> impl IntoView {
         }
     };
 
+    let speed = create_memo(move |_| (1000 / (words_per_minute() / 60)) * chunk_size());
+    let duration_seconds = create_memo(move |_| {
+        (speed() * chunk_size() * (text_chunks.with(|t| t.len()) - current_index()))
+            / 1000
+            / chunk_size()
+    });
+
+    let duration = create_memo(move |_| {
+        let duration_seconds = duration_seconds();
+        format!(
+            "{}m {}s",
+            (duration_seconds % 3600) / 60,
+            duration_seconds % 60
+        )
+    });
+
     create_effect(move |prev: Option<Result<IntervalHandle, JsValue>>| {
         if let Some(Ok(handle)) = prev {
             handle.clear();
@@ -246,6 +262,15 @@ pub fn QuickReader() -> impl IntoView {
               "Reset"
             </button>
 
+          </div>
+
+          <div id="progress" class="w-full flex gap-5 px-5 ">
+            <p>
+              "Chunk " {move || current_index() + 1} " of " {move || text_chunks.with(|t| t.len())}
+            </p>
+            <div class="w-[1px] h-[30px] self-center bg-black"></div>
+            <p>"Duration: " {duration}</p>
+            <div class="w-[1px] h-[30px] self-center bg-black"></div>
           </div>
 
           <div id="playback" class="w-full grid grid-cols-3 px-5 gap-5">
