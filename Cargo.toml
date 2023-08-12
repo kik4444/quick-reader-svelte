@@ -19,7 +19,7 @@ log = "0.4.19"
 js-sys = "0.3.64"
 thiserror = "1.0.44"
 unicode-segmentation = "1.10.1"
-web-sys = { version = "0.3.64", features = ["Selection", "Window", "EventTarget"] }
+web-sys = { version = "0.3.64", features = ["Selection", "DomRect", "Animation", "KeyframeAnimationOptions"] }
 
 [profile.release]
 panic = "abort" # Strip expensive unwind on panic

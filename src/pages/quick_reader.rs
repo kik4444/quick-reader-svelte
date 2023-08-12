@@ -24,7 +24,7 @@ use leptos::{
 };
 use wasm_bindgen::JsValue;
 
-use crate::{app::ReaderState, splitter};
+use crate::{app::ReaderState, splitter, Button::Button};
 
 #[component]
 pub fn QuickReader() -> impl IntoView {
@@ -175,6 +175,8 @@ pub fn QuickReader() -> impl IntoView {
     });
 
     view! {
+      <Button/>
+
       <main class="w-full h-full grid grid-rows-3 place-items-center">
 
         <div
