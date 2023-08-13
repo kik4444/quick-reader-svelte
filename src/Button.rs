@@ -20,13 +20,16 @@
 use std::time::Duration;
 
 use leptos::*;
-use serde::Serialize;
-use serde_wasm_bindgen::to_value;
-use wasm_bindgen::JsCast;
-use web_sys::{
-    CssStyleDeclaration, DomRect, HtmlButtonElement, HtmlSpanElement, KeyframeAnimationOptions,
-    MouseEvent,
-};
+use wasm_bindgen::prelude::*;
+use web_sys::{CssStyleDeclaration, DomRect, HtmlButtonElement, HtmlSpanElement, MouseEvent};
+
+#[derive(Default, Clone, Copy, PartialEq, Eq)]
+pub enum ButtonRipple {
+    #[default]
+    Light,
+    Dark,
+    None,
+}
 
 fn find_furthest_point(
     click_point_x: f64,
@@ -36,34 +39,36 @@ fn find_furthest_point(
     element_height: f64,
     offset_y: f64,
 ) -> f64 {
-    let x = click_point_x
-        - if offset_x > (element_width / 2.0) {
-            0.0
-        } else {
-            element_width
-        };
+    let x = if click_point_x - offset_x > element_width / 2.0 {
+        0.0
+    } else {
+        element_width
+    };
 
-    let y = click_point_y
-        - if offset_y > (element_height / 2.0) {
-            0.0
-        } else {
-            element_height
-        };
+    let y = if click_point_y - offset_y > element_height / 2.0 {
+        0.0
+    } else {
+        element_height
+    };
 
-    js_sys::Math::hypot(
-        x - (click_point_x - offset_x),
-        y - (click_point_y - offset_y),
-    )
+    (x - (click_point_x - offset_x)).hypot(y - (click_point_y - offset_y))
 }
 
 fn apply_styles(
     circle_style: CssStyleDeclaration,
-    color: &str,
+    ripple: ButtonRipple,
     rect: DomRect,
     radius: f64,
-    event: MouseEvent,
+    event: &MouseEvent,
 ) {
-    _ = circle_style.set_property("background-color", "rgba(255,255,255, 0.3)");
+    _ = circle_style.set_property(
+        "background-color",
+        match ripple {
+            ButtonRipple::Light => "rgba(255,255,255, 0.3)",
+            ButtonRipple::Dark => "rgba(0,0,0, 0.2)",
+            ButtonRipple::None => unreachable!(),
+        },
+    );
     _ = circle_style.set_property("border-radius", "50%");
     _ = circle_style.set_property("pointer-events", "none");
     _ = circle_style.set_property("position", "absolute");
@@ -81,39 +86,44 @@ fn apply_styles(
     _ = circle_style.set_property("height", width_height);
 }
 
-#[derive(Serialize)]
-struct AnimationTransformation {
-    transform: &'static str,
-    opacity: f64,
-}
-
-#[cfg(web_sys_unstable_apis)]
-fn apply_animation(circle: &HtmlSpanElement) {
-    let transformation = js_sys::Object::from(
-        to_value(&[
-            AnimationTransformation {
+// We use JS to animate the ripple because the Animation feature in web-sys requires web_sys_unstable_apis
+#[wasm_bindgen(inline_js = r#"
+export function animate_ripple(span_element, duration) {
+    span_element.animate(
+        [
+            {
                 transform: "scale(0)",
-                opacity: 1.0,
+                opacity: 1,
             },
-            AnimationTransformation {
+            {
                 transform: "scale(1.5)",
-                opacity: 0.0,
+                opacity: 0,
             },
-        ])
-        .expect("ok"),
+        ],
+        {
+            duration,
+            easing: "linear",
+        },
     );
-
-    let mut keyframe = KeyframeAnimationOptions::new();
-    keyframe.duration(&to_value(&500).expect("ok"));
-    keyframe.easing("linear");
-
-    circle.animate_with_keyframe_animation_options(Some(&transformation), &keyframe);
+}
+"#)]
+extern "C" {
+    fn animate_ripple(span_element: &HtmlSpanElement, duration: f64);
 }
 
 #[component]
-pub fn Button(#[prop(default = true)] ripple: bool) -> impl IntoView {
+pub fn Button(
+    children: Children,
+    #[prop(optional)] node_ref: Option<NodeRef<html::Button>>,
+    #[prop(optional, into)] disabled: Option<MaybeSignal<bool>>,
+    #[prop(optional, into)] class: Option<MaybeSignal<String>>,
+    #[prop(optional, into)] ripple: Option<MaybeSignal<ButtonRipple>>,
+    #[prop(optional, into)] ripple_duration: Option<MaybeSignal<u64>>,
+) -> impl IntoView {
     let create_ripple = move |ev: MouseEvent| {
-        if !ripple {
+        let ripple = ripple.map(|r| r()).unwrap_or_default();
+
+        if ripple == ButtonRipple::None {
             return;
         }
 
@@ -139,19 +149,29 @@ pub fn Button(#[prop(default = true)] ripple: bool) -> impl IntoView {
         let circle = element.dyn_into::<HtmlSpanElement>().expect("ok");
         let circle_style = circle.style();
 
-        apply_styles(circle_style, "dark", rect, radius, ev);
-        apply_animation(&circle);
+        apply_styles(circle_style, ripple, rect, radius, &ev);
+
+        let duration = ripple_duration.map(|d| d()).unwrap_or(500);
+        animate_ripple(&circle, duration as f64);
 
         _ = button.append_child(&circle);
-        set_timeout(move || circle.remove(), Duration::from_millis(500));
+        set_timeout(move || circle.remove(), Duration::from_millis(duration));
     };
 
-    view! {
+    let reference = create_node_ref::<html::Button>();
+    let view = view! {
       <button
-        class="rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        class=move || class.as_ref().map(|c| c()).unwrap_or_default()
         on:mouseup=create_ripple
+        disabled=move || disabled.map(|d| d()).unwrap_or_default()
       >
-        "Hello"
+        {children()}
       </button>
+    };
+
+    if let Some(r) = node_ref {
+        reference.get_untracked().expect("ok").node_ref(r);
     }
+
+    view
 }

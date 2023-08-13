@@ -177,8 +177,6 @@ pub fn QuickReader() -> impl IntoView {
     on_cleanup(move || handle.remove());
 
     view! {
-      <Button/>
-
       <main class="w-full h-full grid grid-rows-3 place-items-center">
 
         <div
@@ -253,13 +251,12 @@ pub fn QuickReader() -> impl IntoView {
                     }
                 })}
 
-            <button
+            <Button
               class="rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              data-ripple-light="true"
               on:click=move |_| reset()
             >
               "Reset"
-            </button>
+            </Button>
 
           </div>
 
@@ -306,14 +303,13 @@ pub fn QuickReader() -> impl IntoView {
             ]
                 .map(|(text, on_click, disabled)| {
                     view! {
-                      <button
+                      <Button
                         class="rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        data-ripple-light="true"
-                        disabled=disabled
+                        disabled=disabled.derive_signal()
                         on:click=on_click
                       >
                         {text}
-                      </button>
+                      </Button>
                     }
                 })}
 
