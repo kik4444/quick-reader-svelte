@@ -23,7 +23,11 @@ use leptos::{
 };
 use wasm_bindgen::JsValue;
 
-use crate::{app::ReaderState, components::Button::Button, splitter};
+use crate::{
+    app::ReaderState,
+    components::{Button::Button, MatIcon::MatIcon},
+    splitter,
+};
 
 #[component]
 pub fn QuickReader() -> impl IntoView {
@@ -254,7 +258,7 @@ pub fn QuickReader() -> impl IntoView {
               class="flex items-center justify-center gap-3 rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               on:click=move |_| reset()
             >
-              <span class="material-icons-round pointer-events-none">"loop"</span>
+              <MatIcon>"loop"</MatIcon>
               "Reset"
             </Button>
 
@@ -311,7 +315,7 @@ pub fn QuickReader() -> impl IntoView {
                         disabled=disabled.derive_signal()
                         on:click=on_click
                       >
-                        <span class="material-icons-round pointer-events-none">{icon}</span>
+                        <MatIcon>{icon}</MatIcon>
                         {text}
                       </Button>
                     }

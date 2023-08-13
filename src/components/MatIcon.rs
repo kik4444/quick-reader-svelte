@@ -15,6 +15,9 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#![allow(non_snake_case)]
-pub mod Button;
-pub mod MatIcon;
+use leptos::*;
+
+#[component]
+pub fn MatIcon(children: Children) -> impl IntoView {
+    view! { <span class="material-icons-round pointer-events-none">{children()}</span> }
+}
