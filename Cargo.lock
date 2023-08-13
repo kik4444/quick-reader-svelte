@@ -2720,7 +2720,6 @@ dependencies = [
  "log",
  "serde",
  "serde-wasm-bindgen",
- "thiserror",
  "unicode-segmentation",
  "wasm-bindgen",
  "wasm-bindgen-futures",
