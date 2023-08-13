@@ -18,7 +18,6 @@
 use std::time::Duration;
 
 use leptos::{
-    html::Textarea,
     leptos_dom::helpers::{debounce, IntervalHandle},
     *,
 };
@@ -67,7 +66,7 @@ pub fn QuickReader() -> impl IntoView {
 
     let text_chunks = create_memo(move |_| splitter::split(&text(), chunk_size()));
 
-    let textarea = create_node_ref::<Textarea>();
+    let textarea = create_node_ref::<html::Textarea>();
     let textarea_locked = create_rw_signal(false);
 
     let reset = move || {
