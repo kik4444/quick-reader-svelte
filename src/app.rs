@@ -43,7 +43,7 @@ pub fn App() -> impl IntoView {
     view! {
       <Router>
 
-        <main class="h-screen pt-5 grid grid-rows-[5%_90%] place-items-center">
+        <main class="h-screen dark:bg-gray-900 pt-5 grid grid-rows-[5%_90%]">
 
           <nav class="w-full grid grid-cols-3 px-5 gap-5">
 
@@ -55,7 +55,7 @@ pub fn App() -> impl IntoView {
                 .map(|(href, icon, text)| {
                     view! {
                       <a href=href>
-                        <Button class="flex items-center justify-center gap-3 w-full rounded-lg bg-blue-500 py-2 px-4 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                        <Button class="btn-main w-full">
                           <MatIcon>{icon}</MatIcon>
                           {text}
                         </Button>

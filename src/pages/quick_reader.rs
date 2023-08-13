@@ -187,7 +187,7 @@ pub fn QuickReader() -> impl IntoView {
           class="relative w-full h-full min-w-[200px] pt-5 px-5 [&>label]:pt-5 [&>label]:px-5"
         >
           <textarea
-            class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-red-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+            class="peer textarea"
             placeholder=" "
             node_ref=textarea
             readonly=textarea_locked
@@ -195,14 +195,12 @@ pub fn QuickReader() -> impl IntoView {
           >
             {text}
           </textarea>
-          <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-red-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-red-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-red-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-            "Quick Reader"
-          </label>
+          <label class="label">"Quick Reader"</label>
         </div>
 
         <p
           id="display"
-          class="block font-sans text-4xl font-semibold leading-[1.3] tracking-normal text-inherit antialiased"
+          class="paragraph block font-sans text-4xl font-semibold leading-[1.3] tracking-normal antialiased"
         >
           {move || text_chunks.with(|t| t[current_index()].chunk.clone())}
         </p>
@@ -237,7 +235,7 @@ pub fn QuickReader() -> impl IntoView {
                       <div class="w-32">
                         <div class="relative h-10 w-full">
                           <input
-                            class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                            class="peer input"
                             placeholder=" "
                             type="number"
                             min=min
@@ -246,18 +244,13 @@ pub fn QuickReader() -> impl IntoView {
                             prop:value=value
                             on:input=debounce(Duration::from_millis(500), on_input)
                           />
-                          <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                            {name}
-                          </label>
+                          <label class="label">{name}</label>
                         </div>
                       </div>
                     }
                 })}
 
-            <Button
-              class="flex items-center justify-center gap-3 rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              on:click=move |_| reset()
-            >
+            <Button class="btn-main" on:click=move |_| reset()>
               <MatIcon>"loop"</MatIcon>
               "Reset"
             </Button>
@@ -265,11 +258,11 @@ pub fn QuickReader() -> impl IntoView {
           </div>
 
           <div id="progress" class="w-full flex gap-3 px-5">
-            <p>
+            <p class="paragraph">
               "Chunk " {move || current_index() + 1} " of " {move || text_chunks.with(|t| t.len())}
             </p>
             <div class="w-[1px] h-[30px] self-center bg-black"></div>
-            <p>"Duration: " {duration}</p>
+            <p class="paragraph">"Duration: " {duration}</p>
             <div class="w-[1px] h-[30px] self-center bg-black"></div>
             <input
               type="progress"
@@ -310,11 +303,7 @@ pub fn QuickReader() -> impl IntoView {
             ]
                 .map(|(text, icon, on_click, disabled)| {
                     view! {
-                      <Button
-                        class="flex items-center justify-center gap-3 rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        disabled=disabled.derive_signal()
-                        on:click=on_click
-                      >
+                      <Button class="btn-main" disabled=disabled.derive_signal() on:click=on_click>
                         <MatIcon>{icon}</MatIcon>
                         {text}
                       </Button>

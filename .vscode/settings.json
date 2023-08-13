@@ -29,5 +29,6 @@
     "tailwindCSS.experimental.classRegex": [
         ".*_class=\"([^\"\n]+)\"",
         ".*_?class=move\\s*\\|.?\\|\\s*{?\\s*format!\\(\\s*\"([^\"\n]+)\""
-    ]
+    ],
+    "css.format.enable": false
 }
