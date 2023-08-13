@@ -18,7 +18,7 @@
 use leptos::*;
 use leptos_router::*;
 
-use crate::{pages::quick_reader::QuickReader, Button::Button};
+use crate::{components::Button::Button, pages::quick_reader::QuickReader};
 
 pub struct ReaderState {
     pub text: String,

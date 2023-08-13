@@ -23,7 +23,7 @@ use leptos::{
 };
 use wasm_bindgen::JsValue;
 
-use crate::{app::ReaderState, splitter, Button::Button};
+use crate::{app::ReaderState, components::Button::Button, splitter};
 
 #[component]
 pub fn QuickReader() -> impl IntoView {

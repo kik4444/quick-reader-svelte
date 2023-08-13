@@ -18,9 +18,8 @@
 use serde_wasm_bindgen::{Deserializer, Serializer};
 use wasm_bindgen::JsValue;
 
-#[allow(non_snake_case)]
-pub mod Button;
 pub mod app;
+pub mod components;
 pub mod js_bindings;
 pub mod pages;
 pub mod splitter;
