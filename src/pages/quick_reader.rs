@@ -251,9 +251,10 @@ pub fn QuickReader() -> impl IntoView {
                 })}
 
             <Button
-              class="rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              class="flex items-center justify-center gap-3 rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               on:click=move |_| reset()
             >
+              <span class="material-icons-round pointer-events-none">"loop"</span>
               "Reset"
             </Button>
 
@@ -286,27 +287,31 @@ pub fn QuickReader() -> impl IntoView {
             [
                 (
                     Box::new(|| "Stop") as Box<dyn Fn() -> &'static str>,
+                    Box::new(|| "stop") as Box<dyn Fn() -> &'static str>,
                     Box::new(move |_| stop()) as Box<dyn Fn(_)>,
                     Box::new(move || !textarea_locked()) as Box<dyn Fn() -> bool>,
                 ),
                 (
                     Box::new(|| "Restart"),
+                    Box::new(|| "restart_alt"),
                     Box::new(move |_| restart()),
                     Box::new(move || !textarea_locked()),
                 ),
                 (
                     Box::new(move || if playing() { "Pause" } else { "Play" }),
+                    Box::new(move || if playing() { "pause" } else { "play_arrow" }),
                     Box::new(move |_| toggle_playing()),
                     Box::new(|| false),
                 ),
             ]
-                .map(|(text, on_click, disabled)| {
+                .map(|(text, icon, on_click, disabled)| {
                     view! {
                       <Button
-                        class="rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        class="flex items-center justify-center gap-3 rounded-lg bg-blue-500 py-3 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         disabled=disabled.derive_signal()
                         on:click=on_click
                       >
+                        <span class="material-icons-round pointer-events-none">{icon}</span>
                         {text}
                       </Button>
                     }

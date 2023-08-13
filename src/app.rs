@@ -44,11 +44,16 @@ pub fn App() -> impl IntoView {
 
           <nav class="w-full grid grid-cols-3 px-5 gap-5">
 
-            {[("/settings", "Settings"), ("/", "Quick Reader"), ("/about", "About")]
-                .map(|(href, text)| {
+            {[
+                ("/settings", "settings", "Settings"),
+                ("/", "speed", "Quick Reader"),
+                ("/about", "help", "About"),
+            ]
+                .map(|(href, icon, text)| {
                     view! {
                       <a href=href>
-                        <Button class="w-full rounded-lg bg-blue-500 py-2 px-4 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                        <Button class="flex items-center justify-center gap-3 w-full rounded-lg bg-blue-500 py-2 px-4 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                          <span class="material-icons-round pointer-events-none">{icon}</span>
                           {text}
                         </Button>
                       </a>
