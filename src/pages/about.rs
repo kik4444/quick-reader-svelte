@@ -25,7 +25,7 @@ pub fn About() -> impl IntoView {
     const LICENSE_LINK: &str = "https://www.gnu.org/licenses";
 
     let clicked_link = move |ev: MouseEvent| {
-        #[cfg(not(feature = "web"))]
+        #[cfg(feature = "tauri")]
         {
             use crate::js_bindings::open;
 

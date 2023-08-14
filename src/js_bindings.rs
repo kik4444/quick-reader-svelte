@@ -17,7 +17,7 @@
 
 use wasm_bindgen::prelude::*;
 
-#[cfg(not(feature = "web"))]
+#[cfg(feature = "tauri")]
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = ["window", "__TAURI__"])]

@@ -30,5 +30,8 @@
         ".*_class=\"([^\"\n]+)\"",
         ".*_?class=move\\s*\\|.?\\|\\s*{?\\s*format!\\(\\s*\"([^\"\n]+)\""
     ],
-    "css.format.enable": false
+    "css.format.enable": false,
+    "rust-analyzer.cargo.features": [
+        "tauri"
+    ]
 }

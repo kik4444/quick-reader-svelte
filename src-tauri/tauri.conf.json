@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeBuildCommand": "trunk build --release",
-    "beforeDevCommand": "trunk serve",
+    "beforeBuildCommand": "trunk build --release --features tauri",
+    "beforeDevCommand": "trunk serve --features tauri",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": true

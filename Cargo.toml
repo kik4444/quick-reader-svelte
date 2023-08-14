@@ -35,4 +35,4 @@ lib-profile-release = "wasm-release"
 
 # Conditionally do things differently if we are running on the web vs Tauri
 [features]
-web = []
+tauri = []
