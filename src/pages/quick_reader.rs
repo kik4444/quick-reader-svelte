@@ -68,7 +68,7 @@ pub fn QuickReader() -> impl IntoView {
         },
     );
 
-    let text_chunks = create_memo(move |_| splitter::split(&text(), chunk_size()));
+    let text_chunks = (move || splitter::split(&text(), chunk_size())).derive_signal();
 
     let textarea = create_node_ref::<html::Textarea>();
     let textarea_locked = create_rw_signal(false);
