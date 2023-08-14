@@ -19,8 +19,6 @@ use leptos::*;
 use wasm_bindgen::JsCast;
 use web_sys::{HtmlAnchorElement, MouseEvent};
 
-use crate::js_bindings::open;
-
 #[component]
 pub fn About() -> impl IntoView {
     const SOURCE_CODE_LINK: &str = "https://github.com/kik4444/quick-reader/tree/leptos";
@@ -29,6 +27,8 @@ pub fn About() -> impl IntoView {
     let clicked_link = move |ev: MouseEvent| {
         #[cfg(not(feature = "web"))]
         {
+            use crate::js_bindings::open;
+
             ev.prevent_default();
             let link = ev
                 .target()
