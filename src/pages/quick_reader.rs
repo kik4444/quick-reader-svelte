@@ -265,7 +265,6 @@ pub fn QuickReader() -> impl IntoView {
             <p class="paragraph">"Duration: " {duration}</p>
             <div class="w-[1px] h-[30px] self-center bg-black"></div>
             <input
-              type="progress"
               type="range"
               min="0"
               max=move || text_chunks.with(|t| t.len() - 1)
