@@ -20,7 +20,7 @@ use leptos_router::*;
 
 use crate::{
     components::{Button::Button, MatIcon::MatIcon},
-    pages::quick_reader::QuickReader,
+    pages::{about::About, quick_reader::QuickReader},
 };
 
 pub struct ReaderState {
@@ -67,6 +67,7 @@ pub fn App() -> impl IntoView {
 
           <Routes>
             <Route path="/" view=QuickReader/>
+            <Route path="/about" view=About/>
           </Routes>
         </main>
       </Router>

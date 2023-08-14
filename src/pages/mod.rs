@@ -15,4 +15,5 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+pub mod about;
 pub mod quick_reader;
