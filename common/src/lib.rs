@@ -36,8 +36,8 @@ impl Default for AppSettings {
             display_font_size: 35,
             textarea_font_style: "Monospace".into(),
             textarea_font_size: 12,
-            jump_back_chunks: 10,
-            jump_forward_chunks: 10,
+            jump_back_chunks: 5,
+            jump_forward_chunks: 5,
         }
     }
 }
