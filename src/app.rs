@@ -15,12 +15,13 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use common::AppSettings;
 use leptos::*;
 use leptos_router::*;
 
 use crate::{
     components::{Button::Button, MatIcon::MatIcon},
-    pages::{about::About, quick_reader::QuickReader},
+    pages::{about::About, quick_reader::QuickReader, settings::Settings},
 };
 
 pub struct ReaderState {
@@ -28,6 +29,29 @@ pub struct ReaderState {
     pub chunk_size: usize,
     pub current_index: usize,
     pub words_per_minute: usize,
+}
+
+async fn load_settings() -> Result<AppSettings, Box<dyn std::error::Error>> {
+    #[cfg(feature = "tauri")]
+    {
+        todo!()
+    }
+
+    #[cfg(not(feature = "tauri"))]
+    {
+        let storage = window()
+            .local_storage()
+            .map_err(|_| "error getting storage".to_string())?
+            .ok_or_else(|| "error getting storage".to_string())?;
+
+        match storage.get_item("app_settings") {
+            Ok(Some(app_settings)) => Ok(serde_json::from_str(&app_settings)?),
+            res => {
+                log::warn!("Found {res:?}, expected app settings. Returning default");
+                Ok(AppSettings::default())
+            }
+        }
+    }
 }
 
 #[component]
@@ -40,9 +64,13 @@ pub fn App() -> impl IntoView {
         words_per_minute: 300,
     }));
 
+    let provide_settings = create_local_resource(
+        || (),
+        |_| async move { provide_context(create_rw_signal(load_settings().await.unwrap_or_default())) },
+    );
+
     view! {
       <Router>
-
         <main class="h-screen dark:bg-gray-900 pt-5 grid grid-rows-[5%_90%]">
 
           <nav class="w-full grid grid-cols-3 px-5 gap-5">
@@ -65,10 +93,20 @@ pub fn App() -> impl IntoView {
 
           </nav>
 
-          <Routes>
-            <Route path="/" view=QuickReader/>
-            <Route path="/about" view=About/>
-          </Routes>
+          {move || match provide_settings.read() {
+              None => view! { <p class="paragraph m-5">"Loading"</p> }.into_view(),
+              Some(_) => {
+                  view! {
+                    <Routes>
+                      <Route path="/settings" view=Settings/>
+                      <Route path="/" view=QuickReader/>
+                      <Route path="/about" view=About/>
+                    </Routes>
+                  }
+                      .into_view()
+              }
+          }}
+
         </main>
       </Router>
     }

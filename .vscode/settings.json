@@ -32,6 +32,6 @@
     ],
     "css.format.enable": false,
     "rust-analyzer.cargo.features": [
-        "tauri"
+        // "tauri"
     ]
 }

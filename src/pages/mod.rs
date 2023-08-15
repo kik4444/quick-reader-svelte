@@ -17,3 +17,4 @@
 
 pub mod about;
 pub mod quick_reader;
+pub mod settings;

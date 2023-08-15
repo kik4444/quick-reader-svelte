@@ -21,12 +21,12 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppSettings {
-    display_font_style: String,
-    display_font_size: u8,
-    textarea_font_style: String,
-    textarea_font_size: u8,
-    jump_back_chunks: usize,
-    jump_forward_chunks: usize,
+    pub display_font_style: String,
+    pub display_font_size: u8,
+    pub textarea_font_style: String,
+    pub textarea_font_size: u8,
+    pub jump_back_chunks: usize,
+    pub jump_forward_chunks: usize,
 }
 
 impl Default for AppSettings {
