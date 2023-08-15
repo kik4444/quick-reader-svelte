@@ -17,6 +17,7 @@
 
 use std::time::Duration;
 
+use common::AppSettings;
 use leptos::{
     leptos_dom::helpers::{debounce, IntervalHandle},
     *,
@@ -32,6 +33,15 @@ use crate::{
 #[component]
 pub fn QuickReader() -> impl IntoView {
     let reader_state = expect_context::<RwSignal<ReaderState>>();
+    let settings = expect_context::<RwSignal<AppSettings>>();
+
+    let display_font = create_read_slice(settings, |s| s.display_font_style.clone());
+    let textarea_font = create_read_slice(settings, |s| s.textarea_font_style.clone());
+
+    let display_font_size = create_read_slice(settings, |s| s.display_font_size);
+    let textarea_font_size = create_read_slice(settings, |s| s.textarea_font_size);
+    let jump_back_chunks = create_read_slice(settings, |s| s.jump_back_chunks);
+    let jump_forward_chunks = create_read_slice(settings, |s| s.jump_forward_chunks);
 
     let playing = create_rw_signal(false);
 
@@ -161,9 +171,9 @@ pub fn QuickReader() -> impl IntoView {
     });
 
     let handle = window_event_listener(ev::keydown, move |ev| match ev.code().as_str() {
-        "ArrowLeft" => set_current_index(current_index().saturating_sub(5)),
+        "ArrowLeft" => set_current_index(current_index().saturating_sub(jump_back_chunks())),
         "ArrowRight" => set_current_index(std::cmp::min(
-            current_index() + 5,
+            current_index() + jump_forward_chunks(),
             text_chunks.with(|t| t.len() - 1),
         )),
         "Space" => {
@@ -188,6 +198,10 @@ pub fn QuickReader() -> impl IntoView {
         >
           <textarea
             class="peer textarea"
+            style=move || {
+                format!("font-family: {}; font-size: {}pt", textarea_font(), textarea_font_size())
+            }
+
             placeholder=" "
             node_ref=textarea
             readonly=textarea_locked
@@ -200,8 +214,12 @@ pub fn QuickReader() -> impl IntoView {
 
         <p
           id="display"
-          class="paragraph block font-sans text-4xl font-semibold leading-[1.3] tracking-normal antialiased"
+          class="paragraph block font-semibold leading-[1.3] tracking-normal antialiased"
+          style=move || {
+              format!("font-family: {}; font-size: {}pt", display_font(), display_font_size())
+          }
         >
+
           {move || text_chunks.with(|t| t[current_index()].chunk.clone())}
         </p>
 

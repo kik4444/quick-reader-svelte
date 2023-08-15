@@ -51,6 +51,30 @@ pub fn Settings() -> impl IntoView {
     let display_font = create_read_slice(settings, |s| s.display_font_style.clone());
     let textarea_font = create_read_slice(settings, |s| s.textarea_font_style.clone());
 
+    let (display_font_size, set_display_font_size) = create_slice(
+        settings,
+        |s| s.display_font_size,
+        |s, new| s.display_font_size = new,
+    );
+
+    let (textarea_font_size, set_textarea_font_size) = create_slice(
+        settings,
+        |s| s.textarea_font_size,
+        |s, new| s.textarea_font_size = new,
+    );
+
+    let (jump_back_chunks, set_jump_back_chunks) = create_slice(
+        settings,
+        |s| s.jump_back_chunks,
+        |s, new| s.jump_back_chunks = new,
+    );
+
+    let (jump_forward_chunks, set_jump_forward_chunks) = create_slice(
+        settings,
+        |s| s.jump_forward_chunks,
+        |s, new| s.jump_forward_chunks = new,
+    );
+
     on_cleanup(move || {
         spawn_local(async move {
             if let Err(e) = save_settings(&settings.get_untracked()).await {
@@ -68,7 +92,14 @@ pub fn Settings() -> impl IntoView {
         </div>
 
         <div class="w-fit relative h-10">
-          <input type="number" class="peer input" placeholder=" " min="1"/>
+          <input
+            type="number"
+            class="peer input"
+            placeholder=" "
+            min="1"
+            prop:value=display_font_size
+            on:input=move |ev| set_display_font_size(event_target_value(&ev).parse().unwrap_or(35))
+          />
           <label class="label">"Display font size"</label>
         </div>
 
@@ -77,11 +108,22 @@ pub fn Settings() -> impl IntoView {
           <p class="paragraph">{textarea_font}</p>
         </div>
 
-        {[("Textarea font size"), ("Jump back chunks"), ("Jump forward chunks")]
-            .map(|name| {
+        {[
+            ("Textarea font size", textarea_font_size, set_textarea_font_size, 12),
+            ("Jump back chunks", jump_back_chunks, set_jump_back_chunks, 5),
+            ("Jump forward chunks", jump_forward_chunks, set_jump_forward_chunks, 5),
+        ]
+            .map(|(name, value, setter, default)| {
                 view! {
                   <div class="w-fit relative h-10">
-                    <input type="number" class="peer input" placeholder=" " min="1"/>
+                    <input
+                      type="number"
+                      class="peer input"
+                      placeholder=" "
+                      min="1"
+                      prop:value=value
+                      on:input=move |ev| setter(event_target_value(&ev).parse().unwrap_or(default))
+                    />
                     <label class="label">{name}</label>
                   </div>
                 }
