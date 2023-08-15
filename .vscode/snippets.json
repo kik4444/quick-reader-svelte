@@ -4,7 +4,8 @@
             "router": "Router",
             "routes": "Routes",
             "route": "<Route path=\"${1}\" view=${2}/>",
-            "material-icon": "MatIcon"
+            "material-icon": "MatIcon",
+            "suspense": "<Suspense fallback=${1}>${2}</Suspense>"
         }
     }
 }
