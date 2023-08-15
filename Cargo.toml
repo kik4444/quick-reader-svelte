@@ -1,5 +1,5 @@
 [workspace]
-members = ["src-tauri"]
+members = ["src-tauri", "common"]
 
 [package]
 name = "quick-reader-ui"
@@ -18,7 +18,9 @@ leptos_router = { version = "0.5.0-alpha2", features = ["csr", "nightly"] }
 log = "0.4.19"
 js-sys = "0.3.64"
 unicode-segmentation = "1.10.1"
-web-sys = { version = "0.3.64", features = ["Selection", "DomRect"] }
+web-sys = { version = "0.3.64", features = ["Selection", "DomRect", "Storage"] }
+common = { version = "0.1.0", path = "common" }
+serde_json = "1.0.104"
 
 [profile.release]
 panic = "abort" # Strip expensive unwind on panic
