@@ -232,20 +232,18 @@ pub fn QuickReader() -> impl IntoView {
             ]
                 .map(|(name, min, max, step, value, on_input)| {
                     view! {
-                      <div class="w-32">
-                        <div class="relative h-10 w-full">
-                          <input
-                            class="peer input"
-                            placeholder=" "
-                            type="number"
-                            min=min
-                            max=max
-                            step=step
-                            prop:value=value
-                            on:input=debounce(Duration::from_millis(500), on_input)
-                          />
-                          <label class="label">{name}</label>
-                        </div>
+                      <div class="w-32 relative h-10">
+                        <input
+                          class="peer input"
+                          placeholder=" "
+                          type="number"
+                          min=min
+                          max=max
+                          step=step
+                          prop:value=value
+                          on:input=debounce(Duration::from_millis(500), on_input)
+                        />
+                        <label class="label">{name}</label>
                       </div>
                     }
                 })}
