@@ -35,8 +35,8 @@ pub fn QuickReader() -> impl IntoView {
     let reader_state = expect_context::<RwSignal<ReaderState>>();
     let settings = expect_context::<RwSignal<AppSettings>>();
 
-    let display_font = create_read_slice(settings, |s| s.display_font_style.clone());
-    let textarea_font = create_read_slice(settings, |s| s.textarea_font_style.clone());
+    let display_font_style = create_read_slice(settings, |s| s.display_font_style.clone());
+    let textarea_font_style = create_read_slice(settings, |s| s.textarea_font_style.clone());
 
     let display_font_size = create_read_slice(settings, |s| s.display_font_size);
     let textarea_font_size = create_read_slice(settings, |s| s.textarea_font_size);
@@ -138,7 +138,7 @@ pub fn QuickReader() -> impl IntoView {
         }
     };
 
-    let speed = create_memo(move |_| (1000 / (words_per_minute() / 60)) * chunk_size());
+    let speed = (move || (1000 / (words_per_minute() / 60)) * chunk_size()).derive_signal();
 
     let (duration, _) = create_signal(move || {
         let chunk_size = chunk_size();
@@ -199,7 +199,9 @@ pub fn QuickReader() -> impl IntoView {
           <textarea
             class="peer textarea"
             style=move || {
-                format!("font-family: {}; font-size: {}pt", textarea_font(), textarea_font_size())
+                format!(
+                    "font-family: {}; font-size: {}pt", textarea_font_style(), textarea_font_size()
+                )
             }
 
             placeholder=" "
@@ -216,7 +218,7 @@ pub fn QuickReader() -> impl IntoView {
           id="display"
           class="paragraph block font-semibold leading-[1.3] tracking-normal antialiased"
           style=move || {
-              format!("font-family: {}; font-size: {}pt", display_font(), display_font_size())
+              format!("font-family: {}; font-size: {}pt", display_font_style(), display_font_size())
           }
         >
 
