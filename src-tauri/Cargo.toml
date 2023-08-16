@@ -13,6 +13,7 @@ tauri = { version = "1.4", features = ["shell-open"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 font-kit = "0.11.0"
+common = { version = "0.1.0", path = "../common" }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

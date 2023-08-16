@@ -2838,6 +2838,7 @@ dependencies = [
 name = "quick-reader"
 version = "0.0.0"
 dependencies = [
+ "common",
  "font-kit",
  "serde",
  "serde_json",
