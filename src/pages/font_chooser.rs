@@ -37,10 +37,10 @@ async fn get_fonts() -> Result<Vec<String>, FontError> {
     {
         use crate::js_bindings::invoke;
 
-        invoke("get_system_fonts", ().to_js_value().expect("ok"))
-            .await
-            .into_value::<Vec<String>>()
-            .map_err(|e| FontError(e.to_string()))
+        match invoke("get_system_fonts", ().to_js_value().expect("ok")).await {
+            Ok(js_value) => Ok(js_value.into_value::<Vec<String>>().expect("ok")),
+            Err(e) => Err(FontError(e.as_string().expect("to be string"))),
+        }
     }
 
     #[cfg(not(feature = "tauri"))]
