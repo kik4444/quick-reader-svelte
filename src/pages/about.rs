@@ -16,32 +16,37 @@
  */
 
 use leptos::*;
-use wasm_bindgen::JsCast;
-use web_sys::{HtmlAnchorElement, MouseEvent};
+
+#[cfg(feature = "tauri")]
+use web_sys::MouseEvent;
 
 #[component]
 pub fn About() -> impl IntoView {
     const SOURCE_CODE_LINK: &str = "https://github.com/kik4444/quick-reader/tree/leptos";
     const LICENSE_LINK: &str = "https://www.gnu.org/licenses";
 
+    #[cfg(feature = "tauri")]
     let clicked_link = move |ev: MouseEvent| {
-        #[cfg(feature = "tauri")]
-        {
-            use crate::js_bindings::open;
+        use wasm_bindgen::JsCast;
+        use web_sys::HtmlAnchorElement;
 
-            ev.prevent_default();
-            let link = ev
-                .target()
-                .expect("ok")
-                .dyn_ref::<HtmlAnchorElement>()
-                .expect("ok")
-                .href();
+        use crate::js_bindings::open;
 
-            spawn_local(async move {
-                open(&link).await;
-            });
-        }
+        ev.prevent_default();
+        let link = ev
+            .target()
+            .expect("ok")
+            .dyn_ref::<HtmlAnchorElement>()
+            .expect("ok")
+            .href();
+
+        spawn_local(async move {
+            open(&link).await;
+        });
     };
+
+    #[cfg(not(feature = "tauri"))]
+    let clicked_link = move |_| {};
 
     view! {
       <div class="flex flex-col gap-5 mt-10 mx-5 items-center ">

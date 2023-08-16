@@ -24,8 +24,10 @@ use crate::{
     pages::{
         about::About, font_chooser::FontChooser, quick_reader::QuickReader, settings::Settings,
     },
-    IntoValue, ToJsValue,
 };
+
+#[cfg(feature = "tauri")]
+use crate::{IntoValue, ToJsValue};
 
 pub struct ReaderState {
     pub text: String,

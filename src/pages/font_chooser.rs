@@ -21,8 +21,6 @@ use common::AppSettings;
 use leptos::*;
 use leptos_router::*;
 
-use crate::{IntoValue, ToJsValue};
-
 #[derive(Debug, thiserror::Error, Clone)]
 #[error("{0}")]
 struct FontError(String);
@@ -36,6 +34,7 @@ async fn get_fonts() -> Result<Vec<String>, FontError> {
     #[cfg(feature = "tauri")]
     {
         use crate::js_bindings::invoke;
+        use crate::{IntoValue, ToJsValue};
 
         match invoke("get_system_fonts", ().to_js_value().expect("ok")).await {
             Ok(js_value) => Ok(js_value.into_value::<Vec<String>>().expect("ok")),

@@ -15,6 +15,7 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#[allow(unused_imports)]
 use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "tauri")]
