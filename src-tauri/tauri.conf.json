@@ -64,8 +64,8 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Quick Reader",
-        "width": 680,
-        "height": 560
+        "width": 700,
+        "height": 600
       }
     ]
   }
