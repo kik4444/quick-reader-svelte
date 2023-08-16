@@ -103,6 +103,7 @@ export function animate_ripple(span_element, duration) {
         {
             duration,
             easing: "linear",
+            fill: "forwards"
         },
     );
 }
