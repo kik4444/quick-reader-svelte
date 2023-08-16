@@ -24,6 +24,7 @@ use crate::{
     pages::{
         about::About, font_chooser::FontChooser, quick_reader::QuickReader, settings::Settings,
     },
+    IntoValue, ToJsValue,
 };
 
 pub struct ReaderState {
@@ -36,8 +37,12 @@ pub struct ReaderState {
 async fn load_settings() -> Result<AppSettings, Box<dyn std::error::Error>> {
     #[cfg(feature = "tauri")]
     {
-        // todo!()
-        Ok(AppSettings::default())
+        use crate::js_bindings::invoke;
+
+        match invoke("load_settings", ().to_js_value().expect("ok")).await {
+            Ok(js_value) => Ok(js_value.into_value::<AppSettings>().expect("ok")),
+            Err(e) => Err(e.as_string().expect("to be string").into()),
+        }
     }
 
     #[cfg(not(feature = "tauri"))]
@@ -57,6 +62,46 @@ async fn load_settings() -> Result<AppSettings, Box<dyn std::error::Error>> {
     }
 }
 
+async fn save_settings(settings_serialized: &str) -> Result<(), Box<dyn std::error::Error>> {
+    #[cfg(feature = "tauri")]
+    {
+        use crate::js_bindings::invoke;
+
+        #[derive(serde::Serialize)]
+        #[serde(rename_all = "camelCase")]
+        struct SaveArgs<'a> {
+            settings_serialized: &'a str,
+        }
+
+        _ = invoke(
+            "save_settings",
+            SaveArgs {
+                settings_serialized,
+            }
+            .to_js_value()
+            .expect("ok"),
+        )
+        .await;
+    }
+
+    #[cfg(not(feature = "tauri"))]
+    {
+        let storage = window()
+            .local_storage()
+            .map_err(|_| "error getting storage".to_string())?
+            .ok_or_else(|| "error getting storage".to_string())?;
+
+        storage
+            .set_item(
+                "app_settings",
+                &serde_json::to_string(&settings_serialized).expect("ok"),
+            )
+            .map_err(|_| "error saving settings".to_string())?;
+    }
+
+    Ok(())
+}
+
 #[component]
 pub fn App() -> impl IntoView {
     // Global state for the reader which should persist across page navigation
@@ -71,6 +116,18 @@ pub fn App() -> impl IntoView {
         provide_context(create_rw_signal(load_settings().await.unwrap_or_default()))
     });
     provide_settings.dispatch(());
+
+    create_effect(move |_| {
+        if provide_settings.version().with(|v| *v > 0) {
+            let settings = expect_context::<RwSignal<AppSettings>>();
+            let serialized = settings.with(serde_json::to_string_pretty).expect("ok");
+            spawn_local(async move {
+                if let Err(e) = save_settings(&serialized).await {
+                    log::error!("{e:#?}")
+                }
+            });
+        }
+    });
 
     view! {
       <Router>
