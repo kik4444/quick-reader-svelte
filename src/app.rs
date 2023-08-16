@@ -21,7 +21,9 @@ use leptos_router::*;
 
 use crate::{
     components::{Button::Button, MatIcon::MatIcon},
-    pages::{about::About, quick_reader::QuickReader, settings::Settings},
+    pages::{
+        about::About, font_chooser::FontChooser, quick_reader::QuickReader, settings::Settings,
+    },
 };
 
 pub struct ReaderState {
@@ -93,18 +95,29 @@ pub fn App() -> impl IntoView {
 
           </nav>
 
-          <Show
-            fallback=|| view! { <p class="paragraph m-5">"Loading"</p> }
-            when=move || provide_settings.version().with(|v| *v > 0)
-          >
+          <Routes>
+            <Route
+              path="/"
+              view=move || {
+                  view! {
+                    <Show
+                      fallback=|| view! { <p class="paragraph m-5">"Loading"</p> }
+                      when=move || provide_settings.version().with(|v| *v > 0)
+                    >
+                      <Outlet/>
+                    </Show>
+                  }
+              }
+            >
 
-            <Routes>
-              <Route path="/settings" view=Settings/>
-              <Route path="/" view=QuickReader/>
-              <Route path="/about" view=About/>
-            </Routes>
+              <Route path="" view=QuickReader/>
+              <Route path="settings" view=Settings/>
+              <Route path="about" view=About/>
+              <Route path="font-chooser" view=FontChooser/>
 
-          </Show>
+            </Route>
+
+          </Routes>
 
         </main>
       </Router>

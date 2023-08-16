@@ -72,11 +72,7 @@ pub fn Settings() -> impl IntoView {
         |s, new| s.jump_forward_chunks = new,
     );
 
-    create_effect(move |prev| {
-        if prev.is_none() {
-            return;
-        }
-
+    create_effect(move |_| {
         let serialized = settings.with(serde_json::to_string).expect("ok");
         spawn_local(async move {
             if let Err(e) = save_settings(&serialized).await {
@@ -89,7 +85,10 @@ pub fn Settings() -> impl IntoView {
       <main class="flex flex-col gap-5 mt-5 mx-5">
 
         <div class="flex gap-5 place-items-center">
-          <Button class="btn-main">"Choose display font family"</Button>
+
+          <a href="/font-chooser?choice=display">
+            <Button class="btn-main">"Choose display font family"</Button>
+          </a>
           <p class="paragraph">{display_font}</p>
         </div>
 
@@ -106,7 +105,9 @@ pub fn Settings() -> impl IntoView {
         </div>
 
         <div class="flex gap-5 place-items-center">
-          <Button class="btn-main">"Choose textarea font family"</Button>
+          <a href="/font-chooser?choice=textarea">
+            <Button class="btn-main">"Choose textarea font family"</Button>
+          </a>
           <p class="paragraph">{textarea_font}</p>
         </div>
 
