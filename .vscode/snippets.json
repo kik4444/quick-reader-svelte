@@ -3,9 +3,11 @@
         "snippets": {
             "router": "Router",
             "routes": "Routes",
-            "route": "<Route path=\"${1}\" view=${2}/>",
-            "material-icon": "MatIcon",
-            "suspense": "<Suspense fallback=${1}>${2}</Suspense>"
+            "route": "<Route path=\"${1}\" view=${2}>${3}</Route>",
+            "materialicon": "MatIcon",
+            "suspense": "<Suspense fallback=move || ${1}>${2}</Suspense>",
+            "errorboundary": "<ErrorBoundary fallback=move |errors| ${1}>${2}</ErrorBoundary>",
+            "for": "<For each=move || ${1} key=|val| ${2} view=move |val| ${3}/>"
         }
     }
 }
