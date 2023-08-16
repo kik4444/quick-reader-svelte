@@ -64,10 +64,10 @@ pub fn App() -> impl IntoView {
         words_per_minute: 300,
     }));
 
-    let provide_settings = create_local_resource(
-        || (),
-        |_| async move { provide_context(create_rw_signal(load_settings().await.unwrap_or_default())) },
-    );
+    let provide_settings = create_action(|()| async move {
+        provide_context(create_rw_signal(load_settings().await.unwrap_or_default()))
+    });
+    provide_settings.dispatch(());
 
     view! {
       <Router>
@@ -93,19 +93,18 @@ pub fn App() -> impl IntoView {
 
           </nav>
 
-          {move || match provide_settings.read() {
-              None => view! { <p class="paragraph m-5">"Loading"</p> }.into_view(),
-              Some(_) => {
-                  view! {
-                    <Routes>
-                      <Route path="/settings" view=Settings/>
-                      <Route path="/" view=QuickReader/>
-                      <Route path="/about" view=About/>
-                    </Routes>
-                  }
-                      .into_view()
-              }
-          }}
+          <Show
+            fallback=|| view! { <p class="paragraph m-5">"Loading"</p> }
+            when=move || provide_settings.version().with(|v| *v > 0)
+          >
+
+            <Routes>
+              <Route path="/settings" view=Settings/>
+              <Route path="/" view=QuickReader/>
+              <Route path="/about" view=About/>
+            </Routes>
+
+          </Show>
 
         </main>
       </Router>

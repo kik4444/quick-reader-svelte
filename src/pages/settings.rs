@@ -20,7 +20,7 @@ use leptos::*;
 
 use crate::components::Button::Button;
 
-async fn save_settings(settings: &AppSettings) -> Result<(), Box<dyn std::error::Error>> {
+async fn save_settings(settings_serialized: &str) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(feature = "tauri")]
     {
         todo!()
@@ -34,10 +34,7 @@ async fn save_settings(settings: &AppSettings) -> Result<(), Box<dyn std::error:
             .ok_or_else(|| "error getting storage".to_string())?;
 
         storage
-            .set_item(
-                "app_settings",
-                &serde_json::to_string(settings).expect("ok"),
-            )
+            .set_item("app_settings", settings_serialized)
             .map_err(|_| "error saving settings".to_string())?;
     }
 
@@ -75,12 +72,17 @@ pub fn Settings() -> impl IntoView {
         |s, new| s.jump_forward_chunks = new,
     );
 
-    on_cleanup(move || {
+    create_effect(move |prev| {
+        if prev.is_none() {
+            return;
+        }
+
+        let serialized = settings.with(serde_json::to_string).expect("ok");
         spawn_local(async move {
-            if let Err(e) = save_settings(&settings.get_untracked()).await {
+            if let Err(e) = save_settings(&serialized).await {
                 log::error!("{e:#?}")
             }
-        })
+        });
     });
 
     view! {
