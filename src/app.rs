@@ -36,7 +36,8 @@ pub struct ReaderState {
 async fn load_settings() -> Result<AppSettings, Box<dyn std::error::Error>> {
     #[cfg(feature = "tauri")]
     {
-        todo!()
+        // todo!()
+        Ok(AppSettings::default())
     }
 
     #[cfg(not(feature = "tauri"))]
