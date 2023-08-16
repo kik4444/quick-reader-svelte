@@ -69,6 +69,7 @@ async fn get_system_fonts() -> Result<Vec<String>, String> {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_window_state::Builder::default().build())
         .invoke_handler(tauri::generate_handler![
             load_settings,
             save_settings,
