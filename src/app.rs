@@ -15,7 +15,7 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use common::AppSettings;
+use common::{AppSettings, Theme};
 use leptos::*;
 use leptos_router::*;
 
@@ -160,54 +160,74 @@ pub fn App() -> impl IntoView {
         }
     });
 
+    let (dark_mode, _) = create_signal(move || {
+        if provide_settings.version().with(|v| *v > 0) {
+            let settings = expect_context::<RwSignal<AppSettings>>();
+            match settings.with(|s| s.theme) {
+                Theme::Auto => match window().match_media("(prefers-color-scheme: dark)") {
+                    Ok(Some(media_query_list)) => media_query_list.matches(),
+                    Err(e) => {
+                        log::debug!(
+                            "error querying prefers-color-scheme: {}",
+                            e.as_string().expect("to be string")
+                        );
+                        false
+                    }
+                    _ => false,
+                },
+                Theme::Dark => true,
+                Theme::Light => false,
+            }
+        } else {
+            false
+        }
+    });
+
     view! {
       <Router>
-        <main class="h-screen dark:bg-gray-900 pt-5 grid grid-rows-[5%_90%]">
+        <main class:dark=move || dark_mode()()>
+          <div class="h-screen dark:bg-gray-900 pt-5 grid grid-rows-[5%_90%]">
+            <nav class="w-full grid grid-cols-3 px-5 gap-5">
 
-          <nav class="w-full grid grid-cols-3 px-5 gap-5">
+              {[
+                  ("/settings", "settings", "Settings"),
+                  ("/", "speed", "Quick Reader"),
+                  ("/about", "help", "About"),
+              ]
+                  .map(|(href, icon, text)| {
+                      view! {
+                        <a href=href>
+                          <Button class="btn-main w-full">
+                            <MatIcon>{icon}</MatIcon>
+                            {text}
+                          </Button>
+                        </a>
+                      }
+                  })}
 
-            {[
-                ("/settings", "settings", "Settings"),
-                ("/", "speed", "Quick Reader"),
-                ("/about", "help", "About"),
-            ]
-                .map(|(href, icon, text)| {
+            </nav>
+            <Routes>
+              <Route
+                path="/"
+                view=move || {
                     view! {
-                      <a href=href>
-                        <Button class="btn-main w-full">
-                          <MatIcon>{icon}</MatIcon>
-                          {text}
-                        </Button>
-                      </a>
+                      <Show
+                        fallback=|| view! { <p class="paragraph m-5">"Loading"</p> }
+                        when=move || provide_settings.version().with(|v| *v > 0)
+                      >
+                        <Outlet/>
+                      </Show>
                     }
-                })}
+                }
+              >
 
-          </nav>
-
-          <Routes>
-            <Route
-              path="/"
-              view=move || {
-                  view! {
-                    <Show
-                      fallback=|| view! { <p class="paragraph m-5">"Loading"</p> }
-                      when=move || provide_settings.version().with(|v| *v > 0)
-                    >
-                      <Outlet/>
-                    </Show>
-                  }
-              }
-            >
-
-              <Route path="" view=QuickReader/>
-              <Route path="settings" view=Settings/>
-              <Route path="about" view=About/>
-              <Route path="font-chooser" view=FontChooser/>
-
-            </Route>
-
-          </Routes>
-
+                <Route path="" view=QuickReader/>
+                <Route path="settings" view=Settings/>
+                <Route path="about" view=About/>
+                <Route path="font-chooser" view=FontChooser/>
+              </Route>
+            </Routes>
+          </div>
         </main>
       </Router>
     }

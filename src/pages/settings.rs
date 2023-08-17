@@ -17,7 +17,7 @@
 
 use std::time::Duration;
 
-use common::AppSettings;
+use common::{AppSettings, Theme};
 use leptos::*;
 
 use crate::components::Button::Button;
@@ -52,6 +52,8 @@ pub fn Settings() -> impl IntoView {
         |s| s.jump_forward_chunks,
         |s, new| s.jump_forward_chunks = new,
     );
+
+    let (theme, set_theme) = create_slice(settings, |s| s.theme, |s, new| s.theme = new);
 
     view! {
       <main class="flex flex-col gap-5 mt-5 mx-5">
@@ -106,10 +108,29 @@ pub fn Settings() -> impl IntoView {
                           move |ev| setter(event_target_value(&ev).parse().unwrap_or(default)),
                       )
                     />
+
                     <label class="label">{name}</label>
                   </div>
                 }
             })}
+
+        <div class="relative h-fit w-fit">
+          <select
+            class="peer select"
+            on:input=move |ev| set_theme(event_target_value(&ev).parse().unwrap_or_default())
+          >
+            {[Theme::Auto, Theme::Dark, Theme::Light]
+                .map(|window_theme| {
+                    view! {
+                      <option selected=move || {
+                          settings.with(|s| s.theme == window_theme)
+                      }>{move || window_theme.to_string()}</option>
+                    }
+                })}
+
+          </select>
+          <label class="label">"Theme"</label>
+        </div>
 
       </main>
     }

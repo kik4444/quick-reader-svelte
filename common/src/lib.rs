@@ -17,7 +17,44 @@
 
 // This file is merely for sharing data between the backend and frontend
 
+use std::{fmt::Display, str::FromStr};
+
 use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Theme {
+    #[default]
+    Auto,
+    Dark,
+    Light,
+}
+
+impl Display for Theme {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match *self {
+                Theme::Auto => "Auto",
+                Theme::Dark => "Dark",
+                Theme::Light => "Light",
+            }
+        )
+    }
+}
+
+impl FromStr for Theme {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Auto" => Ok(Self::Auto),
+            "Dark" => Ok(Self::Dark),
+            "Light" => Ok(Self::Light),
+            s => Err(format!("invalid theme {s}")),
+        }
+    }
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppSettings {
@@ -27,6 +64,7 @@ pub struct AppSettings {
     pub textarea_font_size: usize,
     pub jump_back_chunks: usize,
     pub jump_forward_chunks: usize,
+    pub theme: Theme,
 }
 
 impl Default for AppSettings {
@@ -38,6 +76,7 @@ impl Default for AppSettings {
             textarea_font_size: 12,
             jump_back_chunks: 5,
             jump_forward_chunks: 5,
+            theme: Theme::default(),
         }
     }
 }
