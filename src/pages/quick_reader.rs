@@ -222,7 +222,7 @@ pub fn QuickReader() -> impl IntoView {
           {move || text_chunks.with(|t| t[current_index()].chunk.clone())}
         </p>
 
-        <div id="controls" class="w-full flex flex-col gap-5 items-center">
+        <div id="controls" class="w-full self-end flex flex-col gap-5 items-center">
 
           <div id="chunking" class="w-full flex gap-5 place-content-center">
 
