@@ -51,7 +51,7 @@ jobs:
         run: npm install # Change this to npm, yarn or pnpm.
 
       - name: Install Trunk
-        uses: mbround18/trunk-rs@v0.0.1
+        run: cargo install trunk
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
