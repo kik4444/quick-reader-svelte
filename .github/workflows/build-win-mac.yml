@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev librsvg2-dev
 
       - name: Rust setup
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@nightly-2023-08-03
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
