@@ -1,6 +1,10 @@
 {
+  "scripts": {
+    "tauri": "tauri"
+  },
   "devDependencies": {
     "@material-design-icons/font": "^0.14.10",
-    "@material-tailwind/html": "^2.0.0"
+    "@material-tailwind/html": "^2.0.0",
+    "@tauri-apps/cli": "^1.4.0"
   }
 }

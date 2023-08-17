@@ -10,6 +10,7 @@ RUN apt-get update \
     librsvg2-dev \
     nodejs \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && cargo install trunk
 
 WORKDIR /build

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-TARGET=/build/src-tauri/target
+TARGET=/build/target
 BUNDLE=$TARGET/release/bundle
+CARGO_CACHE=/usr/local/cargo/registry
 
 cleanup() {
     # Stop the container
@@ -21,7 +22,7 @@ docker build -t builder -f linux-Dockerfile .
 docker volume create builder_cache > /dev/null
 
 # Create a container with an infinite command in the background so it can accept other commands
-docker run -d --rm --name builder -v builder_cache:/usr/local/cargo -v builder_cache:$TARGET builder tail -f /dev/null > /dev/null 
+docker run -d --rm --name builder -v builder_cache:$CARGO_CACHE -v builder_cache:$TARGET builder tail -f /dev/null > /dev/null 
 
 # Copy source code into container
 docker cp "$PWD/../." builder:/build/
