@@ -53,7 +53,7 @@ pub fn Settings() -> impl IntoView {
         |s, new| s.jump_forward_chunks = new,
     );
 
-    let (theme, set_theme) = create_slice(settings, |s| s.theme, |s, new| s.theme = new);
+    let (_, set_theme) = create_slice(settings, |s| s.theme, |s, new| s.theme = new);
 
     view! {
       <main class="flex flex-col gap-5 mt-5 mx-5">
