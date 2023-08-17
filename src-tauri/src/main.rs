@@ -32,10 +32,10 @@ async fn load_settings(app_handle: AppHandle) -> Result<AppSettings, String> {
 
     let reader = std::fs::OpenOptions::new()
         .read(true)
-        .open(settings_dir.join("settings.json"))
-        .map_err(|e| format!("cannot open settings.json: {e}"))?;
+        .open(settings_dir.join("settings-leptos.json"))
+        .map_err(|e| format!("cannot open settings-leptos.json: {e}"))?;
 
-    serde_json::from_reader(reader).map_err(|e| format!("error reading settings.json: {e}"))
+    serde_json::from_reader(reader).map_err(|e| format!("error reading settings-leptos.json: {e}"))
 }
 
 #[tauri::command]
@@ -53,11 +53,11 @@ async fn save_settings(app_handle: AppHandle, settings_serialized: &str) -> Resu
         .create(true)
         .write(true)
         .truncate(true)
-        .open(settings_dir.join("settings.json"))
-        .map_err(|e| format!("error writing settings.json: {e}"))?;
+        .open(settings_dir.join("settings-leptos.json"))
+        .map_err(|e| format!("error writing settings-leptos.json: {e}"))?;
 
     file.write_all(settings_serialized.as_bytes())
-        .map_err(|e| format!("error saving settings.json: {e}"))
+        .map_err(|e| format!("error saving settings-leptos.json: {e}"))
 }
 
 #[tauri::command]
