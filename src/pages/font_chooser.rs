@@ -24,6 +24,18 @@ use crate::app::{FontError, Fonts};
 #[component]
 pub fn FontChooser() -> impl IntoView {
     let settings = expect_context::<RwSignal<AppSettings>>();
+
+    let (display_font_style, set_display_font_style) = create_slice(
+        settings,
+        |s| s.display_font_style.clone(),
+        |s, new| s.display_font_style = new,
+    );
+    let (textarea_font_style, set_textarea_font_style) = create_slice(
+        settings,
+        |s| s.textarea_font_style.clone(),
+        |s, new| s.textarea_font_style = new,
+    );
+
     let fonts = expect_context::<Resource<(), Result<Fonts, FontError>>>();
 
     let query = use_query_map();
@@ -32,14 +44,12 @@ pub fn FontChooser() -> impl IntoView {
         query.with(|q| match q.get("choice") {
             Some(choice) => match choice.as_str() {
                 "display" => Ok((
-                    create_rw_signal(settings.with(|s| s.display_font_style.clone())),
-                    Box::new(move |style| settings.update(|s| s.display_font_style = style))
-                        as Box<dyn Fn(String)>,
+                    display_font_style,
+                    Box::new(set_display_font_style) as Box<dyn Fn(String)>,
                 )),
                 "textarea" => Ok((
-                    create_rw_signal(settings.with(|s| s.textarea_font_style.clone())),
-                    Box::new(move |style| settings.update(|s| s.textarea_font_style = style))
-                        as Box<dyn Fn(String)>,
+                    textarea_font_style,
+                    Box::new(set_textarea_font_style) as Box<dyn Fn(String)>,
                 )),
                 s => Err(FontError(format!("invalid font choice {s}"))),
             },
