@@ -18,10 +18,7 @@
 use std::time::Duration;
 
 use common::AppSettings;
-use leptos::{
-    leptos_dom::helpers::{debounce, IntervalHandle},
-    *,
-};
+use leptos::{leptos_dom::helpers::IntervalHandle, *};
 use wasm_bindgen::JsValue;
 
 use crate::{
@@ -261,7 +258,7 @@ pub fn QuickReader() -> impl IntoView {
                           max=max
                           step=step
                           prop:value=value
-                          on:input=debounce(Duration::from_millis(500), on_input)
+                          on:input=on_input
                         />
                         <label class="label">{name}</label>
                       </div>

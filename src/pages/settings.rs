@@ -15,6 +15,8 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use std::time::Duration;
+
 use common::AppSettings;
 use leptos::*;
 
@@ -69,8 +71,12 @@ pub fn Settings() -> impl IntoView {
             placeholder=" "
             min="1"
             prop:value=display_font_size
-            on:input=move |ev| set_display_font_size(event_target_value(&ev).parse().unwrap_or(35))
+            on:input=debounce(
+                Duration::from_secs(1),
+                move |ev| set_display_font_size(event_target_value(&ev).parse().unwrap_or(35)),
+            )
           />
+
           <label class="label">"Display font size"</label>
         </div>
 
@@ -95,7 +101,10 @@ pub fn Settings() -> impl IntoView {
                       placeholder=" "
                       min="1"
                       prop:value=value
-                      on:input=move |ev| setter(event_target_value(&ev).parse().unwrap_or(default))
+                      on:input=debounce(
+                          Duration::from_secs(1),
+                          move |ev| setter(event_target_value(&ev).parse().unwrap_or(default)),
+                      )
                     />
                     <label class="label">{name}</label>
                   </div>
