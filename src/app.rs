@@ -36,6 +36,12 @@ pub struct ReaderState {
     pub words_per_minute: usize,
 }
 
+#[derive(Debug, thiserror::Error, Clone)]
+#[error("{0}")]
+pub struct FontError(pub String);
+
+pub type Fonts = Vec<String>;
+
 async fn load_settings() -> Result<AppSettings, Box<dyn std::error::Error>> {
     #[cfg(feature = "tauri")]
     {
@@ -104,6 +110,25 @@ async fn save_settings(settings_serialized: &str) -> Result<(), Box<dyn std::err
     Ok(())
 }
 
+async fn get_fonts() -> Result<Fonts, FontError> {
+    #[cfg(feature = "tauri")]
+    {
+        use crate::js_bindings::invoke;
+
+        match invoke("get_system_fonts", ().to_js_value().expect("ok")).await {
+            Ok(js_value) => Ok(js_value.into_value::<Fonts>().expect("ok")),
+            Err(e) => Err(FontError(e.as_string().expect("to be string"))),
+        }
+    }
+
+    #[cfg(not(feature = "tauri"))]
+    {
+        Err(FontError(
+            "choosing fonts is not supported on the web".into(),
+        ))
+    }
+}
+
 #[component]
 pub fn App() -> impl IntoView {
     // Global state for the reader which should persist across page navigation
@@ -118,6 +143,10 @@ pub fn App() -> impl IntoView {
         provide_context(create_rw_signal(load_settings().await.unwrap_or_default()))
     });
     provide_settings.dispatch(());
+
+    // Start loading the fonts once the app starts to avoid showing a loading screen in the font chooser page
+    let fonts = create_local_resource(|| (), |_| async move { get_fonts().await });
+    provide_context(fonts);
 
     create_effect(move |_| {
         if provide_settings.version().with(|v| *v > 0) {

@@ -21,41 +21,19 @@ use common::AppSettings;
 use leptos::*;
 use leptos_router::*;
 
-#[derive(Debug, thiserror::Error, Clone)]
-#[error("{0}")]
-struct FontError(String);
+use crate::app::{FontError, Fonts};
 
 struct Action {
     getter: Box<dyn Fn() -> String>,
     setter: Box<dyn Fn(String)>,
 }
 
-async fn get_fonts() -> Result<Vec<String>, FontError> {
-    #[cfg(feature = "tauri")]
-    {
-        use crate::js_bindings::invoke;
-        use crate::{IntoValue, ToJsValue};
-
-        match invoke("get_system_fonts", ().to_js_value().expect("ok")).await {
-            Ok(js_value) => Ok(js_value.into_value::<Vec<String>>().expect("ok")),
-            Err(e) => Err(FontError(e.as_string().expect("to be string"))),
-        }
-    }
-
-    #[cfg(not(feature = "tauri"))]
-    {
-        Err(FontError(
-            "choosing fonts is not supported on the web".into(),
-        ))
-    }
-}
-
 #[component]
 pub fn FontChooser() -> impl IntoView {
     let settings = expect_context::<RwSignal<AppSettings>>();
-    let query = use_query_map();
+    let fonts = expect_context::<Resource<(), Result<Fonts, FontError>>>();
 
-    let fonts = create_local_resource(|| (), |_| async move { get_fonts().await });
+    let query = use_query_map();
 
     let action = move || {
         query.with(|q| match q.get("choice") {
