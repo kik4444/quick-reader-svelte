@@ -258,7 +258,7 @@ pub fn QuickReader() -> impl IntoView {
                           max=max
                           step=step
                           prop:value=value
-                          on:input=on_input
+                          on:input=debounce(Duration::from_millis(500), on_input)
                         />
                         <label class="label">{name}</label>
                       </div>
