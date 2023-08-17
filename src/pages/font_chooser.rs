@@ -95,8 +95,23 @@ pub fn FontChooser() -> impl IntoView {
                                       <For
                                         each=move || fonts.clone()
                                         key=|font| font.clone()
-                                        view=move |font| view! { <option>{font}</option> }
+                                        view={
+                                            let action = Rc::clone(&action);
+                                            move |font| {
+                                                view! {
+                                                  <option selected={
+                                                      let action = Rc::clone(&action);
+                                                      let font = font.clone();
+                                                      move || {
+                                                          let current_font = (action.getter)();
+                                                          font == current_font
+                                                      }
+                                                  }>{font}</option>
+                                                }
+                                            }
+                                        }
                                       />
+
                                     </select>
                                     <label class="label">{label_text}</label>
                                   </div>
