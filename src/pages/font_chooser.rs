@@ -15,18 +15,11 @@
  *    along with Quick Reader.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use std::rc::Rc;
-
 use common::AppSettings;
 use leptos::*;
 use leptos_router::*;
 
 use crate::app::{FontError, Fonts};
-
-struct Action {
-    getter: Box<dyn Fn() -> String>,
-    setter: Box<dyn Fn(String)>,
-}
 
 #[component]
 pub fn FontChooser() -> impl IntoView {
@@ -35,24 +28,22 @@ pub fn FontChooser() -> impl IntoView {
 
     let query = use_query_map();
 
-    let action = move || {
+    let actions = move || {
         query.with(|q| match q.get("choice") {
-            None => Err(FontError("no font chosen to change".into())),
             Some(choice) => match choice.as_str() {
-                "display" => Ok(Rc::new(Action {
-                    getter: Box::new(move || settings.with(|s| s.display_font_style.clone())),
-                    setter: Box::new(move |style| {
-                        settings.update(|s| s.display_font_style = style)
-                    }),
-                })),
-                "textarea" => Ok(Rc::new(Action {
-                    getter: Box::new(move || settings.with(|s| s.textarea_font_style.clone())),
-                    setter: Box::new(move |style| {
-                        settings.update(|s| s.textarea_font_style = style)
-                    }),
-                })),
+                "display" => Ok((
+                    create_rw_signal(settings.with(|s| s.display_font_style.clone())),
+                    Box::new(move |style| settings.update(|s| s.display_font_style = style))
+                        as Box<dyn Fn(String)>,
+                )),
+                "textarea" => Ok((
+                    create_rw_signal(settings.with(|s| s.textarea_font_style.clone())),
+                    Box::new(move |style| settings.update(|s| s.textarea_font_style = style))
+                        as Box<dyn Fn(String)>,
+                )),
                 s => Err(FontError(format!("invalid font choice {s}"))),
             },
+            None => Err(FontError("no font chosen to change".into())),
         })
     };
 
@@ -60,9 +51,9 @@ pub fn FontChooser() -> impl IntoView {
 
     view! {
       <div class="w-full h-full pt-10 px-5 grid grid-rows-3 gap-5 place-items-center">
-        {move || match action() {
+        {move || match actions() {
             Err(e) => view! { <p class="paragraph m-5">{e.to_string()}</p> }.into_view(),
-            Ok(action) => {
+            Ok((current_font, setter)) => {
                 match fonts.read() {
                     None => view! { <p class="paragraph m-5">"Loading fonts"</p> }.into_view(),
                     Some(fonts) => {
@@ -80,34 +71,17 @@ pub fn FontChooser() -> impl IntoView {
                                   <div class="self-start relative h-fit w-full">
                                     <select
                                       class="peer select"
-                                      // We do this Rc magic because closures are not Clone or Copy
-                                      prop:value={
-                                          let action = Rc::clone(&action);
-                                          move || (action.getter)()
-                                      }
-
-                                      on:input={
-                                          let action = Rc::clone(&action);
-                                          move |ev| (action.setter)(event_target_value(&ev))
-                                      }
+                                      on:input=move |ev| setter(event_target_value(&ev))
                                     >
-
                                       <For
                                         each=move || fonts.clone()
                                         key=|font| font.clone()
-                                        view={
-                                            let action = Rc::clone(&action);
-                                            move |font| {
-                                                view! {
-                                                  <option selected={
-                                                      let action = Rc::clone(&action);
-                                                      let font = font.clone();
-                                                      move || {
-                                                          let current_font = (action.getter)();
-                                                          font == current_font
-                                                      }
-                                                  }>{font}</option>
-                                                }
+                                        view=move |font| {
+                                            view! {
+                                              <option selected={
+                                                  let font = font.clone();
+                                                  move || font == current_font()
+                                              }>{font}</option>
                                             }
                                         }
                                       />
@@ -118,10 +92,7 @@ pub fn FontChooser() -> impl IntoView {
 
                                   <p
                                     class="paragraph self-center text-3xl"
-                                    style={
-                                        let action = Rc::clone(&action);
-                                        move || { format!("font-family: {}", (action.getter) ()) }
-                                    }
+                                    style:font-family=current_font
                                   >
 
                                     "The quick brown fox jumps over the lazy dog"
