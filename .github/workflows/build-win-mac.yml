@@ -35,7 +35,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: '. -> target'
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
@@ -54,8 +54,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
-          tagName: quick-reader-v__VERSION__ # tauri-action replaces \_\_VERSION\_\_ with the app version.
-          releaseName: Quick Reader v__VERSION__ 
+          tagName: quick-reader-leptos-v__VERSION__ # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseName: Quick Reader Leptos v__VERSION__ 
           releaseBody: ${{ inputs.description }}
           releaseDraft: true
           prerelease: false
